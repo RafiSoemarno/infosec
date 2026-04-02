@@ -1,0 +1,72 @@
+@extends('layouts.app')
+
+@php
+    $menuItems = $menuData['items'] ?? [];
+    $menuTitle = $menuData['title'] ?? 'Main Menu';
+    $welcomeTitle = $menuData['welcomeTitle'] ?? 'Welcome Drill Simulation';
+    $welcomeSubtitle = $menuData['welcomeSubtitle'] ?? 'Self-Service Cyber Attack';
+    $showDate = now()->translatedFormat('D, d M Y');
+@endphp
+
+@section('title', $menuTitle)
+
+@section('left_sidebar')
+    <div class="d-flex flex-column h-100">
+        <div class="brand-lockup">
+            <span class="brand-lockup__icon">SEC</span>
+            <div>
+                <h2 class="brand-lockup__title">{{ $brand['name'] ?? 'DENSO' }}</h2>
+                <p class="brand-lockup__subtitle">{{ $brand['tagline'] ?? 'Crafting the Core' }}</p>
+            </div>
+        </div>
+
+        <div class="mt-4 stack-lg">
+            <x-profile-card :user="$user" />
+        </div>
+
+        <form class="mt-auto" method="post" action="{{ url('/logout') }}">
+            @csrf
+            <button type="submit" class="app-btn-primary">Sign Out</button>
+        </form>
+    </div>
+@endsection
+
+@section('topbar')
+    <x-ui.header eyebrow="Control Center" :title="$welcomeTitle" :subtitle="$welcomeSubtitle">
+        <div>
+            <div>{{ $showDate }}</div>
+            <div class="text-support">Alert Center</div>
+        </div>
+    </x-ui.header>
+@endsection
+
+@section('content')
+    <section class="content-span-12">
+        <div class="panel-card panel-card--muted p-4">
+            <p class="page-header__eyebrow mb-2">Navigation</p>
+            <h2 class="section-title">{{ $menuTitle }}</h2>
+            <p class="section-subtitle">Reusable menu modules aligned to the shared desktop layout and color system.</p>
+        </div>
+    </section>
+
+    @forelse ($menuItems as $item)
+        <section class="content-span-12 fade-in-up">
+            <x-menu-card
+                :title="$item['title'] ?? 'Menu Item'"
+                :subtitle="$item['subtitle'] ?? 'Quote for this theme'"
+                :url="$item['url'] ?? '#'"
+                :symbol="$item['symbol'] ?? 'ITEM'"
+            />
+        </section>
+    @empty
+        <section class="content-span-12 fade-in-up">
+            <x-menu-card title="Education" subtitle="Quote for this theme" url="#" symbol="EDU" />
+        </section>
+        <section class="content-span-12 fade-in-up delay-1">
+            <x-menu-card title="Drill Simulation" subtitle="Quote for this theme" url="#" symbol="DRL" />
+        </section>
+        <section class="content-span-12 fade-in-up delay-2">
+            <x-menu-card title="My Result" subtitle="Quote for this theme" url="#" symbol="RES" />
+        </section>
+    @endforelse
+@endsection

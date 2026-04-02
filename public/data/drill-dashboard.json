@@ -1,0 +1,142 @@
+{
+  "brand": {
+    "name": "DENSO",
+    "tagline": "Crafting the Core"
+  },
+  "auth": {
+    "users": [
+      {
+        "username": "selamet.nuryanto",
+        "password": "Denso123!",
+        "name": "Selamet Nuryanto",
+        "employeeId": "JK2141189",
+        "company": "PT. Denso Indonesia",
+        "businessUnit": "3302 - Information System Bekasi",
+        "email": "selamet.nuryanto.a9e@ap.denso.com"
+      },
+      {
+        "username": "demo.user",
+        "password": "demo123",
+        "name": "Demo User",
+        "employeeId": "DM0000001",
+        "company": "PT. Denso Indonesia",
+        "businessUnit": "3302 - Information System Bekasi",
+        "email": "demo.user@ap.denso.com"
+      }
+    ]
+  },
+  "menu": {
+    "title": "Main Menu",
+    "welcomeTitle": "Welcome Drill Simulation",
+    "welcomeSubtitle": "Self-Service Cyber Attack",
+    "items": [
+      {
+        "title": "Education",
+        "subtitle": "Quote fot This theme",
+        "url": "#",
+        "symbol": "EDU"
+      },
+      {
+        "title": "Drill Simulation",
+        "subtitle": "Quote fot This theme",
+        "url": "#",
+        "symbol": "DRL"
+      },
+      {
+        "title": "My Result",
+        "subtitle": "Quote fot This theme",
+        "url": "#",
+        "symbol": "RES"
+      }
+    ]
+  },
+  "dashboard": {
+    "title": "Drill Simulation",
+    "subtitle": "Self-Service Cyber Attack",
+    "periodOptions": ["1st Half", "2nd Half", "3rd Half"],
+    "selectedPeriod": "1st Half",
+    "periodData": {
+      "1st Half": {
+        "target": 1276,
+        "actual": 333,
+        "percentage": 58,
+        "stats": [
+          {
+            "label": "DNIA",
+            "actual": 250,
+            "target": 788
+          },
+          {
+            "label": "DMIA",
+            "actual": 150,
+            "target": 293
+          },
+          {
+            "label": "DSIA",
+            "actual": 75,
+            "target": 133
+          },
+          {
+            "label": "HDI",
+            "actual": 15,
+            "target": 51
+          }
+        ]
+      },
+      "2nd Half": {
+        "target": 1460,
+        "actual": 710,
+        "percentage": 49,
+        "stats": [
+          {
+            "label": "DNIA",
+            "actual": 310,
+            "target": 860
+          },
+          {
+            "label": "DMIA",
+            "actual": 220,
+            "target": 355
+          },
+          {
+            "label": "DSIA",
+            "actual": 130,
+            "target": 170
+          },
+          {
+            "label": "HDI",
+            "actual": 50,
+            "target": 75
+          }
+        ]
+      },
+      "3rd Half": {
+        "target": 1325,
+        "actual": 982,
+        "percentage": 74,
+        "stats": [
+          {
+            "label": "DNIA",
+            "actual": 420,
+            "target": 780
+          },
+          {
+            "label": "DMIA",
+            "actual": 260,
+            "target": 320
+          },
+          {
+            "label": "DSIA",
+            "actual": 210,
+            "target": 165
+          },
+          {
+            "label": "HDI",
+            "actual": 92,
+            "target": 60
+          }
+        ]
+      }
+    }
+  }
+}
