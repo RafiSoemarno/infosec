@@ -92,6 +92,24 @@ Route::get('/menu', function () {
     ]);
 });
 
+Route::get('/education', function () {
+    if (!session()->has('auth_user')) {
+        return redirect('/')
+            ->withErrors([
+                'auth' => 'Please sign in first.',
+            ]);
+    }
+
+    $drillData = getDrillData();
+
+    return view('education', [
+        'brand' => $drillData['brand'] ?? [],
+        'menuData' => $drillData['menu'] ?? [],
+        'educationData' => $drillData['education'] ?? [],
+        'user' => session('auth_user'),
+    ]);
+});
+
 Route::post('/logout', function () {
     session()->forget('auth_user');
 

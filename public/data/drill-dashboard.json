@@ -32,21 +32,72 @@
     "items": [
       {
         "title": "Education",
-        "subtitle": "Quote fot This theme",
-        "url": "#",
+        "subtitle": "Learn cyber security fundamentals",
+        "url": "/education",
         "symbol": "EDU"
       },
       {
         "title": "Drill Simulation",
-        "subtitle": "Quote fot This theme",
+        "subtitle": "Practice attack scenarios",
         "url": "#",
         "symbol": "DRL"
       },
       {
         "title": "My Result",
-        "subtitle": "Quote fot This theme",
+        "subtitle": "Track your progress",
         "url": "#",
         "symbol": "RES"
+      }
+    ]
+  },
+  "education": {
+    "title": "Education",
+    "subtitle": "Upload Video on Devas and embed link to show web",
+    "searchPlaceholder": "Search education ...",
+    "progressLabel": "Education Material",
+    "progressNote": "Track All Ongoing education material",
+    "videos": [
+      {
+        "id": 1,
+        "title": "Security Incident Response for Malware Infections",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": true
+      },
+      {
+        "id": 2,
+        "title": "How to Disconnect Network?",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": true
+      },
+      {
+        "id": 3,
+        "title": "Handling Information",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": false
+      },
+      {
+        "id": 4,
+        "title": "Usage E-mail, Web Browsing, and Cyber Security",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": false
+      },
+      {
+        "id": 5,
+        "title": "Photography & Videography",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": false
+      },
+      {
+        "id": 6,
+        "title": "ITake Out - Bring In of Information Equipment",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": false
+      },
+      {
+        "id": 7,
+        "title": "Incident Report",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "watched": false
       }
     ]
   },

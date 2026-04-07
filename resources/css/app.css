@@ -498,3 +498,264 @@ a {
 		transform: translateY(0);
 	}
 }
+
+/* ── Sidebar Nav ────────────────────────────────────────── */
+
+.sidebar-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.sidebar-nav__item {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 12px 16px;
+	border-radius: var(--radius-sm);
+	text-decoration: none;
+	color: var(--color-muted);
+	font-weight: 600;
+	font-size: 0.97rem;
+	transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-nav__item:hover {
+	background: var(--color-panel-muted);
+	color: var(--color-ink);
+}
+
+.sidebar-nav__item--active {
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+}
+
+.sidebar-nav__item--active:hover {
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+}
+
+.sidebar-nav__symbol {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background: var(--color-panel-muted);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.7rem;
+	font-weight: 800;
+	letter-spacing: 0.06em;
+	color: var(--color-muted);
+	flex-shrink: 0;
+}
+
+.sidebar-nav__item--active .sidebar-nav__symbol {
+	background: var(--color-brand);
+	color: #fff;
+}
+
+.sidebar-nav__label {
+	flex: 1;
+}
+
+/* ── Secondary button ───────────────────────────────────── */
+
+.app-btn-secondary {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 14px 20px;
+	border: 1.5px solid var(--color-line);
+	border-radius: 16px;
+	background: var(--color-panel);
+	color: var(--color-ink);
+	font-size: 1rem;
+	font-weight: 800;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.app-btn-secondary:disabled {
+	opacity: 0.38;
+	cursor: not-allowed;
+}
+
+.app-btn-primary {
+	gap: 8px;
+}
+
+.app-btn-primary:disabled {
+	opacity: 0.38;
+	cursor: not-allowed;
+}
+
+/* ── Education nav buttons ──────────────────────────────── */
+
+.edu-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+/* ── Education video panel ──────────────────────────────── */
+
+.edu-video-panel {
+	overflow: hidden;
+}
+
+.edu-video-panel__embed {
+	position: relative;
+	width: 100%;
+	padding-bottom: 56.25%;
+}
+
+.edu-video-panel__embed iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	border-radius: var(--radius-lg);
+}
+
+/* ── Education right sidebar ────────────────────────────── */
+
+.edu-search {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 14px;
+	background: var(--color-panel-muted);
+	border: 1px solid var(--color-line);
+	border-radius: var(--radius-sm);
+}
+
+.edu-search__icon {
+	flex-shrink: 0;
+	color: var(--color-muted);
+}
+
+.edu-search__input {
+	flex: 1;
+	border: 0;
+	background: transparent;
+	font-family: var(--font-sans);
+	font-size: 0.9rem;
+	color: var(--color-ink);
+	outline: none;
+}
+
+.edu-search__input::placeholder {
+	color: var(--color-muted);
+}
+
+.edu-list-header__title {
+	margin: 0 0 4px;
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+.edu-list-header__note {
+	margin: 0;
+	font-size: 0.82rem;
+	color: var(--color-muted);
+}
+
+.edu-video-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	overflow-y: auto;
+	flex: 1;
+}
+
+.edu-video-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 10px 8px;
+	border-radius: var(--radius-sm);
+	text-decoration: none;
+	color: var(--color-ink);
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.4;
+	transition: background 0.12s;
+}
+
+.edu-video-item:hover {
+	background: var(--color-panel-muted);
+}
+
+.edu-video-item--active {
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+}
+
+.edu-video-item--active:hover {
+	background: var(--color-brand-soft);
+}
+
+.edu-video-item__dot {
+	flex-shrink: 0;
+	margin-top: 4px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: 2px solid var(--color-line);
+	background: transparent;
+}
+
+.edu-video-item__dot--watched {
+	background: var(--color-brand);
+	border-color: var(--color-brand);
+}
+
+/* ── Education progress badge ───────────────────────────── */
+
+.edu-progress-badge {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 18px 20px;
+	border-radius: var(--radius-md);
+	background: linear-gradient(135deg, #eb3349 0%, #b61425 100%);
+	color: #fff;
+}
+
+.edu-progress-badge__score {
+	display: flex;
+	align-items: baseline;
+	gap: 2px;
+}
+
+.edu-progress-badge__num {
+	font-size: 2.2rem;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.04em;
+}
+
+.edu-progress-badge__denom {
+	font-size: 1.1rem;
+	font-weight: 700;
+	opacity: 0.75;
+}
+
+.edu-progress-badge__label {
+	margin: 0 0 2px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	opacity: 0.85;
+}
+
+.edu-progress-badge__cta {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 800;
+}
