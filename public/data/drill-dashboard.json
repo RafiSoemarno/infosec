@@ -1,193 +1,222 @@
 {
-  "brand": {
-    "name": "DENSO",
-    "tagline": "Crafting the Core"
-  },
-  "auth": {
-    "users": [
-      {
-        "username": "selamet.nuryanto",
-        "password": "Denso123!",
-        "name": "Selamet Nuryanto",
-        "employeeId": "JK2141189",
-        "company": "PT. Denso Indonesia",
-        "businessUnit": "3302 - Information System Bekasi",
-        "email": "selamet.nuryanto.a9e@ap.denso.com"
-      },
-      {
-        "username": "demo.user",
-        "password": "demo123",
-        "name": "Demo User",
-        "employeeId": "DM0000001",
-        "company": "PT. Denso Indonesia",
-        "businessUnit": "3302 - Information System Bekasi",
-        "email": "demo.user@ap.denso.com"
-      }
-    ]
-  },
-  "menu": {
-    "title": "Main Menu",
-    "welcomeTitle": "Welcome Drill Simulation",
-    "welcomeSubtitle": "Self-Service Cyber Attack",
-    "items": [
-      {
+    "brand": {
+        "name": "DENSO",
+        "tagline": "Crafting the Core"
+    },
+    "auth": {
+        "users": [
+            {
+                "username": "selamet.nuryanto",
+                "password": "Denso123!",
+                "name": "Selamet Nuryanto",
+                "employeeId": "JK2141189",
+                "company": "PT. Denso Indonesia",
+                "businessUnit": "3302 - Information System Bekasi",
+                "email": "selamet.nuryanto.a9e@ap.denso.com"
+            },
+            {
+                "username": "demo.user",
+                "password": "demo123",
+                "name": "Demo User",
+                "employeeId": "DM0000001",
+                "company": "PT. Denso Indonesia",
+                "businessUnit": "3302 - Information System Bekasi",
+                "email": "demo.user@ap.denso.com"
+            }
+        ]
+    },
+    "menu": {
+        "title": "Main Menu",
+        "welcomeTitle": "Welcome Drill Simulation",
+        "welcomeSubtitle": "Self-Service Cyber Attack",
+        "items": [
+            {
+                "title": "Education",
+                "subtitle": "Learn cyber security fundamentals",
+                "url": "/education",
+                "symbol": "EDU"
+            },
+            {
+                "title": "Drill Simulation",
+                "subtitle": "Practice attack scenarios",
+                "url": "/drill",
+                "symbol": "DRL"
+            },
+            {
+                "title": "My Result",
+                "subtitle": "Track your progress",
+                "url": "#",
+                "symbol": "RES"
+            }
+        ]
+    },
+    "education": {
         "title": "Education",
-        "subtitle": "Learn cyber security fundamentals",
-        "url": "/education",
-        "symbol": "EDU"
-      },
-      {
+        "subtitle": "Upload Video on Devas and embed link to show web",
+        "searchPlaceholder": "Search education ...",
+        "progressLabel": "Education Material",
+        "progressNote": "Track All Ongoing education material",
+        "videos": [
+            {
+                "id": 1,
+                "title": "Security Incident Response for Malware Infections",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": true
+            },
+            {
+                "id": 2,
+                "title": "How to Disconnect Network?",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": true
+            },
+            {
+                "id": 3,
+                "title": "Handling Information",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": true
+            },
+            {
+                "id": 4,
+                "title": "Usage E-mail, Web Browsing, and Cyber Security",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": true
+            },
+            {
+                "id": 5,
+                "title": "Photography & Videography",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": false
+            },
+            {
+                "id": 6,
+                "title": "ITake Out - Bring In of Information Equipment",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": false
+            },
+            {
+                "id": 7,
+                "title": "Incident Report",
+                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "watched": false
+            }
+        ]
+    },
+    "drillSimulation": {
         "title": "Drill Simulation",
-        "subtitle": "Practice attack scenarios",
-        "url": "#",
-        "symbol": "DRL"
-      },
-      {
-        "title": "My Result",
-        "subtitle": "Track your progress",
-        "url": "#",
-        "symbol": "RES"
-      }
-    ]
-  },
-  "education": {
-    "title": "Education",
-    "subtitle": "Upload Video on Devas and embed link to show web",
-    "searchPlaceholder": "Search education ...",
-    "progressLabel": "Education Material",
-    "progressNote": "Track All Ongoing education material",
-    "videos": [
-      {
-        "id": 1,
-        "title": "Security Incident Response for Malware Infections",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": true
-      },
-      {
-        "id": 2,
-        "title": "How to Disconnect Network?",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": true
-      },
-      {
-        "id": 3,
-        "title": "Handling Information",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": false
-      },
-      {
-        "id": 4,
-        "title": "Usage E-mail, Web Browsing, and Cyber Security",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": false
-      },
-      {
-        "id": 5,
-        "title": "Photography & Videography",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": false
-      },
-      {
-        "id": 6,
-        "title": "ITake Out - Bring In of Information Equipment",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": false
-      },
-      {
-        "id": 7,
-        "title": "Incident Report",
-        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "watched": false
-      }
-    ]
-  },
-  "dashboard": {
-    "title": "Drill Simulation",
-    "subtitle": "Self-Service Cyber Attack",
-    "periodOptions": ["1st Half", "2nd Half", "3rd Half"],
-    "selectedPeriod": "1st Half",
-    "periodData": {
-      "1st Half": {
-        "target": 1276,
-        "actual": 333,
-        "percentage": 58,
-        "stats": [
-          {
-            "label": "DNIA",
-            "actual": 250,
-            "target": 788
-          },
-          {
-            "label": "DMIA",
-            "actual": 150,
-            "target": 293
-          },
-          {
-            "label": "DSIA",
-            "actual": 75,
-            "target": 133
-          },
-          {
-            "label": "HDI",
-            "actual": 15,
-            "target": 51
-          }
+        "subtitle": "Self-Service Cyber Attack",
+        "drills": [
+            {
+                "id": 1,
+                "title": "Ransomware Attack 1st Half",
+                "description": "Test your ability to detect advanced ransomware attacks. This simulation will send fake ransomware to your computer.",
+                "notifyNote": "",
+                "duration": "10 Minutes",
+                "periodStart": "1 Apr 2026",
+                "periodEnd": "30 Apr 2026"
+            },
+            {
+                "id": 2,
+                "title": "Next Drill Schedule",
+                "description": "Follow schedule base on your plant.",
+                "notifyNote": "",
+                "duration": "30 Menit",
+                "periodStart": "20 Jan 2027",
+                "periodEnd": "20 Jan 2027",
+                "comingSoon": true
+            }
         ]
-      },
-      "2nd Half": {
-        "target": 1460,
-        "actual": 710,
-        "percentage": 49,
-        "stats": [
-          {
-            "label": "DNIA",
-            "actual": 310,
-            "target": 860
-          },
-          {
-            "label": "DMIA",
-            "actual": 220,
-            "target": 355
-          },
-          {
-            "label": "DSIA",
-            "actual": 130,
-            "target": 170
-          },
-          {
-            "label": "HDI",
-            "actual": 50,
-            "target": 75
-          }
-        ]
-      },
-      "3rd Half": {
-        "target": 1325,
-        "actual": 982,
-        "percentage": 74,
-        "stats": [
-          {
-            "label": "DNIA",
-            "actual": 420,
-            "target": 780
-          },
-          {
-            "label": "DMIA",
-            "actual": 260,
-            "target": 320
-          },
-          {
-            "label": "DSIA",
-            "actual": 210,
-            "target": 165
-          },
-          {
-            "label": "HDI",
-            "actual": 92,
-            "target": 60
-          }
-        ]
-      }
+    },
+    "dashboard": {
+        "title": "Drill Simulation",
+        "subtitle": "Self-Service Cyber Attack",
+        "periodOptions": [
+            "1st Half",
+            "2nd Half",
+            "3rd Half"
+        ],
+        "selectedPeriod": "1st Half",
+        "periodData": {
+            "1st Half": {
+                "target": 1276,
+                "actual": 333,
+                "percentage": 58,
+                "stats": [
+                    {
+                        "label": "DNIA",
+                        "actual": 250,
+                        "target": 788
+                    },
+                    {
+                        "label": "DMIA",
+                        "actual": 150,
+                        "target": 293
+                    },
+                    {
+                        "label": "DSIA",
+                        "actual": 75,
+                        "target": 133
+                    },
+                    {
+                        "label": "HDI",
+                        "actual": 15,
+                        "target": 51
+                    }
+                ]
+            },
+            "2nd Half": {
+                "target": 1460,
+                "actual": 710,
+                "percentage": 49,
+                "stats": [
+                    {
+                        "label": "DNIA",
+                        "actual": 310,
+                        "target": 860
+                    },
+                    {
+                        "label": "DMIA",
+                        "actual": 220,
+                        "target": 355
+                    },
+                    {
+                        "label": "DSIA",
+                        "actual": 130,
+                        "target": 170
+                    },
+                    {
+                        "label": "HDI",
+                        "actual": 50,
+                        "target": 75
+                    }
+                ]
+            },
+            "3rd Half": {
+                "target": 1325,
+                "actual": 982,
+                "percentage": 74,
+                "stats": [
+                    {
+                        "label": "DNIA",
+                        "actual": 420,
+                        "target": 780
+                    },
+                    {
+                        "label": "DMIA",
+                        "actual": 260,
+                        "target": 320
+                    },
+                    {
+                        "label": "DSIA",
+                        "actual": 210,
+                        "target": 165
+                    },
+                    {
+                        "label": "HDI",
+                        "actual": 92,
+                        "target": 60
+                    }
+                ]
+            }
+        }
     }
-  }
 }

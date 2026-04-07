@@ -759,3 +759,239 @@ a {
 	font-size: 1rem;
 	font-weight: 800;
 }
+
+/* ── Drill Simulation cards ─────────────────────────────── */
+
+.drill-card {
+	overflow: hidden;
+	background: linear-gradient(135deg, #eb3349 0%, #b61425 100%);
+	color: #fff;
+	border: 0;
+}
+
+.drill-card__body {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 32px 36px;
+}
+
+.drill-card__info {
+	flex: 1;
+	min-width: 0;
+}
+
+.drill-card__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+	font-weight: 800;
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+}
+
+.drill-card__desc {
+	margin: 0 0 6px;
+	font-size: 0.97rem;
+	font-weight: 500;
+	opacity: 0.9;
+	max-width: 480px;
+}
+
+.drill-card__notify {
+	margin: 0 0 18px;
+	font-size: 0.82rem;
+	font-style: italic;
+	opacity: 0.75;
+	text-align: right;
+	max-width: 480px;
+}
+
+.drill-card__actions {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	flex-wrap: wrap;
+	margin-top: 18px;
+}
+
+.drill-card__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.drill-card__meta-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	opacity: 0.9;
+}
+
+.drill-action-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 28px;
+	border-radius: 999px;
+	font-size: 1rem;
+	font-weight: 800;
+	text-decoration: none;
+	border: 0;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: opacity 0.15s, transform 0.1s;
+}
+
+.drill-action-btn:hover {
+	opacity: 0.9;
+	transform: translateY(-1px);
+}
+
+.drill-action-btn--watch {
+	background: #fff;
+	color: var(--color-brand);
+}
+
+.drill-action-btn--run {
+	background: #fff;
+	color: var(--color-brand);
+}
+
+.drill-action-btn--completed {
+	background: rgba(255, 255, 255, 0.25);
+	color: #fff;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+.drill-action-btn--completed:hover {
+	transform: none;
+	opacity: 0.7;
+}
+
+.drill-action-btn--coming {
+	background: rgba(255, 255, 255, 0.2);
+	color: #fff;
+	cursor: not-allowed;
+}
+
+.drill-card__badge {
+	flex-shrink: 0;
+	background: #fff;
+	color: var(--color-ink);
+	border-radius: var(--radius-lg);
+	padding: 20px 28px;
+	min-width: 180px;
+	text-align: center;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.drill-card__badge--empty {
+	background: rgba(255, 255, 255, 0.15);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100px;
+}
+
+.drill-card__badge-label {
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+	margin-bottom: 8px;
+}
+
+.drill-card__badge-value {
+	font-size: 1.6rem;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: var(--color-ink);
+}
+
+/* ── Drill education progress (left sidebar) ────────────── */
+
+.drill-edu-progress {
+	border-radius: var(--radius-md);
+}
+
+.drill-edu-progress__bar-wrap {
+	flex: 1;
+	height: 8px;
+	background: var(--color-line);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.drill-edu-progress__bar {
+	height: 100%;
+	background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-brand-strong) 100%);
+	border-radius: 999px;
+	transition: width 0.4s ease;
+}
+
+.drill-edu-progress__count {
+	font-size: 0.85rem;
+	font-weight: 800;
+	color: var(--color-muted);
+	white-space: nowrap;
+}
+
+.drill-edu-progress__hint {
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--color-muted);
+}
+
+.drill-edu-progress__hint--done {
+	color: #2a9d5c;
+	font-weight: 600;
+}
+
+/* ── Topbar profile chip ────────────────────────────────── */
+
+.topbar-profile {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.topbar-profile__text {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 2px;
+}
+
+.topbar-profile__name {
+	font-size: 0.97rem;
+	font-weight: 700;
+	color: var(--color-ink);
+	line-height: 1.2;
+}
+
+.topbar-profile__id {
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--color-muted);
+}
+
+.topbar-profile__avatar {
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 30% 30%, #ff6477 0%, var(--color-brand) 72%);
+	color: #fff;
+	font-size: 1.1rem;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	box-shadow: 0 6px 16px rgba(214, 40, 57, 0.28);
+}

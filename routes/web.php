@@ -92,7 +92,43 @@ Route::get('/menu', function () {
     ]);
 });
 
-Route::get('/education', function () {
+Route::get('/education', function (Request $request) {
+    if (!session()->has('auth_user')) {
+        return redirect('/')
+            ->withErrors([
+                'auth' => 'Please sign in first.',
+            ]);
+    }
+
+    $jsonPath = public_path('data/drill-dashboard.json');
+    $drillData = getDrillData();
+
+    $videoId = (int) $request->query('video', $drillData['education']['videos'][0]['id'] ?? 1);
+
+    $videos = &$drillData['education']['videos'];
+    $updated = false;
+    foreach ($videos as &$video) {
+        if ($video['id'] === $videoId && !($video['watched'] ?? false)) {
+            $video['watched'] = true;
+            $updated = true;
+            break;
+        }
+    }
+    unset($video);
+
+    if ($updated) {
+        file_put_contents($jsonPath, json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
+    return view('education', [
+        'brand' => $drillData['brand'] ?? [],
+        'menuData' => $drillData['menu'] ?? [],
+        'educationData' => $drillData['education'] ?? [],
+        'user' => session('auth_user'),
+    ]);
+});
+
+Route::get('/drill', function () {
     if (!session()->has('auth_user')) {
         return redirect('/')
             ->withErrors([
@@ -102,12 +138,29 @@ Route::get('/education', function () {
 
     $drillData = getDrillData();
 
-    return view('education', [
+    return view('drill', [
         'brand' => $drillData['brand'] ?? [],
         'menuData' => $drillData['menu'] ?? [],
+        'drillSimData' => $drillData['drillSimulation'] ?? [],
         'educationData' => $drillData['education'] ?? [],
         'user' => session('auth_user'),
     ]);
+});
+
+Route::post('/drill/complete', function (Request $request) {
+    if (!session()->has('auth_user')) {
+        return redirect('/');
+    }
+
+    $drillId = (int) $request->input('drill_id');
+    $completed = session('completed_drills', []);
+
+    if (!in_array($drillId, $completed)) {
+        $completed[] = $drillId;
+        session(['completed_drills' => $completed]);
+    }
+
+    return redirect('/drill');
 });
 
 Route::post('/logout', function () {
