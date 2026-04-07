@@ -50,7 +50,7 @@
 @endsection
 
 @section('topbar')
-    @php($authUser = session('auth_user'))
+    @php $authUser = session('auth_user'); @endphp
     <x-ui.header eyebrow="Control Center" :title="$pageTitle" :subtitle="$pageSubtitle">
         <div class="topbar-profile">
             <div class="topbar-profile__text">
