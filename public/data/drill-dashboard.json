@@ -73,19 +73,20 @@
                 "id": 3,
                 "title": "Handling Information",
                 "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                "watched": true
+                "watched": false
             },
             {
                 "id": 4,
                 "title": "Usage E-mail, Web Browsing, and Cyber Security",
                 "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                "watched": true
+                "watched": false
             },
             {
                 "id": 5,
                 "title": "Photography & Videography",
                 "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
                 "watched": false
+
             },
             {
                 "id": 6,
@@ -112,7 +113,8 @@
                 "notifyNote": "",
                 "duration": "10 Minutes",
                 "periodStart": "1 Apr 2026",
-                "periodEnd": "30 Apr 2026"
+                "periodEnd": "30 Apr 2026",
+                "completed": true
             },
             {
                 "id": 2,

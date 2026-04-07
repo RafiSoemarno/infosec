@@ -152,13 +152,20 @@ Route::post('/drill/complete', function (Request $request) {
         return redirect('/');
     }
 
+    $jsonPath = public_path('data/drill-dashboard.json');
+    $drillData = getDrillData();
     $drillId = (int) $request->input('drill_id');
-    $completed = session('completed_drills', []);
 
-    if (!in_array($drillId, $completed)) {
-        $completed[] = $drillId;
-        session(['completed_drills' => $completed]);
+    $drills = &$drillData['drillSimulation']['drills'];
+    foreach ($drills as &$drill) {
+        if (($drill['id'] ?? 0) === $drillId) {
+            $drill['completed'] = true;
+            break;
+        }
     }
+    unset($drill);
+
+    file_put_contents($jsonPath, json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
     return redirect('/drill');
 });

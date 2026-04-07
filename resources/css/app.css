@@ -207,6 +207,7 @@ a {
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: 20px;
+    width: 100%;
 }
 
 .page-header__eyebrow {
@@ -959,6 +960,7 @@ a {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	margin-left: auto;
 }
 
 .topbar-profile__text {

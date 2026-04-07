@@ -11,7 +11,6 @@
     $watchedCount = count(array_filter($videos, fn($v) => $v['watched'] ?? false));
     $allWatched = $totalVideos > 0 && $watchedCount >= $totalVideos;
 
-    $completedDrills = session('completed_drills', []);
 @endphp
 
 @section('title', $pageTitle)
@@ -68,7 +67,7 @@
     @foreach ($drills as $drill)
         @php
             $drillId = $drill['id'] ?? 0;
-            $isCompleted = in_array($drillId, $completedDrills);
+            $isCompleted = $drill['completed'] ?? false;
             $isComingSoon = $drill['comingSoon'] ?? false;
             $periodStart = $drill['periodStart'] ?? '';
             $periodEnd = $drill['periodEnd'] ?? '';
@@ -96,7 +95,7 @@
                             @elseif ($isCompleted && $allWatched)
                                 <button class="drill-action-btn drill-action-btn--completed" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                    Completed
+                                    Complete
                                 </button>
                             @elseif ($allWatched)
                                 <form method="POST" action="{{ url('/drill/complete') }}">
