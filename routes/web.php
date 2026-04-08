@@ -170,6 +170,25 @@ Route::post('/drill/complete', function (Request $request) {
     return redirect('/drill');
 });
 
+Route::get('/my-result', function () {
+    if (!session()->has('auth_user')) {
+        return redirect('/')
+            ->withErrors([
+                'auth' => 'Please sign in first.',
+            ]);
+    }
+
+    $drillData = getDrillData();
+
+    return view('my-result', [
+        'brand' => $drillData['brand'] ?? [],
+        'menuData' => $drillData['menu'] ?? [],
+        'myResultData' => $drillData['myResult'] ?? [],
+        'educationData' => $drillData['education'] ?? [],
+        'user' => session('auth_user'),
+    ]);
+});
+
 Route::post('/logout', function () {
     session()->forget('auth_user');
 

@@ -45,7 +45,7 @@
             {
                 "title": "My Result",
                 "subtitle": "Track your progress",
-                "url": "#",
+                "url": "/my-result",
                 "symbol": "RES"
             }
         ]
@@ -125,6 +125,37 @@
                 "periodStart": "20 Jan 2027",
                 "periodEnd": "20 Jan 2027",
                 "comingSoon": true
+            }
+        ]
+    },
+    "myResult": {
+        "title": "Performance Analytics",
+        "subtitle": "View your detailed drill history.",
+        "fiscalYears": [2025, 2026, 2027],
+        "selectedFY": 2026,
+        "periods": ["1st Half", "2nd Half"],
+        "selectedPeriod": "1st Half",
+        "attendance": {
+            "completed": 0,
+            "total": 2
+        },
+        "drillsCompleted": 0,
+        "status": "Not Yet",
+        "device": {
+            "computerName": "P330222522",
+            "ipAddress": "172.31.1.61",
+            "plant": "Sunter",
+            "location": "Office"
+        },
+        "drillHistory": [
+            {
+                "drillName": "Ransomware Attack 1st Half",
+                "category": "Ransomware",
+                "date": "2026-04-01",
+                "time": "09:15",
+                "responseTime": "3m 42s",
+                "score": 85,
+                "status": "Passed"
             }
         ]
     },
