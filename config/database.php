@@ -15,7 +15,20 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Data Source Toggle
+    |--------------------------------------------------------------------------
+    |
+    | This flag allows a controlled migration from JSON file-backed data to
+    | database-backed reads/writes. Keep this disabled until seed data and
+    | handlers have been validated.
+    |
+    */
+
+    'use_database' => (bool) env('USE_DATABASE', false),
 
     /*
     |--------------------------------------------------------------------------
