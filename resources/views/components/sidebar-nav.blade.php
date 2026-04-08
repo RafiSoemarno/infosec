@@ -6,10 +6,11 @@
 <nav class="sidebar-nav">
     @foreach ($items as $item)
         @php
-            $isActive = $activeUrl && rtrim($item['url'] ?? '#', '/') === rtrim($activeUrl, '/');
+            $itemUrl = $item['url'] ?? '#';
+            $isActive = $activeUrl && url($itemUrl) === rtrim($activeUrl, '/');
         @endphp
         <a
-            href="{{ $item['url'] ?? '#' }}"
+            href="{{ $itemUrl }}"
             class="sidebar-nav__item {{ $isActive ? 'sidebar-nav__item--active' : '' }}"
         >
             <span class="sidebar-nav__symbol">{{ $item['symbol'] ?? '' }}</span>

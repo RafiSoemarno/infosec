@@ -31,6 +31,12 @@
         "welcomeSubtitle": "Self-Service Cyber Attack",
         "items": [
             {
+                "title": "Dashboard",
+                "subtitle": "Overview and statistics",
+                "url": "/menu",
+                "symbol": "DSH"
+            },
+            {
                 "title": "Education",
                 "subtitle": "Learn cyber security fundamentals",
                 "url": "/education",
