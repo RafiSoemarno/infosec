@@ -13,6 +13,16 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public ?int $id = null;
+    public ?string $username = null;
+    public ?string $name = null;
+    public ?string $email = null;
+    public ?string $password = null;
+    public ?string $employee_id = null;
+    public ?string $company = null;
+    public ?string $business_unit = null;
+    public ?string $remember_token = null;
+
     /**
      * The attributes that are mass assignable.
      *
