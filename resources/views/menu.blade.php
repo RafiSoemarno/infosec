@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    $menuItems = $menuData['items'] ?? [];
+    $menuItems = array_values(array_filter($menuData['items'] ?? [], fn($item) => strtolower($item['title'] ?? '') !== 'dashboard'));
     $menuTitle = $menuData['title'] ?? 'Main Menu';
     $welcomeTitle = $menuData['welcomeTitle'] ?? 'Welcome Drill Simulation';
     $welcomeSubtitle = $menuData['welcomeSubtitle'] ?? 'Self-Service Cyber Attack';
