@@ -111,8 +111,8 @@
             </div>
 
             <div class="legend-row">
-                <span><span class="legend-dot" style="background: var(--color-accent);"></span>ACTUAL</span>
                 <span><span class="legend-dot" style="background: var(--color-brand);"></span>TARGET</span>
+                <span><span class="legend-dot" style="background: var(--color-accent);"></span>ACTUAL</span>
             </div>
 
             <div class="chart-panel__canvas">
@@ -152,18 +152,18 @@
                     labels: firstStats.map((item) => item.label || '-'),
                     datasets: [
                         {
-                            label: 'ACTUAL',
-                            data: firstStats.map((item) => Number(item.actual || 0)),
-                            backgroundColor: '#52c6cd',
+                            label: 'TARGET',
+                            data: firstStats.map((item) => Number(item.target || 0)),
+                            backgroundColor: '#d62839',
                             borderRadius: 8,
                             borderSkipped: false,
                             barPercentage: 0.75,
                             categoryPercentage: 0.62
                         },
                         {
-                            label: 'TARGET',
-                            data: firstStats.map((item) => Number(item.target || 0)),
-                            backgroundColor: '#d62839',
+                            label: 'ACTUAL',
+                            data: firstStats.map((item) => Number(item.actual || 0)),
+                            backgroundColor: '#52c6cd',
                             borderRadius: 8,
                             borderSkipped: false,
                             barPercentage: 0.75,
@@ -226,8 +226,8 @@
                 percentageMetric.textContent = `${Number(record.percentage || 0)}%`;
 
                 chart.data.labels = stats.map((item) => item.label || '-');
-                chart.data.datasets[0].data = stats.map((item) => Number(item.actual || 0));
-                chart.data.datasets[1].data = stats.map((item) => Number(item.target || 0));
+                chart.data.datasets[0].data = stats.map((item) => Number(item.target || 0));
+                chart.data.datasets[1].data = stats.map((item) => Number(item.actual || 0));
                 chart.update();
             };
 
