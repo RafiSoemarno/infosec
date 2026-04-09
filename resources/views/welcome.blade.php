@@ -28,7 +28,6 @@
             </div>
 
             <div class="sidebar-section fade-in-up delay-1">
-                <p class="sidebar-label">Authentication</p>
                 <h3 class="section-title">Sign In</h3>
                 <p class="section-subtitle">Access the drill dashboard and simulation tools.</p>
             </div>

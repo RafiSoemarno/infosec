@@ -92,11 +92,11 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                     Coming Soon
                                 </button>
-                            @elseif ($isCompleted && $allWatched)
+                            {{-- @elseif ($isCompleted && $allWatched)
                                 <button class="drill-action-btn drill-action-btn--completed" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                     Complete
-                                </button>
+                                </button> --}}
                             @elseif ($allWatched)
                                 <form method="POST" action="{{ url('/drill/complete') }}">
                                     @csrf
