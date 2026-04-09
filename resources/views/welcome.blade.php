@@ -20,11 +20,7 @@
     <div class="d-flex flex-column h-100">
         <div>
             <div class="brand-lockup fade-in-up">
-                <span class="brand-lockup__icon">SEC</span>
-                <div>
-                    <h2 class="brand-lockup__title">{{ $brand['name'] ?? 'DENSO' }}</h2>
-                    <p class="brand-lockup__subtitle">{{ $brand['tagline'] ?? 'Crafting the Core' }}</p>
-                </div>
+                <img src="{{ asset('storage/Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
             </div>
 
             <div class="sidebar-section fade-in-up delay-1">
