@@ -84,13 +84,20 @@
         <section class="content-span-12 fade-in-up">
             <div class="edu-video-panel panel-card">
                 <div class="edu-video-panel__embed">
-                    <iframe
-                        src="{{ $currentVideo['embedUrl'] }}"
-                        title="{{ $currentVideo['title'] }}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                    ></iframe>
+                    @if (str_contains($currentVideo['embedUrl'], 'youtube.com'))
+                        <iframe
+                            src="{{ $currentVideo['embedUrl'] }}"
+                            title="{{ $currentVideo['title'] }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                    @else
+                        <video controls style="width: 100%; height: 100%; object-fit: cover;">
+                            <source src="{{ $currentVideo['embedUrl'] }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    @endif
                 </div>
             </div>
         </section>
