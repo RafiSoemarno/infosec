@@ -27,15 +27,6 @@ class MenuController extends Controller
         $authUser = (array) session('auth_user');
         $payload = $this->drillData->getMenuPayload($authUser);
 
-        if (!empty($authUser['isSpecial'])) {
-            $payload['menuData']['items'][] = [
-                'title'    => 'Progress Practice',
-                'subtitle' => 'Track your training progress',
-                'url'      => '/progress-practice',
-                'symbol'   => 'PRG',
-            ];
-        }
-
         return view('menu', $payload);
     }
 }

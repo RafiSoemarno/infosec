@@ -45,11 +45,11 @@ class DrillDataService
 
         $drillData = $this->getDrillDataFromJson();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => $drillData['brand'] ?? [],
             'menuData' => $drillData['menu'] ?? [],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     public function getEducationPayload(array $authUser, int $videoId = 0): array
@@ -69,13 +69,13 @@ class DrillDataService
 
         $drillData = $this->getDrillDataFromJson();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => $drillData['brand'] ?? [],
             'menuData' => $drillData['menu'] ?? [],
             'drillSimData' => $drillData['drillSimulation'] ?? [],
             'educationData' => $drillData['education'] ?? [],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     public function completeDrill(array $authUser, int $drillId): void
@@ -100,7 +100,7 @@ class DrillDataService
 
         $drillData = $this->getDrillDataFromJson();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => $drillData['brand'] ?? [],
             'menuData' => $drillData['menu'] ?? [],
             'progressDrillData' => [
@@ -119,7 +119,7 @@ class DrillDataService
             ],
             'educationData' => $drillData['education'] ?? [],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     public function getMyResultPayload(array $authUser): array
@@ -130,13 +130,27 @@ class DrillDataService
 
         $drillData = $this->getDrillDataFromJson();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => $drillData['brand'] ?? [],
             'menuData' => $drillData['menu'] ?? [],
             'myResultData' => $drillData['myResult'] ?? [],
             'educationData' => $drillData['education'] ?? [],
             'user' => $authUser,
-        ];
+        ], $authUser);
+    }
+
+    private function appendSpecialMenuItems(array $payload, array $authUser): array
+    {
+        if (!empty($authUser['isSpecial'])) {
+            $payload['menuData']['items'][] = [
+                'title'    => 'Progress Drill',
+                'subtitle' => 'Track your training progress',
+                'url'      => '/progress-drill',
+                'symbol'   => 'PRG',
+            ];
+        }
+
+        return $payload;
     }
 
     private function isDatabaseEnabled(): bool
@@ -262,7 +276,7 @@ class DrillDataService
                 ];
             })->values()->all();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => [
                 'name' => $brand->name ?? 'DENSO',
                 'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -274,7 +288,7 @@ class DrillDataService
                 'items' => $items,
             ],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     private function getEducationPayloadFromDatabase(array $authUser, int $videoId = 0): array
@@ -294,7 +308,7 @@ class DrillDataService
             ->get();
 
         if ($videos->isEmpty()) {
-            return [
+            return $this->appendSpecialMenuItems([
                 'brand' => [
                     'name' => $brand->name ?? 'DENSO',
                     'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -318,7 +332,7 @@ class DrillDataService
                     'videos' => [],
                 ],
                 'user' => $authUser,
-            ];
+            ], $authUser);
         }
 
         $targetVideo = $videoId > 0
@@ -351,7 +365,7 @@ class DrillDataService
             ];
         })->values()->all();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => [
                 'name' => $brand->name ?? 'DENSO',
                 'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -375,7 +389,7 @@ class DrillDataService
                 'videos' => $serializedVideos,
             ],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     private function getDrillPayloadFromDatabase(array $authUser): array
@@ -429,7 +443,7 @@ class DrillDataService
                 ];
             })->values()->all();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => [
                 'name' => $brand->name ?? 'DENSO',
                 'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -453,7 +467,7 @@ class DrillDataService
                 'videos' => $serializedVideos,
             ],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     private function completeDrillInDatabase(array $authUser, int $drillId): void
@@ -529,7 +543,7 @@ class DrillDataService
             $status = $drillsCompleted >= $drillTotal ? 'Passed' : 'In Progress';
         }
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => [
                 'name' => $brand->name ?? 'DENSO',
                 'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -576,7 +590,7 @@ class DrillDataService
                 })->values()->all(),
             ],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     private function getDrillDataFromJson(): array
@@ -646,12 +660,12 @@ class DrillDataService
             file_put_contents($jsonPath, json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         }
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => $drillData['brand'] ?? [],
             'menuData' => $drillData['menu'] ?? [],
             'educationData' => $drillData['education'] ?? [],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     private function completeDrillInJson(int $drillId): void
@@ -708,7 +722,7 @@ class DrillDataService
         $companies = \App\Models\User::query()->distinct()->pluck('company')->filter()->values()->all();
         $buCodes = \App\Models\User::query()->distinct()->pluck('business_unit')->filter()->values()->all();
 
-        return [
+        return $this->appendSpecialMenuItems([
             'brand' => [
                 'name' => $brand->name ?? 'DENSO',
                 'tagline' => $brand->tagline ?? 'Crafting the Core',
@@ -739,7 +753,7 @@ class DrillDataService
             ],
             'educationData' => ['videos' => []],
             'user' => $authUser,
-        ];
+        ], $authUser);
     }
 
     public function seedFromJsonIfEmpty(): void
