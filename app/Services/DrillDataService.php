@@ -92,6 +92,36 @@ class DrillDataService
         $this->completeDrillInJson($drillId);
     }
 
+    public function getProgressDrillPayload(array $authUser): array
+    {
+        if ($this->isDatabaseEnabled()) {
+            return $this->getProgressDrillPayloadFromDatabase($authUser);
+        }
+
+        $drillData = $this->getDrillDataFromJson();
+
+        return [
+            'brand' => $drillData['brand'] ?? [],
+            'menuData' => $drillData['menu'] ?? [],
+            'progressDrillData' => [
+                'title' => 'Progress Drill',
+                'subtitle' => 'Statistic Overview',
+                'fiscalYears' => [2025, 2026, 2027],
+                'selectedFY' => 2026,
+                'periods' => array_keys($drillData['dashboard']['periodData'] ?? ['1st Half' => []]),
+                'selectedPeriod' => $drillData['dashboard']['selectedPeriod'] ?? '1st Half',
+                'periodData' => $drillData['dashboard']['periodData'] ?? [],
+                'companies' => ['DNIA', 'DMIA', 'DSIA', 'HDI'],
+                'selectedCompany' => 'DNIA',
+                'buCodes' => ['3300 - IS', '3301 - IS SUNTER', '3302 - IS BEKASI', '3941 - IS DPIA'],
+                'selectedBuCode' => '3300 - IS',
+                'drillHistory' => $drillData['myResult']['drillHistory'] ?? [],
+            ],
+            'educationData' => $drillData['education'] ?? [],
+            'user' => $authUser,
+        ];
+    }
+
     public function getMyResultPayload(array $authUser): array
     {
         if ($this->isDatabaseEnabled()) {
@@ -639,6 +669,77 @@ class DrillDataService
         unset($drill);
 
         file_put_contents($jsonPath, json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
+    private function getProgressDrillPayloadFromDatabase(array $authUser): array
+    {
+        $brand = Brand::query()->first();
+
+        $menuItems = MenuItem::query()
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
+        $periodStats = DashboardPeriodStat::query()
+            ->with('details')
+            ->orderBy('period_label')
+            ->get();
+
+        $periodData = [];
+        $periodOptions = [];
+        foreach ($periodStats as $stat) {
+            $periodOptions[] = $stat->period_label;
+            $periodData[$stat->period_label] = [
+                'target' => (int) $stat->target,
+                'actual' => (int) $stat->actual,
+                'percentage' => (int) $stat->percentage,
+                'stats' => $stat->details->map(function ($detail) {
+                    return [
+                        'label' => $detail->label,
+                        'actual' => (int) $detail->actual,
+                        'target' => (int) $detail->target,
+                    ];
+                })->values()->all(),
+            ];
+        }
+
+        $selectedPeriod = $periodOptions[0] ?? '1st Half';
+
+        $companies = \App\Models\User::query()->distinct()->pluck('company')->filter()->values()->all();
+        $buCodes = \App\Models\User::query()->distinct()->pluck('business_unit')->filter()->values()->all();
+
+        return [
+            'brand' => [
+                'name' => $brand->name ?? 'DENSO',
+                'tagline' => $brand->tagline ?? 'Crafting the Core',
+            ],
+            'menuData' => [
+                'items' => $menuItems->map(function (MenuItem $item) {
+                    return [
+                        'title' => $item->title,
+                        'subtitle' => $item->subtitle,
+                        'url' => $item->url,
+                        'symbol' => $item->symbol,
+                    ];
+                })->values()->all(),
+            ],
+            'progressDrillData' => [
+                'title' => 'Progress Drill',
+                'subtitle' => 'Statistic Overview',
+                'fiscalYears' => [2025, 2026, 2027],
+                'selectedFY' => 2026,
+                'periods' => $periodOptions,
+                'selectedPeriod' => $selectedPeriod,
+                'periodData' => $periodData,
+                'companies' => !empty($companies) ? $companies : ['DNIA', 'DMIA', 'DSIA', 'HDI'],
+                'selectedCompany' => $companies[0] ?? 'DNIA',
+                'buCodes' => !empty($buCodes) ? $buCodes : ['3300 - IS', '3301 - IS SUNTER', '3302 - IS BEKASI', '3941 - IS DPIA'],
+                'selectedBuCode' => $buCodes[0] ?? '3300 - IS',
+                'drillHistory' => [],
+            ],
+            'educationData' => ['videos' => []],
+            'user' => $authUser,
+        ];
     }
 
     public function seedFromJsonIfEmpty(): void

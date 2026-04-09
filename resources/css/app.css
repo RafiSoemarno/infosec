@@ -1401,3 +1401,126 @@ a {
 .pa-view-all:hover {
 	color: var(--color-brand-strong);
 }
+
+/* ============================================================
+   Progress Drill page
+   ============================================================ */
+
+/* Row 1: topbar */
+.pd-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.pd-topbar__title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--color-text);
+	margin: 0;
+}
+
+.pd-topbar__filters {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+/* Filter column */
+.pd-filter-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.pd-filter-group__label {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: var(--color-text-muted);
+	margin-bottom: 0.5rem;
+}
+
+.pd-filter-group__list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.pd-filter-btn {
+	display: block;
+	width: 100%;
+	padding: 0.45rem 0.75rem;
+	border: 1.5px solid var(--color-border);
+	border-radius: 6px;
+	background: transparent;
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--color-text);
+	text-align: left;
+	cursor: pointer;
+	transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pd-filter-btn:hover {
+	background: var(--color-brand);
+	border-color: var(--color-brand);
+	color: #fff;
+}
+
+.pd-filter-btn--active {
+	background: var(--color-brand);
+	border-color: var(--color-brand);
+	color: #fff;
+}
+
+/* Stats row inside charts panel */
+.pd-stats-row {
+	display: flex;
+	gap: 1.25rem;
+	align-items: stretch;
+}
+
+.pd-numbers-col {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	min-width: 140px;
+	flex-shrink: 0;
+}
+
+.pd-numbers-col .metric-card {
+	flex: 1;
+}
+
+.pd-chart-col {
+	flex: 1;
+	min-height: 220px;
+	position: relative;
+}
+
+.pd-chart-col canvas {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* Legend dot row (inline) */
+.legend-dot-row {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: var(--color-text-muted);
+}
+
+/* Pagination info text */
+.pa-pagination__info {
+	font-size: 0.82rem;
+	color: var(--color-brand);
+	font-weight: 600;
+	align-self: center;
+	white-space: nowrap;
+}
