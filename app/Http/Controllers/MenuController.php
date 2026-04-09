@@ -24,7 +24,17 @@ class MenuController extends Controller
                 ]);
         }
 
-        $payload = $this->drillData->getMenuPayload((array) session('auth_user'));
+        $authUser = (array) session('auth_user');
+        $payload = $this->drillData->getMenuPayload($authUser);
+
+        if (!empty($authUser['isSpecial'])) {
+            $payload['menuData']['items'][] = [
+                'title'    => 'Progress Practice',
+                'subtitle' => 'Track your training progress',
+                'url'      => '/progress-practice',
+                'symbol'   => 'PRG',
+            ];
+        }
 
         return view('menu', $payload);
     }

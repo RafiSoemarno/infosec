@@ -12,7 +12,8 @@
                 "employeeId": "JK2141189",
                 "company": "PT. Denso Indonesia",
                 "businessUnit": "3302 - Information System Bekasi",
-                "email": "selamet.nuryanto.a9e@ap.denso.com"
+                "email": "selamet.nuryanto.a9e@ap.denso.com",
+                "isSpecial": true
             },
             {
                 "username": "demo.user",

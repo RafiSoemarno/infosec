@@ -202,14 +202,17 @@ class DrillDataService
             return null;
         }
 
+        $resolvedUsername = (string) ($user->username ?: $user->email);
+
         return [
             'id' => (int) $user->id,
-            'username' => (string) ($user->username ?: $user->email),
+            'username' => $resolvedUsername,
             'name' => (string) $user->name,
             'employeeId' => (string) ($user->employee_id ?: '-'),
             'company' => (string) ($user->company ?: '-'),
             'businessUnit' => (string) ($user->business_unit ?: '-'),
             'email' => (string) ($user->email ?: '-'),
+            'isSpecial' => strtolower($resolvedUsername) === 'selamet.nuryanto',
         ];
     }
 
@@ -581,6 +584,7 @@ class DrillDataService
                     'company' => (string) ($user['company'] ?? '-'),
                     'businessUnit' => (string) ($user['businessUnit'] ?? '-'),
                     'email' => (string) ($user['email'] ?? '-'),
+                    'isSpecial' => (bool) ($user['isSpecial'] ?? false),
                 ];
             }
         }
