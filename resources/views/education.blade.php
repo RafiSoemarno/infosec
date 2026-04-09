@@ -84,13 +84,22 @@
         <section class="content-span-12 fade-in-up">
             <div class="edu-video-panel panel-card">
                 <div class="edu-video-panel__embed">
-                    <iframe
-                        src="{{ $currentVideo['embedUrl'] }}"
-                        title="{{ $currentVideo['title'] }}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                    ></iframe>
+                    @if(str_starts_with($currentVideo['embedUrl'], '/'))
+                        <video
+                            src="{{ $currentVideo['embedUrl'] }}"
+                            title="{{ $currentVideo['title'] }}"
+                            controls
+                            style="width:100%;height:100%;"
+                        ></video>
+                    @else
+                        <iframe
+                            src="{{ $currentVideo['embedUrl'] }}"
+                            title="{{ $currentVideo['title'] }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                    @endif
                 </div>
             </div>
         </section>

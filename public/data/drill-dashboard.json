@@ -66,43 +66,43 @@
             {
                 "id": 1,
                 "title": "Security Incident Response for Malware Infections",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": true
             },
             {
                 "id": 2,
                 "title": "How to Disconnect Network?",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": true
             },
             {
                 "id": 3,
                 "title": "Handling Information",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": true
             },
             {
                 "id": 4,
                 "title": "Usage E-mail, Web Browsing, and Cyber Security",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": false
             },
             {
                 "id": 5,
                 "title": "Photography & Videography",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": false
             },
             {
                 "id": 6,
                 "title": "ITake Out - Bring In of Information Equipment",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": false
             },
             {
                 "id": 7,
                 "title": "Incident Report",
-                "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "embedUrl": "/videos/Information Security Video.mp4",
                 "watched": false
             }
         ]
