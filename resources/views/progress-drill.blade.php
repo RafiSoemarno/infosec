@@ -196,7 +196,6 @@
             <div class="pa-section__header pa-section__header--compact">
                 <div>
                     <h2 class="pa-section__title">Drill History
-                        <span class="pa-section__note-source">Get Info from Drill Server</span>
                     </h2>
                 </div>
                 <button class="pa-export-btn">
@@ -317,19 +316,19 @@
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: '#1f2328',
-                            titleFont: { family: 'Plus Jakarta Sans', weight: '700' },
-                            bodyFont: { family: 'Plus Jakarta Sans' },
+                            titleFont: { family: 'DENSOSans', weight: '700' },
+                            bodyFont: { family: 'DENSOSans' },
                         },
                     },
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#1f2328', font: { family: 'Plus Jakarta Sans', weight: '700' } },
+                            ticks: { color: '#1f2328', font: { family: 'DENSOSans', weight: '700' } },
                         },
                         y: {
                             beginAtZero: true,
                             grid: { color: 'rgba(31, 35, 40, 0.1)' },
-                            ticks: { color: '#6a727c', precision: 0, font: { family: 'Plus Jakarta Sans' } },
+                            ticks: { color: '#6a727c', precision: 0, font: { family: 'DENSOSans' } },
                         },
                     },
                 },

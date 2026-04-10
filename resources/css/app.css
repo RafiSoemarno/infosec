@@ -1,7 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-Light.otf') format('opentype');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-LightItalic.otf') format('opentype');
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-Regular.otf') format('opentype');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-Italic.otf') format('opentype');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-Bold.otf') format('opentype');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-BoldItalic.otf') format('opentype');
+	font-weight: 700;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-Black.otf') format('opentype');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DENSOSans';
+	src: url('/storage/font_denso/DENSOSans-BlackItalic.otf') format('opentype');
+	font-weight: 900;
+	font-style: italic;
+}
 
 :root {
-	--font-sans: 'Plus Jakarta Sans', sans-serif;
+	--font-sans: 'DENSOSans', sans-serif;
 	--color-brand: #d62839;
 	--color-brand-strong: #a61e2d;
 	--color-brand-soft: #fdf0f2;
@@ -1427,13 +1481,17 @@ a {
    ============================================================ */
 
 /* Row 1: topbar */
+
 .pd-topbar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 72px;
+    padding: 0 24px;
+    border-radius: 14px;
 }
+
 
 .pd-topbar__title {
 	font-size: 1.1rem;

@@ -43,7 +43,6 @@
                 <a href="#" class="d-inline-block mt-3 text-support text-decoration-none">Forgot Password?</a>
                 @if ($testAccount)
                     <div class="small text-support mt-3">
-                        Test login: {{ $testAccount['username'] ?? 'demo.user' }} / {{ $testAccount['password'] ?? 'demo123' }}
                     </div>
                 @endif
             </form>
@@ -184,8 +183,8 @@
                         },
                         tooltip: {
                             backgroundColor: '#1f2328',
-                            titleFont: { family: 'Plus Jakarta Sans', weight: '700' },
-                            bodyFont: { family: 'Plus Jakarta Sans' }
+                            titleFont: { family: 'DENSOSans', weight: '700' },
+                            bodyFont: { family: 'DENSOSans' }
                         }
                     },
                     scales: {
@@ -195,7 +194,7 @@
                             },
                             ticks: {
                                 color: '#1f2328',
-                                font: { family: 'Plus Jakarta Sans', weight: '700' }
+                                font: { family: 'DENSOSans', weight: '700' }
                             }
                         },
                         y: {
@@ -206,7 +205,7 @@
                             ticks: {
                                 color: '#6a727c',
                                 precision: 0,
-                                font: { family: 'Plus Jakarta Sans' }
+                                font: { family: 'DENSOSans' }
                             }
                         }
                     }
