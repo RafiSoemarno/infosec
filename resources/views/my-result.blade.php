@@ -82,7 +82,6 @@
                 <div>
                     <h2 class="pa-section__title">{{ $pageTitle }}</h2>
                     <p class="pa-section__note">{{ $pageSubtitle }}
-                        <span class="pa-section__note-source">Get Info from Drill Server</span>
                     </p>
                 </div>
                 <div class="pa-section__controls">
@@ -178,7 +177,6 @@
         <div class="pa-section panel-card">
             <div class="pa-section__header pa-section__header--compact">
                 <h2 class="pa-section__title">Device Information</h2>
-                <span class="pa-section__note-source">Get Info from Depas – Master Data Devas Table</span>
             </div>
 
             <div class="pa-device-grid">
@@ -208,7 +206,6 @@
             <div class="pa-section__header pa-section__header--compact">
                 <div>
                     <h2 class="pa-section__title">Drill History
-                        <span class="pa-section__note-source">Get Info from Drill Server</span>
                     </h2>
                 </div>
                 <a href="#" class="pa-view-all">

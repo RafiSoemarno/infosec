@@ -204,6 +204,7 @@ a {
 }
 
 .panel-card {
+    padding: 20px;
 	background: var(--color-panel);
 	border: 1px solid var(--color-line);
 	border-radius: var(--radius-lg);
@@ -357,6 +358,13 @@ a {
 	box-shadow: 0 16px 28px rgba(214, 40, 57, 0.22);
 }
 
+.profile-card__avatar-img {
+	width: 60px;
+	height: 60px;
+	object-fit: contain;
+	filter: brightness(0) invert(1);
+}
+
 .profile-card__name {
     margin: 18px 0 2px; /* dari 4px → 2px */
     text-align: center;
@@ -473,6 +481,13 @@ a {
 	font-size: 1.05rem;
 	font-weight: 800;
 	letter-spacing: 0.14em;
+}
+
+.menu-card__symbol-img {
+	width: 64px;
+	height: 64px;
+	object-fit: contain;
+	filter: brightness(0) invert(1);
 }
 
 .auth-box {
@@ -628,6 +643,16 @@ a {
 .sidebar-nav__item--active .sidebar-nav__symbol {
 	background: var(--color-brand);
 	color: #fff;
+}
+
+.sidebar-nav__symbol-img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+}
+
+.sidebar-nav__item--active .sidebar-nav__symbol-img {
+	filter: brightness(0) invert(1);
 }
 
 .sidebar-nav__label {
@@ -1519,6 +1544,9 @@ a {
 	letter-spacing: 0.08em;
 	color: var(--color-text-muted);
 	margin-bottom: 0.5rem;
+    text-align: center;
+    padding-top: 0.25rem;
+
 }
 
 .pd-filter-group__list {
@@ -1573,16 +1601,22 @@ a {
 	flex: 1;
 }
 
+.pd-stats-row {
+    display: flex;
+    align-items: stretch;
+}
+
 .pd-chart-col {
-	flex: 1;
-	min-height: 220px;
-	position: relative;
+    flex: 1;
+    height: 320px;
+    position: relative;
 }
 
 .pd-chart-col canvas {
-	width: 100% !important;
-	height: 100% !important;
+    width: 100%;
+    height: 100%;
 }
+
 
 /* Legend dot row (inline) */
 .legend-dot-row {

@@ -31,7 +31,6 @@
     <x-ui.header eyebrow="Control Center" :title="$welcomeTitle" :subtitle="$welcomeSubtitle">
         <div>
             <div>{{ $showDate }}</div>
-            <div class="text-support">Alert Center</div>
         </div>
     </x-ui.header>
 @endsection

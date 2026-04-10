@@ -6,7 +6,9 @@
 @endphp
 
 <div {{ $attributes->class('profile-card panel-card') }}>
-    <div class="profile-card__avatar">{{ $initial }}</div>
+    <div class="profile-card__avatar">
+        <img src="{{ asset('storage/icon_denso/icon_profile.png') }}" alt="{{ $initial }}" class="profile-card__avatar-img">
+    </div>
     <h2 class="profile-card__name">{{ $userName }}</h2>
     <p class="profile-card__meta">{{ $user['employeeId'] ?? '-' }}</p>
 
