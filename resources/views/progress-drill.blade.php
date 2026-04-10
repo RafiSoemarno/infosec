@@ -69,7 +69,7 @@
                 <span class="topbar-profile__id">{{ $authUser['employeeId'] ?? '' }}</span>
             </div>
             <div class="topbar-profile__avatar">
-                {{ strtoupper(substr($authUser['name'] ?? 'U', 0, 1)) }}
+                <img src="{{ asset('storage/icon_denso/icon_profile.png') }}" alt="Profile" class="topbar-profile__avatar-img">
             </div>
         </div>
     </x-ui.header>

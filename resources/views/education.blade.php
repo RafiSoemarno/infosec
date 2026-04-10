@@ -70,7 +70,6 @@
     <x-ui.header eyebrow="Control Center" :title="$pageTitle" :subtitle="$pageSubtitle">
         <div>
             <div>{{ now()->translatedFormat('D, d M Y') }}</div>
-            <div class="text-support">Alert Center</div>
         </div>
     </x-ui.header>
 @endsection

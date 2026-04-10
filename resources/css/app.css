@@ -1144,6 +1144,13 @@ a {
 	box-shadow: 0 6px 16px rgba(214, 40, 57, 0.28);
 }
 
+.topbar-profile__avatar-img {
+	width: 24px;
+	height: 24px;
+	object-fit: contain;
+	filter: brightness(0) invert(1);
+}
+
 /* ── Performance Analytics page ────────────────────────── */
 
 .pa-section {
