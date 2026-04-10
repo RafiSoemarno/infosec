@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: infosec-app
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html
+      # Anonymous volume prevents the host-side vendor/ directory (if present)
+      # from shadowing the vendor/ installed inside the image
+      - /var/www/html/vendor
+    networks:
+      - infosec
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: infosec-nginx
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - infosec
+
+networks:
+  infosec:
+    driver: bridge
