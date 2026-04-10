@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DrillController;
-use App\Http\Controllers\EducationController;
-use App\Http\Controllers\MenuController;
-use App\Http\Controllers\ResultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,13 +8,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [AuthController::class, 'showLogin']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/', function () {
+    return response()->json(['status' => 'ok', 'message' => 'infosec API is running.']);
+});
 
-Route::get('/menu', [MenuController::class, 'index']);
-Route::get('/education', [EducationController::class, 'index']);
-Route::get('/drill', [DrillController::class, 'index']);
-Route::post('/drill/complete', [DrillController::class, 'complete']);
-Route::get('/my-result', [ResultController::class, 'index']);
-
-Route::post('/logout', [AuthController::class, 'logout']);
