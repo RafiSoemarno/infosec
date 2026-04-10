@@ -1053,6 +1053,53 @@ a {
 	font-weight: 600;
 }
 
+/* ── Topbar actions (date + notification bell) ──────────── */
+
+.topbar-actions {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.topbar-actions__date {
+	color: var(--color-muted);
+	font-size: 0.95rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.notif-bell {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.notif-bell__icon {
+	width: 28px;
+	height: 28px;
+	object-fit: contain;
+}
+
+.notif-bell__badge {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 4px;
+	border-radius: 9px;
+	background: var(--color-brand);
+	color: #fff;
+	font-size: 0.65rem;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
 /* ── Topbar profile chip ────────────────────────────────── */
 
 .topbar-profile {

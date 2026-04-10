@@ -29,8 +29,9 @@
 
 @section('topbar')
     <x-ui.header eyebrow="Control Center" :title="$welcomeTitle" :subtitle="$welcomeSubtitle">
-        <div>
-            <div>{{ $showDate }}</div>
+        <div class="topbar-actions">
+            <span class="topbar-actions__date">{{ $showDate }}</span>
+            <x-notification-bell :count="$notificationCount ?? 0" />
         </div>
     </x-ui.header>
 @endsection
