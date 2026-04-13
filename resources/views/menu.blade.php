@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @php
+    $isAdmin = strtolower($user['username'] ?? '') === 'dnia.admin';
     $menuItems = array_values(array_filter($menuData['items'] ?? [], fn($item) => strtolower($item['title'] ?? '') !== 'dashboard'));
+    $menuItems = array_map(function ($item) use ($isAdmin) {
+        if (!$isAdmin && strtolower($item['title'] ?? '') === 'result') {
+            $item['title'] = 'My Result';
+        }
+        return $item;
+    }, $menuItems);
     $menuTitle = $menuData['title'] ?? 'Main Menu';
     $welcomeTitle = $menuData['welcomeTitle'] ?? 'Welcome Drill Simulation';
     $welcomeSubtitle = $menuData['welcomeSubtitle'] ?? 'Self-Service Cyber Attack';
