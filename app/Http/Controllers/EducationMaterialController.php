@@ -42,16 +42,17 @@ class EducationMaterialController extends Controller
 
         // --- Validate input ------------------------------------------------
         $request->validate([
-            'title'    => ['required', 'string', 'max:255'],
+            'titles'   => ['required', 'array', 'min:1'],
+            'titles.*' => ['required', 'string', 'max:255'],
             'files'    => ['required', 'array', 'min:1'],
             'files.*'  => [
                 'file',
-                'max:' . (self::MAX_FILE_SIZE_MB * 1024),  // Laravel max is in KB
+                'max:' . (self::MAX_FILE_SIZE_MB * 1024),
                 'mimes:mp4,webm,ogv,mov,avi,pdf,ppt,pptx,doc,docx',
             ],
         ]);
 
-        $title      = $request->input('title');
+        $titles     = $request->input('titles');
         $uploadedBy = session('auth_user.username', 'admin');
         $batch      = [];
         $count      = 0;
@@ -61,7 +62,6 @@ class EducationMaterialController extends Controller
             $mimeType     = $uploadedFile->getMimeType();
             $extension    = $uploadedFile->getClientOriginalExtension();
 
-            // Build a safe filename: "my-video_1713000000_0.mp4"
             $safeName    = Str::slug(pathinfo($originalName, PATHINFO_FILENAME))
                          . '_' . time() . '_' . $count
                          . '.' . $extension;
@@ -69,7 +69,7 @@ class EducationMaterialController extends Controller
             $storagePath = $uploadedFile->storeAs('education', $safeName, 'public');
 
             $batch[] = [
-                'title'             => $title,
+                'title'             => $titles[$count] ?? $originalName,
                 'file_path'         => $storagePath,
                 'file_type'         => $mimeType,
                 'original_filename' => $originalName,
@@ -82,7 +82,7 @@ class EducationMaterialController extends Controller
         // Write all records in one read-modify-write cycle so each gets a unique id
         $this->store->createMany($batch);
 
-        $label = $count === 1 ? '"' . $title . '"' : $count . ' files';
+        $label = $count === 1 ? '"' . ($titles[0] ?? '') . '"' : $count . ' files';
 
         return redirect('/education')
             ->with('success', 'Material ' . $label . ' uploaded successfully.');

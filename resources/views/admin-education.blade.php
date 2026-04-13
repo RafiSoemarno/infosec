@@ -65,16 +65,6 @@
             <form method="POST" action="{{ url('/education/materials') }}" enctype="multipart/form-data" id="uploadForm">
                 @csrf
 
-                <input
-                    type="text"
-                    name="title"
-                    class="edu-admin-title-input"
-                    placeholder="Create Title ..."
-                    value="{{ old('title') }}"
-                    required
-                    autocomplete="off"
-                >
-
                 {{-- Drop zone --}}
                 <div
                     class="edu-admin-dropzone"
@@ -222,53 +212,60 @@
     const submitBtn   = document.getElementById('submitBtn');
     const pendingList = document.getElementById('pendingList');
 
-    // Plain array — avoids DataTransfer deduplication of same-named files
+    // Each entry: { file: File, title: string }
     let stagedFiles = [];
-
-    // ── Sync stagedFiles array → the real file input ─────────────
-    function syncFileInput() {
-        const dt = new DataTransfer();
-        stagedFiles.forEach(function (f) { dt.items.add(f); });
-        fileInput.files = dt.files;
-    }
 
     // ── Add files to the staging list ────────────────────────────
     function stageFiles(newFiles) {
         Array.from(newFiles).forEach(function (file) {
-            stagedFiles.push(file);
+            // Default title: filename without extension
+            const defaultTitle = file.name.replace(/\.[^.]+$/, '');
+            stagedFiles.push({ file: file, title: defaultTitle });
         });
-        syncFileInput();
         renderPendingList();
         updateSubmitBtn();
     }
 
     function removeStagedFile(index) {
         stagedFiles.splice(index, 1);
-        syncFileInput();
         renderPendingList();
         updateSubmitBtn();
     }
 
     function renderPendingList() {
         pendingList.innerHTML = '';
-        stagedFiles.forEach(function (file, i) {
+        stagedFiles.forEach(function (entry, i) {
             const item = document.createElement('div');
             item.className = 'edu-admin-material-item edu-admin-pending-item';
+
+            const dot = document.createElement('span');
+            dot.className = 'edu-video-item__dot edu-admin-pending-dot';
+
+            const body = document.createElement('div');
+            body.className = 'edu-admin-material-item__body';
+
+            const titleInput = document.createElement('input');
+            titleInput.type        = 'text';
+            titleInput.className   = 'edu-admin-pending-title-input';
+            titleInput.placeholder = 'Enter title…';
+            titleInput.value       = entry.title;
+            titleInput.addEventListener('input', function () {
+                stagedFiles[i].title = this.value;
+            });
+
+            const meta = document.createElement('span');
+            meta.className = 'edu-admin-material-item__meta edu-admin-pending-badge';
+            meta.textContent = 'Pending \u2022 ' + formatBytes(entry.file.size);
+
+            body.appendChild(titleInput);
+            body.appendChild(meta);
+
             const btn = document.createElement('button');
             btn.type      = 'button';
             btn.className = 'edu-admin-del-btn';
             btn.title     = 'Remove';
             btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
             btn.addEventListener('click', function () { removeStagedFile(i); });
-
-            const dot  = document.createElement('span');
-            dot.className = 'edu-video-item__dot edu-admin-pending-dot';
-
-            const body = document.createElement('div');
-            body.className = 'edu-admin-material-item__body';
-            body.innerHTML =
-                '<span class="edu-video-item__title">' + escHtml(file.name) + '</span>' +
-                '<span class="edu-admin-material-item__meta edu-admin-pending-badge">Pending &bull; ' + formatBytes(file.size) + '</span>';
 
             const del = document.createElement('div');
             del.className = 'edu-admin-material-item__del';
@@ -299,9 +296,7 @@
     fileInput.addEventListener('change', function () {
         if (this.files && this.files.length) {
             stageFiles(this.files);
-            // Reset the native input value so the same file can be re-added
-            // (stagingDT already holds it; we re-sync after)
-            this.value = '';
+            this.value = ''; // reset so same file can be picked again
         }
     });
 
@@ -334,10 +329,37 @@
         });
     });
 
-    // ── Save / upload progress UX ────────────────────────────────
-    document.getElementById('uploadForm').addEventListener('submit', function () {
+    // ── Save via fetch (avoids fileInput.files re-assignment issues) ──
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Validate all titles are filled
+        const emptyIdx = stagedFiles.findIndex(function (entry) { return entry.title.trim() === ''; });
+        if (emptyIdx !== -1) {
+            pendingList.querySelectorAll('.edu-admin-pending-title-input')[emptyIdx].focus();
+            return;
+        }
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Uploading…';
+
+        const fd = new FormData();
+        fd.append('_token', document.querySelector('input[name="_token"]').value);
+        stagedFiles.forEach(function (entry) {
+            fd.append('titles[]', entry.title.trim());
+            fd.append('files[]', entry.file, entry.file.name);
+        });
+
+        fetch('{{ url('/education/materials') }}', { method: 'POST', body: fd })
+            .then(function (res) {
+                // Laravel redirects back — follow the redirect URL
+                if (res.redirected) { window.location.href = res.url; return; }
+                // Non-redirect (e.g. validation error) — reload to show flash/errors
+                window.location.href = '{{ url('/education') }}';
+            })
+            .catch(function () {
+                window.location.href = '{{ url('/education') }}';
+            });
     });
 </script>
 @endpush
