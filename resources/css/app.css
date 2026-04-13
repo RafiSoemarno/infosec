@@ -1690,3 +1690,307 @@ a {
 	align-self: center;
 	white-space: nowrap;
 }
+
+/* ── Admin Education Upload ──────────────────────────────── */
+.edu-admin-upload-panel {
+	padding: 0;
+	overflow: hidden;
+}
+
+.edu-admin-title-input {
+	display: block;
+	width: 100%;
+	padding: 20px 28px;
+	border: 0;
+	border-bottom: 1px solid var(--color-line);
+	background: transparent;
+	font-family: var(--font-sans);
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: var(--color-text);
+	outline: none;
+}
+
+.edu-admin-title-input::placeholder {
+	color: var(--color-muted);
+	font-weight: 400;
+}
+
+.edu-admin-title-input:focus {
+	background: var(--color-panel-muted);
+}
+
+/* Drop zone */
+.edu-admin-dropzone {
+	position: relative;
+	min-height: 320px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin: 24px 28px;
+	border: 2px dashed var(--color-line);
+	border-radius: var(--radius-md);
+	background: var(--color-panel-muted);
+	transition: border-color 0.2s, background 0.2s;
+	cursor: pointer;
+}
+
+.edu-admin-dropzone--drag {
+	border-color: var(--color-brand);
+	background: var(--color-brand-soft);
+}
+
+.edu-admin-dropzone__input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+.edu-admin-dropzone__content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	padding: 32px 20px;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.edu-admin-dropzone__icon {
+	width: 120px;
+	height: 90px;
+}
+
+.edu-admin-cloud-svg {
+	width: 100%;
+	height: 100%;
+}
+
+.edu-admin-dropzone__hint {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--color-muted);
+}
+
+.edu-admin-dropzone__actions {
+	display: flex;
+	gap: 12px;
+	pointer-events: all;
+	z-index: 3;
+}
+
+.edu-admin-btn-outline {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 20px;
+	border: 1.5px solid var(--color-line);
+	border-radius: 999px;
+	background: var(--color-panel);
+	font-family: var(--font-sans);
+	font-size: 0.88rem;
+	font-weight: 600;
+	color: var(--color-text);
+	cursor: pointer;
+	text-decoration: none;
+	transition: border-color 0.15s, background 0.15s;
+}
+
+.edu-admin-btn-outline:hover {
+	border-color: var(--color-brand);
+	color: var(--color-brand);
+	background: var(--color-brand-soft);
+}
+
+.edu-admin-dropzone__formats {
+	margin: 0;
+	font-size: 0.75rem;
+	color: var(--color-muted);
+	text-align: center;
+}
+
+/* File preview inside dropzone */
+.edu-admin-dropzone__preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 32px 24px;
+	z-index: 2;
+}
+
+.edu-admin-file-preview {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 20px 24px;
+	background: var(--color-panel);
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-md);
+	width: 100%;
+	max-width: 480px;
+}
+
+.edu-admin-file-preview__icon {
+	flex-shrink: 0;
+	width: 48px;
+	height: 48px;
+	border-radius: var(--radius-sm);
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.edu-admin-file-preview__info {
+	flex: 1;
+	min-width: 0;
+}
+
+.edu-admin-file-preview__name {
+	margin: 0 0 4px;
+	font-size: 0.92rem;
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.edu-admin-file-preview__size {
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--color-muted);
+}
+
+.edu-admin-file-preview__remove {
+	flex-shrink: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--color-muted);
+	padding: 4px;
+	line-height: 0;
+	transition: color 0.15s;
+}
+
+.edu-admin-file-preview__remove:hover {
+	color: var(--color-brand);
+}
+
+/* Upload footer */
+.edu-admin-upload-footer {
+	display: flex;
+	justify-content: flex-end;
+	padding: 16px 28px 24px;
+	border-top: 1px solid var(--color-line);
+}
+
+.edu-admin-submit-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* Alert banners */
+.edu-admin-alert {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 20px;
+	border-radius: var(--radius-md);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.edu-admin-alert--success {
+	background: #f0fdf4;
+	color: #166534;
+	border: 1px solid #bbf7d0;
+}
+
+.edu-admin-alert--error {
+	background: var(--color-brand-soft);
+	color: var(--color-brand-strong);
+	border: 1px solid #fecdd3;
+}
+
+/* Right-sidebar material list items (admin) */
+.edu-admin-material-list {
+	gap: 0;
+}
+
+.edu-admin-material-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 10px 8px;
+	border-radius: var(--radius-sm);
+	text-decoration: none;
+	color: inherit;
+}
+
+.edu-admin-material-item:hover {
+	background: var(--color-panel-muted);
+}
+
+.edu-admin-material-item__body {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.edu-admin-material-item__meta {
+	font-size: 0.72rem;
+	color: var(--color-muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.edu-admin-material-item__del {
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.edu-admin-del-btn {
+	background: none;
+	border: none;
+	padding: 4px;
+	line-height: 0;
+	color: var(--color-muted);
+	cursor: pointer;
+	border-radius: 6px;
+	transition: color 0.15s, background 0.15s;
+}
+
+.edu-admin-del-btn:hover {
+	color: var(--color-brand);
+	background: var(--color-brand-soft);
+}
+
+.edu-admin-empty {
+	padding: 20px 8px;
+	color: var(--color-muted);
+	font-size: 0.85rem;
+	text-align: center;
+}
+
+/* File download panel (non-previewable uploads) */
+.edu-video-panel__download {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 60px 40px;
+	color: var(--color-muted);
+	text-align: center;
+}

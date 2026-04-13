@@ -3,7 +3,10 @@
     "allow": [
       "Bash(php artisan:*)",
       "Bash(xargs grep:*)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('c:/Users/CMM/Documents/Dana/infosec/infosec/public/data/drill-dashboard.json'\\)\\); users=d.get\\('auth',{}\\).get\\('users',[]\\); [print\\(u.get\\('username'\\), u.get\\('role','NO_ROLE'\\), u.get\\('isAdmin','NO_ADMIN'\\), u.get\\('isSpecial','NO_SPECIAL'\\)\\) for u in users]\")",
+      "Bash(node -e \"const d=require\\('./public/data/drill-dashboard.json'\\); d.auth.users.forEach\\(u=>console.log\\(u.username, u.role, u.isAdmin, u.isSpecial\\)\\)\")",
+      "Bash(node -e \"const d=require\\('c:/Users/CMM/Documents/Dana/infosec/infosec/public/data/drill-dashboard.json'\\); console.log\\(JSON.stringify\\(d.auth.users, null, 2\\)\\)\")"
     ]
   }
 }

@@ -78,15 +78,52 @@
     @if ($currentVideo)
         <section class="content-span-12 fade-in-up">
             <div class="edu-video-panel panel-card">
-                <div class="edu-video-panel__embed">
-                    <iframe
-                        src="{{ $currentVideo['embedUrl'] }}"
-                        title="{{ $currentVideo['title'] }}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                    ></iframe>
-                </div>
+                @php
+                    $filePath = $currentVideo['filePath'] ?? null;
+                    $fileType = $currentVideo['fileType'] ?? '';
+                    $isVideo  = str_starts_with($fileType, 'video/');
+                    $isPdf    = $fileType === 'application/pdf';
+                @endphp
+
+                @if ($filePath && $isVideo)
+                    {{-- Uploaded video file --}}
+                    <div class="edu-video-panel__embed">
+                        <video controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;background:#000;">
+                            <source src="{{ $filePath }}" type="{{ $fileType }}">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                @elseif ($filePath && $isPdf)
+                    {{-- Uploaded PDF --}}
+                    <div class="edu-video-panel__embed">
+                        <iframe
+                            src="{{ $filePath }}"
+                            title="{{ $currentVideo['title'] }}"
+                            frameborder="0"
+                            style="position:absolute;inset:0;width:100%;height:100%;"
+                        ></iframe>
+                    </div>
+                @elseif ($filePath)
+                    {{-- Other file types: offer download --}}
+                    <div class="edu-video-panel__download">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <p>{{ $currentVideo['title'] }}</p>
+                        <a href="{{ $filePath }}" download class="app-btn-primary mt-3">
+                            Download File
+                        </a>
+                    </div>
+                @elseif ($currentVideo['embedUrl'])
+                    {{-- Embed URL (YouTube, etc.) --}}
+                    <div class="edu-video-panel__embed">
+                        <iframe
+                            src="{{ $currentVideo['embedUrl'] }}"
+                            title="{{ $currentVideo['title'] }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                @endif
             </div>
         </section>
     @endif

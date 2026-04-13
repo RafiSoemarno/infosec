@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DrillController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\EducationMaterialController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProgressDrillController;
 use App\Http\Controllers\ResultController;
@@ -19,6 +20,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/menu', [MenuController::class, 'index']);
 Route::get('/education', [EducationController::class, 'index']);
+Route::post('/education/materials', [EducationMaterialController::class, 'store']);
+Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
 Route::get('/drill', [DrillController::class, 'index']);
 Route::post('/drill/complete', [DrillController::class, 'complete']);
 Route::get('/drill/video', [DrillController::class, 'videoPlayer']);

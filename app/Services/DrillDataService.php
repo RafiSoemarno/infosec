@@ -258,6 +258,7 @@ class DrillDataService
             'company' => (string) ($user->company ?: '-'),
             'businessUnit' => (string) ($user->business_unit ?: '-'),
             'email' => (string) ($user->email ?: '-'),
+            'role' => (string) ($user->role ?: 'user'),
             'isSpecial' => strtolower($resolvedUsername) === 'selamet.nuryanto',
         ];
     }
@@ -360,10 +361,12 @@ class DrillDataService
 
         $serializedVideos = $videos->map(function (EducationVideo $video) use ($progressByVideo) {
             return [
-                'id' => (int) $video->id,
-                'title' => $video->title,
+                'id'       => (int) $video->id,
+                'title'    => $video->title,
                 'embedUrl' => $video->embed_url,
-                'watched' => (bool) ($progressByVideo[$video->id] ?? false),
+                'filePath' => null,
+                'fileType' => null,
+                'watched'  => (bool) ($progressByVideo[$video->id] ?? false),
             ];
         })->values()->all();
 
@@ -630,6 +633,7 @@ class DrillDataService
                     'company' => (string) ($user['company'] ?? '-'),
                     'businessUnit' => (string) ($user['businessUnit'] ?? '-'),
                     'email' => (string) ($user['email'] ?? '-'),
+                    'role' => strtolower($username) === 'dnia.admin' ? 'admin' : (string) ($user['role'] ?? 'user'),
                     'isSpecial' => (bool) ($user['isSpecial'] ?? false),
                 ];
             }
@@ -640,33 +644,91 @@ class DrillDataService
 
     private function getEducationPayloadFromJson(array $authUser, int $videoId = 0): array
     {
-        $drillData = $this->getDrillDataFromJson();
-        $jsonPath = public_path('data/drill-dashboard.json');
+        $drillData   = $this->getDrillDataFromJson();
+        $dashJsonPath = public_path('data/drill-dashboard.json');
 
-        $videos = &$drillData['education']['videos'];
-        $targetVideoId = $videoId > 0
-            ? $videoId
-            : (int) ($videos[0]['id'] ?? 1);
+        // ── 1. Embed-URL videos from drill-dashboard.json ─────────────────
+        // These are the original videos seeded from the JSON config file.
+        // They use numeric IDs in the range 1–9999.
+        $embedVideos = $drillData['education']['videos'] ?? [];
 
-        $updated = false;
-        foreach ($videos as &$video) {
-            if ((int) ($video['id'] ?? 0) === $targetVideoId && !($video['watched'] ?? false)) {
-                $video['watched'] = true;
-                $updated = true;
-                break;
+        // Normalise each embed-video so both types share the same shape:
+        // id, title, embedUrl, filePath, fileType, watched
+        $embedVideos = array_map(function (array $v) {
+            return [
+                'id'       => (int) ($v['id'] ?? 0),
+                'title'    => (string) ($v['title'] ?? ''),
+                'embedUrl' => (string) ($v['embedUrl'] ?? ''),
+                'filePath' => null,
+                'fileType' => null,
+                'watched'  => (bool) ($v['watched'] ?? false),
+            ];
+        }, $embedVideos);
+
+        // ── 2. Admin-uploaded materials from education-materials.json ──────
+        // IDs for uploaded materials are prefixed with 10000 to guarantee
+        // they never collide with embed-video IDs.
+        $store           = new \App\Services\EducationJsonStore();
+        $uploadedMaterials = $store->all();
+
+        $uploadedVideos = array_map(function (array $m) {
+            return [
+                'id'       => (int) $m['id'] + 10000,  // collision-free ID offset
+                'title'    => (string) ($m['title'] ?? ''),
+                'embedUrl' => null,
+                'filePath' => asset('storage/' . $m['file_path']),
+                'fileType' => (string) ($m['file_type'] ?? ''),
+                'watched'  => false,  // watch-tracking is per embed-video only
+            ];
+        }, $uploadedMaterials);
+
+        // ── 3. Merge both lists: embed-URL videos first, then uploads ──────
+        $allVideos = array_merge($embedVideos, $uploadedVideos);
+
+        // ── 4. Mark the requested/first video as watched (embed-videos only) ─
+        if (!empty($allVideos)) {
+            $targetId = $videoId > 0
+                ? $videoId
+                : (int) ($allVideos[0]['id'] ?? 0);
+
+            $updated = false;
+            // Only persist watched state for embed-URL videos (id < 10000)
+            foreach ($embedVideos as &$v) {
+                if ((int) $v['id'] === $targetId && !$v['watched']) {
+                    $v['watched'] = true;
+                    $updated = true;
+                    break;
+                }
+            }
+            unset($v);
+
+            if ($updated) {
+                // Write the updated watched flag back into drill-dashboard.json
+                $drillData['education']['videos'] = array_map(function (array $orig) use ($embedVideos) {
+                    foreach ($embedVideos as $ev) {
+                        if ((int) $ev['id'] === (int) ($orig['id'] ?? 0)) {
+                            $orig['watched'] = $ev['watched'];
+                        }
+                    }
+                    return $orig;
+                }, $drillData['education']['videos'] ?? []);
+
+                file_put_contents(
+                    $dashJsonPath,
+                    json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                );
             }
         }
-        unset($video);
 
-        if ($updated) {
-            file_put_contents($jsonPath, json_encode($drillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        }
+        // ── 5. Build the education payload ────────────────────────────────
+        $educationData = $drillData['education'] ?? [];
+        $educationData['videos'] = $allVideos;   // replace with merged list
 
         return $this->appendSpecialMenuItems([
-            'brand' => $drillData['brand'] ?? [],
-            'menuData' => $drillData['menu'] ?? [],
-            'educationData' => $drillData['education'] ?? [],
-            'user' => $authUser,
+            'brand'         => $drillData['brand'] ?? [],
+            'menuData'      => $drillData['menu'] ?? [],
+            'educationData' => $educationData,
+            'user'          => $authUser,
         ], $authUser);
     }
 
