@@ -42,42 +42,50 @@ class EducationMaterialController extends Controller
 
         // --- Validate input ------------------------------------------------
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'file'  => [
-                'required',
+            'title'    => ['required', 'string', 'max:255'],
+            'files'    => ['required', 'array', 'min:1'],
+            'files.*'  => [
                 'file',
                 'max:' . (self::MAX_FILE_SIZE_MB * 1024),  // Laravel max is in KB
                 'mimes:mp4,webm,ogv,mov,avi,pdf,ppt,pptx,doc,docx',
             ],
         ]);
 
-        // --- Save the physical file ----------------------------------------
-        $uploadedFile    = $request->file('file');
-        $originalName    = $uploadedFile->getClientOriginalName();
-        $mimeType        = $uploadedFile->getMimeType();
-        $extension       = $uploadedFile->getClientOriginalExtension();
+        $title      = $request->input('title');
+        $uploadedBy = session('auth_user.username', 'admin');
+        $batch      = [];
+        $count      = 0;
 
-        // Build a safe filename: "my video_1713000000.mp4"
-        $safeName    = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '_' . time() . '.' . $extension;
+        foreach ($request->file('files') as $uploadedFile) {
+            $originalName = $uploadedFile->getClientOriginalName();
+            $mimeType     = $uploadedFile->getMimeType();
+            $extension    = $uploadedFile->getClientOriginalExtension();
 
-        // storeAs('education', $safeName, 'public')
-        //   → writes to:  storage/app/public/education/<safeName>
-        //   → served at:  /storage/education/<safeName>  (via the storage symlink)
-        $storagePath = $uploadedFile->storeAs('education', $safeName, 'public');
+            // Build a safe filename: "my-video_1713000000_0.mp4"
+            $safeName    = Str::slug(pathinfo($originalName, PATHINFO_FILENAME))
+                         . '_' . time() . '_' . $count
+                         . '.' . $extension;
 
-        // --- Write metadata to the JSON file --------------------------------
-        // $storagePath is relative: "education/<safeName>"
-        // The public URL is:  asset('storage/' . $storagePath)
-        $this->store->create([
-            'title'             => $request->input('title'),
-            'file_path'         => $storagePath,   // e.g. "education/my-video_1713000000.mp4"
-            'file_type'         => $mimeType,       // e.g. "video/mp4"
-            'original_filename' => $originalName,   // e.g. "my video.mp4"
-            'uploaded_by'       => session('auth_user.username', 'admin'),
-        ]);
+            $storagePath = $uploadedFile->storeAs('education', $safeName, 'public');
+
+            $batch[] = [
+                'title'             => $title,
+                'file_path'         => $storagePath,
+                'file_type'         => $mimeType,
+                'original_filename' => $originalName,
+                'uploaded_by'       => $uploadedBy,
+            ];
+
+            $count++;
+        }
+
+        // Write all records in one read-modify-write cycle so each gets a unique id
+        $this->store->createMany($batch);
+
+        $label = $count === 1 ? '"' . $title . '"' : $count . ' files';
 
         return redirect('/education')
-            ->with('success', 'Material "' . $request->input('title') . '" uploaded successfully.');
+            ->with('success', 'Material ' . $label . ' uploaded successfully.');
     }
 
     /**

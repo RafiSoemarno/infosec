@@ -1983,6 +1983,23 @@ a {
 	text-align: center;
 }
 
+/* Pending (staged) file items */
+.edu-admin-pending-item {
+	border: 1px dashed var(--color-line);
+	border-radius: var(--radius-sm);
+	margin-bottom: 4px;
+}
+
+.edu-admin-pending-dot {
+	background: #f59e0b !important;
+	flex-shrink: 0;
+}
+
+.edu-admin-pending-badge {
+	color: #b45309 !important;
+	font-style: italic;
+}
+
 /* File download panel (non-previewable uploads) */
 .edu-video-panel__download {
 	display: flex;

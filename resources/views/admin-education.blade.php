@@ -85,11 +85,11 @@
                 >
                     <input
                         type="file"
-                        name="file"
+                        name="files[]"
                         id="fileInput"
                         class="edu-admin-dropzone__input"
                         accept=".mp4,.webm,.ogv,.mov,.avi,.pdf,.ppt,.pptx,.doc,.docx"
-                        required
+                        multiple
                     >
 
                     <div class="edu-admin-dropzone__content" id="dropzoneContent">
@@ -130,35 +130,19 @@
                         <div class="edu-admin-dropzone__actions">
                             <label for="fileInput" class="edu-admin-btn-outline" role="button" tabindex="0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                Upload files
+                                Add files
                             </label>
                         </div>
 
                         <p class="edu-admin-dropzone__formats">Supported: MP4, WebM, MOV, AVI, PDF, PPT, PPTX, DOC, DOCX &mdash; max {{ 500 }} MB</p>
-                    </div>
-
-                    {{-- Preview state (shown after file selected) --}}
-                    <div class="edu-admin-dropzone__preview" id="filePreview" style="display:none;">
-                        <div class="edu-admin-file-preview">
-                            <div class="edu-admin-file-preview__icon" id="previewIcon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            </div>
-                            <div class="edu-admin-file-preview__info">
-                                <p class="edu-admin-file-preview__name" id="previewName"></p>
-                                <p class="edu-admin-file-preview__size" id="previewSize"></p>
-                            </div>
-                            <button type="button" class="edu-admin-file-preview__remove" onclick="clearFile()" title="Remove file">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
-                        </div>
                     </div>
                 </div>
 
                 {{-- Submit --}}
                 <div class="edu-admin-upload-footer">
                     <button type="submit" class="app-btn-primary edu-admin-submit-btn" id="submitBtn" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                        Upload Material
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Save Material
                     </button>
                 </div>
             </form>
@@ -179,6 +163,9 @@
         </div>
 
         <div class="edu-video-list edu-admin-material-list" id="adminMaterialList">
+            {{-- Pending (staged) files — added by JS before save --}}
+            <div id="pendingList"></div>
+
             @forelse ($materials as $material)
                 <div class="edu-admin-material-item" data-title="{{ strtolower($material['title']) }}">
                     {{-- Dot is always red/active because every stored material is live --}}
@@ -228,34 +215,78 @@
 
 @push('scripts')
 <script>
-    // ── File input handling ──────────────────────────────────────
+    // ── State ────────────────────────────────────────────────────
     const fileInput   = document.getElementById('fileInput');
     const dropzone    = document.getElementById('dropzone');
     const dzContent   = document.getElementById('dropzoneContent');
-    const filePreview = document.getElementById('filePreview');
-    const previewName = document.getElementById('previewName');
-    const previewSize = document.getElementById('previewSize');
     const submitBtn   = document.getElementById('submitBtn');
+    const pendingList = document.getElementById('pendingList');
 
-    fileInput.addEventListener('change', function () {
-        if (this.files && this.files[0]) {
-            showPreview(this.files[0]);
-        }
-    });
+    // Plain array — avoids DataTransfer deduplication of same-named files
+    let stagedFiles = [];
 
-    function showPreview(file) {
-        previewName.textContent = file.name;
-        previewSize.textContent = formatBytes(file.size);
-        dzContent.style.display = 'none';
-        filePreview.style.display = 'flex';
-        submitBtn.disabled = false;
+    // ── Sync stagedFiles array → the real file input ─────────────
+    function syncFileInput() {
+        const dt = new DataTransfer();
+        stagedFiles.forEach(function (f) { dt.items.add(f); });
+        fileInput.files = dt.files;
     }
 
-    function clearFile() {
-        fileInput.value = '';
-        dzContent.style.display = '';
-        filePreview.style.display = 'none';
-        submitBtn.disabled = true;
+    // ── Add files to the staging list ────────────────────────────
+    function stageFiles(newFiles) {
+        Array.from(newFiles).forEach(function (file) {
+            stagedFiles.push(file);
+        });
+        syncFileInput();
+        renderPendingList();
+        updateSubmitBtn();
+    }
+
+    function removeStagedFile(index) {
+        stagedFiles.splice(index, 1);
+        syncFileInput();
+        renderPendingList();
+        updateSubmitBtn();
+    }
+
+    function renderPendingList() {
+        pendingList.innerHTML = '';
+        stagedFiles.forEach(function (file, i) {
+            const item = document.createElement('div');
+            item.className = 'edu-admin-material-item edu-admin-pending-item';
+            const btn = document.createElement('button');
+            btn.type      = 'button';
+            btn.className = 'edu-admin-del-btn';
+            btn.title     = 'Remove';
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
+            btn.addEventListener('click', function () { removeStagedFile(i); });
+
+            const dot  = document.createElement('span');
+            dot.className = 'edu-video-item__dot edu-admin-pending-dot';
+
+            const body = document.createElement('div');
+            body.className = 'edu-admin-material-item__body';
+            body.innerHTML =
+                '<span class="edu-video-item__title">' + escHtml(file.name) + '</span>' +
+                '<span class="edu-admin-material-item__meta edu-admin-pending-badge">Pending &bull; ' + formatBytes(file.size) + '</span>';
+
+            const del = document.createElement('div');
+            del.className = 'edu-admin-material-item__del';
+            del.appendChild(btn);
+
+            item.appendChild(dot);
+            item.appendChild(body);
+            item.appendChild(del);
+            pendingList.appendChild(item);
+        });
+    }
+
+    function updateSubmitBtn() {
+        submitBtn.disabled = stagedFiles.length === 0;
+    }
+
+    function escHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
     function formatBytes(bytes) {
@@ -263,6 +294,16 @@
         if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / 1048576).toFixed(1) + ' MB';
     }
+
+    // ── File input change ────────────────────────────────────────
+    fileInput.addEventListener('change', function () {
+        if (this.files && this.files.length) {
+            stageFiles(this.files);
+            // Reset the native input value so the same file can be re-added
+            // (stagingDT already holds it; we re-sync after)
+            this.value = '';
+        }
+    });
 
     // ── Drag-and-drop ────────────────────────────────────────────
     function handleDragOver(e) {
@@ -279,13 +320,8 @@
     function handleDrop(e) {
         e.preventDefault();
         dropzone.classList.remove('edu-admin-dropzone--drag');
-        const files = e.dataTransfer.files;
-        if (files && files[0]) {
-            // Assign to actual input via DataTransfer
-            const dt = new DataTransfer();
-            dt.items.add(files[0]);
-            fileInput.files = dt.files;
-            showPreview(files[0]);
+        if (e.dataTransfer.files && e.dataTransfer.files.length) {
+            stageFiles(e.dataTransfer.files);
         }
     }
 
@@ -293,11 +329,12 @@
     document.getElementById('adminSearchInput').addEventListener('input', function () {
         const q = this.value.toLowerCase();
         document.querySelectorAll('.edu-admin-material-item').forEach(function (item) {
+            if (item.classList.contains('edu-admin-pending-item')) return; // always show pending
             item.style.display = (item.dataset.title || '').includes(q) ? '' : 'none';
         });
     });
 
-    // ── Upload progress UX ───────────────────────────────────────
+    // ── Save / upload progress UX ────────────────────────────────
     document.getElementById('uploadForm').addEventListener('submit', function () {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Uploading…';

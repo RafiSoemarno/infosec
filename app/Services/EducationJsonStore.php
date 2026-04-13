@@ -73,27 +73,43 @@ class EducationJsonStore
      */
     public function create(array $fields): array
     {
-        $data = $this->read();
+        return $this->createMany([$fields])[0];
+    }
 
-        // Auto-increment: read next_id, then bump it for next time
-        $newId = (int) ($data['next_id'] ?? 1);
-        $data['next_id'] = $newId + 1;
+    /**
+     * Add multiple material records in a single read-modify-write cycle.
+     * This guarantees each record gets a unique id even when called in a tight loop.
+     *
+     * @param array $batch  Array of field arrays (same keys as create())
+     * @return array        Array of the newly created records
+     */
+    public function createMany(array $batch): array
+    {
+        $data    = $this->read();
+        $nextId  = (int) ($data['next_id'] ?? 1);
+        $now     = now()->format('Y-m-d H:i:s');
+        $created = [];
 
-        $record = [
-            'id'                => $newId,
-            'title'             => (string) ($fields['title'] ?? ''),
-            'file_path'         => (string) ($fields['file_path'] ?? ''),
-            'file_type'         => (string) ($fields['file_type'] ?? ''),
-            'original_filename' => (string) ($fields['original_filename'] ?? ''),
-            'uploaded_by'       => (string) ($fields['uploaded_by'] ?? 'admin'),
-            'created_at'        => now()->format('Y-m-d H:i:s'),
-        ];
+        foreach ($batch as $fields) {
+            $record = [
+                'id'                => $nextId,
+                'title'             => (string) ($fields['title'] ?? ''),
+                'file_path'         => (string) ($fields['file_path'] ?? ''),
+                'file_type'         => (string) ($fields['file_type'] ?? ''),
+                'original_filename' => (string) ($fields['original_filename'] ?? ''),
+                'uploaded_by'       => (string) ($fields['uploaded_by'] ?? 'admin'),
+                'created_at'        => $now,
+            ];
 
-        $data['materials'][] = $record;
+            $data['materials'][] = $record;
+            $created[]           = $record;
+            $nextId++;
+        }
 
+        $data['next_id'] = $nextId;
         $this->write($data);
 
-        return $record;
+        return $created;
     }
 
     /**
