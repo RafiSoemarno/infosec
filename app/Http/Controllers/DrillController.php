@@ -29,7 +29,13 @@ class DrillController extends Controller
                 ]);
         }
 
-        $payload = $this->drillData->getDrillPayload((array) session('auth_user'));
+        $authUser = (array) session('auth_user');
+
+        if (($authUser['role'] ?? '') === 'admin') {
+            return redirect('/admin/drill');
+        }
+
+        $payload = $this->drillData->getDrillPayload($authUser);
 
         return view('drill', $payload);
     }

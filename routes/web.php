@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDrillController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DrillController;
 use App\Http\Controllers\EducationController;
@@ -28,5 +29,13 @@ Route::get('/drill/video', [DrillController::class, 'videoPlayer']);
 Route::get('/drill/video/stream', [DrillController::class, 'video']);
 Route::get('/my-result', [ResultController::class, 'index']);
 Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
+
+// Admin drill scheduling
+Route::get('/admin/drill', [AdminDrillController::class, 'index']);
+Route::post('/admin/drill/self-service', [AdminDrillController::class, 'saveSelfService']);
+Route::post('/admin/drill/schedule', [AdminDrillController::class, 'saveScheduleDrill']);
+Route::post('/admin/drill/drills', [AdminDrillController::class, 'storeDrill']);
+Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDrill']);
+Route::post('/admin/drill/drills/{id}/delete', [AdminDrillController::class, 'destroyDrill']);
 
 Route::post('/logout', [AuthController::class, 'logout']);

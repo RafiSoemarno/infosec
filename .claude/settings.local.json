@@ -6,7 +6,11 @@
       "Bash(xargs ls:*)",
       "Bash(python3 -c \"import json; d=json.load\\(open\\('c:/Users/CMM/Documents/Dana/infosec/infosec/public/data/drill-dashboard.json'\\)\\); users=d.get\\('auth',{}\\).get\\('users',[]\\); [print\\(u.get\\('username'\\), u.get\\('role','NO_ROLE'\\), u.get\\('isAdmin','NO_ADMIN'\\), u.get\\('isSpecial','NO_SPECIAL'\\)\\) for u in users]\")",
       "Bash(node -e \"const d=require\\('./public/data/drill-dashboard.json'\\); d.auth.users.forEach\\(u=>console.log\\(u.username, u.role, u.isAdmin, u.isSpecial\\)\\)\")",
-      "Bash(node -e \"const d=require\\('c:/Users/CMM/Documents/Dana/infosec/infosec/public/data/drill-dashboard.json'\\); console.log\\(JSON.stringify\\(d.auth.users, null, 2\\)\\)\")"
+      "Bash(node -e \"const d=require\\('c:/Users/CMM/Documents/Dana/infosec/infosec/public/data/drill-dashboard.json'\\); console.log\\(JSON.stringify\\(d.auth.users, null, 2\\)\\)\")",
+      "Bash(python3 -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('drillSimulation', {}\\), indent=2\\)\\)\")",
+      "Bash(grep -E \"\\(color:|--red|--bg|--text|--border|#[A-Fa-f0-9]{3,6}\\)\")",
+      "Bash(python3 -c \" import sys, json d = json.load\\(sys.stdin\\) keys = list\\(d.keys\\(\\)\\) print\\('Top-level keys:', keys\\) if 'drillSimulation' in d: print\\(json.dumps\\(d['drillSimulation'], indent=2\\)\\) \")",
+      "Bash(python3 -c ':*)"
     ]
   }
 }

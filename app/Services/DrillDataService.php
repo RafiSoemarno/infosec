@@ -142,6 +142,17 @@ class DrillDataService
     private function appendSpecialMenuItems(array $payload, array $authUser): array
     {
         $username = strtolower((string) ($authUser['username'] ?? ''));
+        $isAdmin  = ($authUser['role'] ?? '') === 'admin';
+
+        // For admin users, redirect the "Drill Simulation" menu item to the admin page.
+        if ($isAdmin) {
+            $payload['menuData']['items'] = array_map(function (array $item) {
+                if (strtolower($item['url'] ?? '') === '/drill') {
+                    $item['url'] = '/admin/drill';
+                }
+                return $item;
+            }, $payload['menuData']['items'] ?? []);
+        }
 
         if (!empty($authUser['isSpecial']) && $username !== 'dnia.admin') {
             $payload['menuData']['items'][] = [

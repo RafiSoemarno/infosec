@@ -2034,3 +2034,342 @@ a {
 	color: var(--color-muted);
 	text-align: center;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Admin Drill Simulation page  (.da-*)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Flash alerts ──────────────────────────────────────────── */
+.da-alert {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 16px;
+	border-radius: var(--radius-sm);
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+.da-alert--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+.da-alert--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+/* ── Section card ──────────────────────────────────────────── */
+.da-section-card {
+	background: var(--color-panel);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-card);
+	padding: 24px 28px 28px;
+}
+.da-section-card--brand {
+	background: linear-gradient(135deg, #eb3349 0%, #b61425 100%);
+}
+
+/* ── Section header ────────────────────────────────────────── */
+.da-section-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+.da-section-header__left {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.da-section-badge {
+	display: inline-block;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-brand);
+	background: var(--color-brand-soft);
+	border-radius: 6px;
+	padding: 3px 10px;
+}
+.da-section-badge--white {
+	color: var(--color-brand);
+	background: rgba(255,255,255,0.95);
+}
+.da-section-desc {
+	font-size: 0.8125rem;
+	color: var(--color-muted);
+	margin: 0;
+}
+.da-section-desc--light {
+	color: rgba(255,255,255,0.78);
+}
+
+/* ── Save button ───────────────────────────────────────────── */
+.da-save-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 18px;
+	background: var(--color-brand);
+	color: #fff;
+	border: none;
+	border-radius: var(--radius-sm);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.15s;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+.da-save-btn:hover {
+	background: var(--color-brand-strong);
+}
+.da-save-btn--light {
+	background: rgba(255,255,255,0.18);
+	border: 1px solid rgba(255,255,255,0.4);
+	color: #fff;
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+}
+.da-save-btn--light:hover {
+	background: rgba(255,255,255,0.3);
+}
+
+/* ── Two-column halves grid ────────────────────────────────── */
+.da-halves-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+@media (max-width: 900px) {
+	.da-halves-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Half panel ────────────────────────────────────────────── */
+.da-half-panel {
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-md);
+	padding: 18px 20px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.da-half-panel--active {
+	border-color: var(--color-brand);
+	background: var(--color-brand-soft);
+}
+.da-half-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.da-half-title {
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--color-ink);
+}
+.da-half-icon {
+	color: var(--color-muted);
+	flex-shrink: 0;
+}
+
+/* ── Fields ────────────────────────────────────────────────── */
+.da-fields-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+}
+.da-fields-row--wrap {
+	flex-wrap: wrap;
+}
+.da-field-group {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	min-width: 140px;
+	flex: 1;
+}
+.da-field-group--action {
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex: 0 0 auto;
+}
+.da-field-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--color-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+.da-field-label--light {
+	color: rgba(255,255,255,0.78);
+}
+
+/* ── Inputs ────────────────────────────────────────────────── */
+.da-input {
+	padding: 8px 12px;
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	color: var(--color-ink);
+	background: #fff;
+	outline: none;
+	transition: border-color 0.15s;
+	width: 100%;
+	box-sizing: border-box;
+}
+.da-input:focus {
+	border-color: var(--color-brand);
+}
+.da-input--brand {
+	background: rgba(255,255,255,0.14);
+	border-color: rgba(255,255,255,0.35);
+	color: #fff;
+}
+.da-input--brand::placeholder { color: rgba(255,255,255,0.55); }
+.da-input--brand:focus { border-color: #fff; }
+.da-input--sm {
+	padding: 5px 8px;
+	font-size: 0.8125rem;
+}
+/* native date/time colour fix on brand bg */
+.da-input--brand::-webkit-calendar-picker-indicator { filter: invert(1); }
+
+/* ── Selects ───────────────────────────────────────────────── */
+.da-select {
+	padding: 8px 12px;
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	color: var(--color-ink);
+	background: #fff;
+	outline: none;
+	cursor: pointer;
+	width: 100%;
+	box-sizing: border-box;
+	appearance: auto;
+}
+.da-select:focus { border-color: var(--color-brand); }
+.da-select--brand {
+	background: rgba(255,255,255,0.14);
+	border-color: rgba(255,255,255,0.35);
+	color: #fff;
+}
+.da-select--sm {
+	padding: 5px 8px;
+	font-size: 0.8125rem;
+}
+
+/* ── Add-drill form container ──────────────────────────────── */
+.da-add-form {
+	background: var(--color-panel-muted);
+	border: 1.5px dashed var(--color-brand);
+	border-radius: var(--radius-md);
+	padding: 18px 20px;
+	margin-bottom: 20px;
+}
+.da-add-form__grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	align-items: flex-end;
+}
+
+/* ── Drill table ───────────────────────────────────────────── */
+.da-table-wrap {
+	overflow-x: auto;
+	border-radius: var(--radius-md);
+	border: 1px solid var(--color-line);
+}
+.da-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+}
+.da-table thead tr {
+	background: var(--color-panel-muted);
+	border-bottom: 2px solid var(--color-line);
+}
+.da-table th {
+	padding: 11px 16px;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+	text-align: left;
+	white-space: nowrap;
+}
+.da-table td {
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--color-line);
+	color: var(--color-ink);
+	vertical-align: middle;
+}
+.da-table tbody tr:last-child td { border-bottom: none; }
+.da-table tbody tr:hover { background: var(--color-panel-muted); }
+.da-table__row--past { opacity: 0.55; }
+.da-table__empty {
+	text-align: center;
+	color: var(--color-muted);
+	padding: 32px;
+}
+
+/* ── Plant badge ───────────────────────────────────────────── */
+.da-plant-badge {
+	display: inline-block;
+	padding: 2px 10px;
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+	border-radius: 20px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+}
+
+/* ── Icon buttons ──────────────────────────────────────────── */
+.da-cell-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+.da-icon-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.15s, color 0.15s;
+}
+.da-icon-btn--edit {
+	background: #eff6ff;
+	color: #2563eb;
+}
+.da-icon-btn--edit:hover { background: #dbeafe; }
+.da-icon-btn--save {
+	background: #ecfdf5;
+	color: #059669;
+}
+.da-icon-btn--save:hover { background: #d1fae5; }
+.da-icon-btn--delete {
+	background: var(--color-brand-soft);
+	color: var(--color-brand);
+}
+.da-icon-btn--delete:hover { background: #fecaca; }
+.da-past-label {
+	font-size: 0.75rem;
+	color: var(--color-muted);
+	font-style: italic;
+}
