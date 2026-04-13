@@ -57,6 +57,10 @@ class AdminDrillController extends Controller
 
         $this->store->saveSelfService($request->all());
 
+        // Sync first-half window to the user-facing drill-dashboard.json
+        $saved = $this->store->getSelfService();
+        $this->store->syncSelfServiceToDrillDashboard($saved['first_half'] ?? []);
+
         return redirect(url('/admin/drill'))->with('success_self_service', 'Self-service window saved successfully.');
     }
 
@@ -76,30 +80,10 @@ class AdminDrillController extends Controller
             'time'     => ['required'],
         ]);
 
-        $this->store->saveScheduleDrill($request->all());
+        // Save schedule config, add it as a new drill entry, and sync to drill-dashboard.json
+        $this->store->saveScheduleDrillAndSync($request->all());
 
-        return redirect(url('/admin/drill'))->with('success_schedule', 'Schedule drill saved successfully.');
-    }
-
-    // ── Add a drill entry ──────────────────────────────────────────
-
-    public function storeDrill(Request $request)
-    {
-        if (!$this->isAdmin()) {
-            return redirect('/drill');
-        }
-
-        $request->validate([
-            'company'  => ['required', 'string', 'max:150'],
-            'plant'    => ['required', 'string', 'max:100'],
-            'date'     => ['required', 'date'],
-            'time'     => ['required'],
-            'duration' => ['required', 'integer', 'min:1'],
-        ]);
-
-        $this->store->createDrill($request->all());
-
-        return redirect(url('/admin/drill'))->with('success_schedule', 'Drill entry added successfully.');
+        return redirect(url('/admin/drill'))->with('success_schedule', 'Schedule drill saved and added to the list.');
     }
 
     // ── Update a drill entry ───────────────────────────────────────

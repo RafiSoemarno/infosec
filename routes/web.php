@@ -34,7 +34,6 @@ Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
 Route::get('/admin/drill', [AdminDrillController::class, 'index']);
 Route::post('/admin/drill/self-service', [AdminDrillController::class, 'saveSelfService']);
 Route::post('/admin/drill/schedule', [AdminDrillController::class, 'saveScheduleDrill']);
-Route::post('/admin/drill/drills', [AdminDrillController::class, 'storeDrill']);
 Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDrill']);
 Route::post('/admin/drill/drills/{id}/delete', [AdminDrillController::class, 'destroyDrill']);
 

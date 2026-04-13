@@ -2049,171 +2049,187 @@ a {
 	font-size: 0.875rem;
 	font-weight: 500;
 }
-.da-alert--success {
-	background: #ecfdf5;
-	color: #065f46;
-	border: 1px solid #a7f3d0;
-}
-.da-alert--error {
-	background: #fef2f2;
-	color: #991b1b;
-	border: 1px solid #fecaca;
+.da-alert--success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.da-alert--error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+/* ── Branded card (red gradient) ───────────────────────────── */
+.da-branded-card {
+	background: linear-gradient(135deg, #eb3349 0%, #b61425 100%);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-card);
+	padding: 20px 24px 24px;
+	color: #fff;
 }
 
-/* ── Section card ──────────────────────────────────────────── */
-.da-section-card {
+/* ── Plain white card ──────────────────────────────────────── */
+.da-plain-card {
 	background: var(--color-panel);
 	border-radius: var(--radius-lg);
 	box-shadow: var(--shadow-card);
-	padding: 24px 28px 28px;
-}
-.da-section-card--brand {
-	background: linear-gradient(135deg, #eb3349 0%, #b61425 100%);
+	overflow: hidden;
 }
 
-/* ── Section header ────────────────────────────────────────── */
-.da-section-header {
+/* ── Card top bar (title + circle save btn) ─────────────────── */
+.da-card-topbar {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: space-between;
-	gap: 16px;
-	margin-bottom: 20px;
+	margin-bottom: 18px;
 }
-.da-section-header__left {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-/* ── Badges ────────────────────────────────────────────────── */
-.da-section-badge {
-	display: inline-block;
-	font-size: 0.75rem;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--color-brand);
-	background: var(--color-brand-soft);
-	border-radius: 6px;
-	padding: 3px 10px;
-}
-.da-section-badge--white {
-	color: var(--color-brand);
-	background: rgba(255,255,255,0.95);
-}
-.da-section-desc {
-	font-size: 0.8125rem;
-	color: var(--color-muted);
-	margin: 0;
-}
-.da-section-desc--light {
-	color: rgba(255,255,255,0.78);
+.da-card-topbar__title {
+	font-size: 1.1rem;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	color: #fff;
 }
 
-/* ── Save button ───────────────────────────────────────────── */
-.da-save-btn {
+/* ── Circle save button (top-right of branded card) ─────────── */
+.da-icon-circle-btn {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	padding: 8px 18px;
-	background: var(--color-brand);
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.18);
+	border: 1.5px solid rgba(255,255,255,0.45);
 	color: #fff;
-	border: none;
-	border-radius: var(--radius-sm);
-	font-size: 0.8125rem;
-	font-weight: 600;
 	cursor: pointer;
 	transition: background 0.15s;
-	white-space: nowrap;
 	flex-shrink: 0;
 }
-.da-save-btn:hover {
-	background: var(--color-brand-strong);
-}
-.da-save-btn--light {
-	background: rgba(255,255,255,0.18);
-	border: 1px solid rgba(255,255,255,0.4);
-	color: #fff;
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-}
-.da-save-btn--light:hover {
-	background: rgba(255,255,255,0.3);
-}
+.da-icon-circle-btn:hover { background: rgba(255,255,255,0.32); }
 
-/* ── Two-column halves grid ────────────────────────────────── */
-.da-halves-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 20px;
+/* ── Two-column halves row ─────────────────────────────────── */
+.da-halves-row {
+	display: flex;
+	gap: 0;
+	align-items: stretch;
 }
-@media (max-width: 900px) {
-	.da-halves-grid { grid-template-columns: 1fr; }
-}
-
-/* ── Half panel ────────────────────────────────────────────── */
-.da-half-panel {
-	border: 1.5px solid var(--color-line);
-	border-radius: var(--radius-md);
-	padding: 18px 20px 20px;
+.da-half-block {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 12px;
+	min-width: 0;
 }
-.da-half-panel--active {
-	border-color: var(--color-brand);
-	background: var(--color-brand-soft);
+.da-half-divider {
+	width: 1px;
+	background: rgba(255,255,255,0.25);
+	margin: 0 24px;
+	flex-shrink: 0;
 }
-.da-half-header {
+@media (max-width: 820px) {
+	.da-halves-row { flex-direction: column; }
+	.da-half-divider { width: auto; height: 1px; margin: 16px 0; }
+}
+
+/* ── Half-block title bar ──────────────────────────────────── */
+.da-half-titlebar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	margin-bottom: 4px;
 }
-.da-half-title {
+.da-half-label {
 	font-size: 0.9375rem;
 	font-weight: 700;
-	color: var(--color-ink);
+	color: #fff;
 }
-.da-half-icon {
-	color: var(--color-muted);
-	flex-shrink: 0;
-}
+.da-half-titlebar svg { color: rgba(255,255,255,0.7); flex-shrink: 0; }
 
-/* ── Fields ────────────────────────────────────────────────── */
-.da-fields-row {
+/* ── Date-time row ─────────────────────────────────────────── */
+.da-date-time-row {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 14px;
+	gap: 10px 16px;
+	align-items: flex-end;
 }
-.da-fields-row--wrap {
+.da-time-row {
+	display: flex;
+	gap: 16px;
 	flex-wrap: wrap;
 }
-.da-field-group {
+.da-schedule-fields-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 20px;
+	align-items: flex-end;
+}
+
+/* ── Label + control group ─────────────────────────────────── */
+.da-dt-group {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
-	min-width: 140px;
-	flex: 1;
 }
-.da-field-group--action {
-	justify-content: flex-end;
-	align-items: flex-end;
-	flex: 0 0 auto;
-}
-.da-field-label {
-	font-size: 0.75rem;
+.da-dt-label {
+	font-size: 0.72rem;
 	font-weight: 600;
-	color: var(--color-muted);
-	text-transform: uppercase;
 	letter-spacing: 0.06em;
-}
-.da-field-label--light {
+	text-transform: uppercase;
 	color: rgba(255,255,255,0.78);
+	white-space: nowrap;
 }
 
-/* ── Inputs ────────────────────────────────────────────────── */
+/* ── Date pill (white bg, calendar icon) ────────────────────── */
+.da-dt-pill {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	background: #fff;
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	min-width: 130px;
+}
+.da-date-input {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-ink);
+	padding: 8px 10px;
+	padding-right: 32px;
+	width: 100%;
+	cursor: pointer;
+}
+.da-date-input::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; top: 0; width: 100%; height: 100%; cursor: pointer; }
+.da-cal-icon {
+	position: absolute;
+	right: 8px;
+	color: var(--color-muted);
+	pointer-events: none;
+	flex-shrink: 0;
+}
+
+/* ── Dropdown pill (white bg, chevron) ──────────────────────── */
+.da-dropdown-pill {
+	background: #fff;
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	display: inline-flex;
+	min-width: 130px;
+}
+.da-dropdown-pill--time { min-width: 110px; }
+.da-pill-select {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-ink);
+	padding: 8px 10px;
+	width: 100%;
+	cursor: pointer;
+	appearance: auto;
+}
+
+/* ── Inline inputs (used in table edit mode) ────────────────── */
 .da-input {
-	padding: 8px 12px;
+	padding: 6px 10px;
 	border: 1.5px solid var(--color-line);
 	border-radius: var(--radius-sm);
 	font-family: var(--font-sans);
@@ -2225,69 +2241,12 @@ a {
 	width: 100%;
 	box-sizing: border-box;
 }
-.da-input:focus {
-	border-color: var(--color-brand);
-}
-.da-input--brand {
-	background: rgba(255,255,255,0.14);
-	border-color: rgba(255,255,255,0.35);
-	color: #fff;
-}
-.da-input--brand::placeholder { color: rgba(255,255,255,0.55); }
-.da-input--brand:focus { border-color: #fff; }
-.da-input--sm {
-	padding: 5px 8px;
-	font-size: 0.8125rem;
-}
-/* native date/time colour fix on brand bg */
-.da-input--brand::-webkit-calendar-picker-indicator { filter: invert(1); }
-
-/* ── Selects ───────────────────────────────────────────────── */
-.da-select {
-	padding: 8px 12px;
-	border: 1.5px solid var(--color-line);
-	border-radius: var(--radius-sm);
-	font-family: var(--font-sans);
-	font-size: 0.875rem;
-	color: var(--color-ink);
-	background: #fff;
-	outline: none;
-	cursor: pointer;
-	width: 100%;
-	box-sizing: border-box;
-	appearance: auto;
-}
-.da-select:focus { border-color: var(--color-brand); }
-.da-select--brand {
-	background: rgba(255,255,255,0.14);
-	border-color: rgba(255,255,255,0.35);
-	color: #fff;
-}
-.da-select--sm {
-	padding: 5px 8px;
-	font-size: 0.8125rem;
-}
-
-/* ── Add-drill form container ──────────────────────────────── */
-.da-add-form {
-	background: var(--color-panel-muted);
-	border: 1.5px dashed var(--color-brand);
-	border-radius: var(--radius-md);
-	padding: 18px 20px;
-	margin-bottom: 20px;
-}
-.da-add-form__grid {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 14px;
-	align-items: flex-end;
-}
+.da-input:focus { border-color: var(--color-brand); }
+.da-input--sm   { padding: 4px 8px; font-size: 0.8125rem; }
 
 /* ── Drill table ───────────────────────────────────────────── */
 .da-table-wrap {
 	overflow-x: auto;
-	border-radius: var(--radius-md);
-	border: 1px solid var(--color-line);
 }
 .da-table {
 	width: 100%;
@@ -2299,7 +2258,7 @@ a {
 	border-bottom: 2px solid var(--color-line);
 }
 .da-table th {
-	padding: 11px 16px;
+	padding: 11px 18px;
 	font-size: 0.72rem;
 	font-weight: 700;
 	letter-spacing: 0.07em;
@@ -2309,24 +2268,25 @@ a {
 	white-space: nowrap;
 }
 .da-table td {
-	padding: 12px 16px;
+	padding: 13px 18px;
 	border-bottom: 1px solid var(--color-line);
 	color: var(--color-ink);
 	vertical-align: middle;
 }
 .da-table tbody tr:last-child td { border-bottom: none; }
-.da-table tbody tr:hover { background: var(--color-panel-muted); }
-.da-table__row--past { opacity: 0.55; }
+.da-table tbody tr:hover { background: #fafbfc; }
+.da-table__row--past { opacity: 0.5; }
 .da-table__empty {
 	text-align: center;
 	color: var(--color-muted);
-	padding: 32px;
+	padding: 40px;
+	font-size: 0.875rem;
 }
 
 /* ── Plant badge ───────────────────────────────────────────── */
 .da-plant-badge {
 	display: inline-block;
-	padding: 2px 10px;
+	padding: 3px 12px;
 	background: var(--color-brand-soft);
 	color: var(--color-brand);
 	border-radius: 20px;
@@ -2335,39 +2295,30 @@ a {
 	letter-spacing: 0.04em;
 }
 
-/* ── Icon buttons ──────────────────────────────────────────── */
+/* ── Table action buttons ──────────────────────────────────── */
 .da-cell-actions {
 	display: flex;
 	align-items: center;
 	gap: 6px;
 	white-space: nowrap;
 }
-.da-icon-btn {
+.da-tbl-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 30px;
-	height: 30px;
+	width: 28px;
+	height: 28px;
 	border: none;
-	border-radius: 8px;
+	border-radius: 7px;
 	cursor: pointer;
-	transition: background 0.15s, color 0.15s;
+	transition: background 0.15s;
 }
-.da-icon-btn--edit {
-	background: #eff6ff;
-	color: #2563eb;
-}
-.da-icon-btn--edit:hover { background: #dbeafe; }
-.da-icon-btn--save {
-	background: #ecfdf5;
-	color: #059669;
-}
-.da-icon-btn--save:hover { background: #d1fae5; }
-.da-icon-btn--delete {
-	background: var(--color-brand-soft);
-	color: var(--color-brand);
-}
-.da-icon-btn--delete:hover { background: #fecaca; }
+.da-tbl-btn--edit   { background: #eff6ff; color: #2563eb; }
+.da-tbl-btn--edit:hover { background: #dbeafe; }
+.da-tbl-btn--save   { background: #ecfdf5; color: #059669; }
+.da-tbl-btn--save:hover { background: #d1fae5; }
+.da-tbl-btn--delete { background: var(--color-brand-soft); color: var(--color-brand); }
+.da-tbl-btn--delete:hover { background: #fecaca; }
 .da-past-label {
 	font-size: 0.75rem;
 	color: var(--color-muted);

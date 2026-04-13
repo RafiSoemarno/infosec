@@ -226,6 +226,97 @@ class DrillScheduleStore
         return true;
     }
 
+    // ── Sync back to drill-dashboard.json (user-facing drill page) ─
+
+    /**
+     * Update drill-dashboard.json drill[0] (1st Half active drill) with the
+     * self-service window settings saved by the admin.
+     */
+    public function syncSelfServiceToDrillDashboard(array $firstHalf): void
+    {
+        $path = public_path('data/drill-dashboard.json');
+        if (!file_exists($path)) {
+            return;
+        }
+
+        $data = json_decode(file_get_contents($path), true);
+        if (!is_array($data)) {
+            return;
+        }
+
+        $drills = &$data['drillSimulation']['drills'];
+        if (empty($drills[0])) {
+            return;
+        }
+
+        // Format dates as human-readable: "1 Apr 2026"
+        $fmt = function (string $date): string {
+            try {
+                return \Carbon\Carbon::parse($date)->format('j M Y');
+            } catch (\Exception $e) {
+                return $date;
+            }
+        };
+
+        $drills[0]['periodStart'] = $fmt($firstHalf['start_date'] ?? '');
+        $drills[0]['periodEnd']   = $fmt($firstHalf['end_date']   ?? '');
+        $drills[0]['duration']    = ($firstHalf['duration'] ?? 10) . ' Minutes';
+
+        file_put_contents(
+            $path,
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
+    }
+
+    /**
+     * Update drill-dashboard.json drill[1] (the "comingSoon" entry) with the
+     * scheduled drill settings, and also add the new entry to the drill list.
+     */
+    public function saveScheduleDrillAndSync(array $data): array
+    {
+        // 1. Save to schedule store
+        $this->saveScheduleDrill($data);
+
+        // 2. Add new entry to the drill list
+        $record = $this->createDrill($data);
+
+        // 3. Sync to drill-dashboard.json "comingSoon" card
+        $path = public_path('data/drill-dashboard.json');
+        if (file_exists($path)) {
+            $json = json_decode(file_get_contents($path), true);
+            if (is_array($json)) {
+                $drills = &$json['drillSimulation']['drills'];
+
+                // Find the comingSoon entry and update it, or update index [1]
+                $updated = false;
+                foreach ($drills as &$drill) {
+                    if (!empty($drill['comingSoon'])) {
+                        $drill['periodStart'] = $data['date'] ?? '';
+                        $drill['periodEnd']   = $data['date'] ?? '';
+                        $drill['duration']    = ($data['duration'] ?? 30) . ' Minutes';
+                        $drill['notifyNote']  = 'Company: ' . ($data['company'] ?? '') . ' — Plant: ' . ($data['plant'] ?? '');
+                        $updated = true;
+                        break;
+                    }
+                }
+                unset($drill);
+
+                if (!$updated && isset($drills[1])) {
+                    $drills[1]['periodStart'] = $data['date'] ?? '';
+                    $drills[1]['periodEnd']   = $data['date'] ?? '';
+                    $drills[1]['duration']    = ($data['duration'] ?? 30) . ' Minutes';
+                }
+
+                file_put_contents(
+                    $path,
+                    json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                );
+            }
+        }
+
+        return $record;
+    }
+
     // ── Internal ───────────────────────────────────────────────────
 
     private function read(): array
