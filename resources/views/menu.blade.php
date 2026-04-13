@@ -62,7 +62,7 @@
             <x-menu-card title="Drill Simulation" subtitle="Quote for this theme" url="#" symbol="DRL" />
         </section>
         <section class="content-span-12 fade-in-up delay-2">
-            <x-menu-card title="My Result" subtitle="Quote for this theme" url="#" symbol="RES" />
+            <x-menu-card title="Result" subtitle="Quote for this theme" url="#" symbol="RES" />
         </section>
     @endforelse
 @endsection

@@ -6,6 +6,15 @@
     "auth": {
         "users": [
             {
+                "username": "dnia.admin",
+                "password": "admin123",
+                "name": "DNIA Admin",
+                "employeeId": "AP\\3300",
+                "company": "PT. Denso Indonesia",
+                "businessUnit": "3302 - Information System Bekasi",
+                "email": "dnia-is.admin.a4d@ap.denso.com"
+            },
+            {
                 "username": "selamet.nuryanto",
                 "password": "Denso123!",
                 "name": "Selamet Nuryanto",
@@ -50,7 +59,7 @@
                 "symbol": "DRL"
             },
             {
-                "title": "My Result",
+                "title": "Result",
                 "subtitle": "Track your progress",
                 "url": "/my-result",
                 "symbol": "RES"

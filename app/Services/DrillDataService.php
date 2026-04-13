@@ -141,7 +141,9 @@ class DrillDataService
 
     private function appendSpecialMenuItems(array $payload, array $authUser): array
     {
-        if (!empty($authUser['isSpecial'])) {
+        $username = strtolower((string) ($authUser['username'] ?? ''));
+
+        if (!empty($authUser['isSpecial']) && $username !== 'dnia.admin') {
             $payload['menuData']['items'][] = [
                 'title'    => 'Progress Drill',
                 'subtitle' => 'Track your training progress',
