@@ -117,21 +117,31 @@ class DrillScheduleStore
     public function saveSelfService(array $data): void
     {
         $store = $this->read();
+        $existing = $store['self_service'] ?? $this->defaultSelfService;
+        $fh = $existing['first_half']  ?? [];
+        $sh = $existing['second_half'] ?? [];
+
+        // Non-empty string = the selected half was submitted; keep existing for the other half.
+        $savingFirst  = !empty($data['first_half_start_date']);
+        $savingSecond = !empty($data['second_half_start_date']);
+
         $store['self_service'] = [
-            'first_half' => [
-                'start_date' => $data['first_half_start_date'] ?? '',
-                'start_time' => $data['first_half_start_time'] ?? '',
-                'end_date'   => $data['first_half_end_date'] ?? '',
-                'end_time'   => $data['first_half_end_time'] ?? '',
-                'duration'   => (int) ($data['first_half_duration'] ?? 10),
-            ],
-            'second_half' => [
-                'start_date' => $data['second_half_start_date'] ?? '',
-                'start_time' => $data['second_half_start_time'] ?? '',
-                'end_date'   => $data['second_half_end_date'] ?? '',
-                'end_time'   => $data['second_half_end_time'] ?? '',
-                'duration'   => (int) ($data['second_half_duration'] ?? 10),
-            ],
+            'first_half' => $savingFirst ? [
+                'start_date' => (string) ($data['first_half_start_date'] ?? ''),
+                'start_time' => (string) ($data['first_half_start_time'] ?? ''),
+                'end_date'   => (string) ($data['first_half_end_date']   ?? ''),
+                'end_time'   => (string) ($data['first_half_end_time']   ?? ''),
+                'duration'   => (int)    ($data['first_half_duration']   ?? 10),
+                'target'     => (int)    ($data['first_half_target']     ?? 0),
+            ] : $fh,
+            'second_half' => $savingSecond ? [
+                'start_date' => (string) ($data['second_half_start_date'] ?? ''),
+                'start_time' => (string) ($data['second_half_start_time'] ?? ''),
+                'end_date'   => (string) ($data['second_half_end_date']   ?? ''),
+                'end_time'   => (string) ($data['second_half_end_time']   ?? ''),
+                'duration'   => (int)    ($data['second_half_duration']   ?? 10),
+                'target'     => (int)    ($data['second_half_target']     ?? 0),
+            ] : $sh,
         ];
         $this->write($store);
     }

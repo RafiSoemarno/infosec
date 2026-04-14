@@ -73,7 +73,7 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════ --}}
-    {{-- ROW 1 — Self-Service Windows (Unified with half selector)      --}}
+    {{-- ROW 1 — Self-Service Windows                                   --}}
     {{-- ══════════════════════════════════════════════════════════════ --}}
     <section class="content-span-12 fade-in-up">
         <form method="POST" action="{{ url('/admin/drill/self-service') }}" id="selfServiceForm">
@@ -88,76 +88,85 @@
                     </button>
                 </div>
 
-                {{-- Single panel with half selector --}}
-                <div class="da-half-block">
-                    <div class="da-half-titlebar">
+                {{-- All fields in one row --}}
+                <div class="da-schedule-fields-row">
+
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">Start Date :</span>
+                        <div class="da-dt-pill">
+                            <input type="date" id="startDate" class="da-date-input" value="">
+                            <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">Start Time :</span>
+                        <div class="da-dropdown-pill da-dropdown-pill--time">
+                            <input type="time" id="startTime" class="da-pill-select" value="">
+                        </div>
+                    </div>
+
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">End Date :</span>
+                        <div class="da-dt-pill">
+                            <input type="date" id="endDate" class="da-date-input" value="">
+                            <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">End Time :</span>
+                        <div class="da-dropdown-pill da-dropdown-pill--time">
+                            <input type="time" id="endTime" class="da-pill-select" value="">
+                        </div>
+                    </div>
+
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">Duration :</span>
                         <div class="da-dropdown-pill">
-                            <select id="halfSelector" name="half" class="da-pill-select" onchange="switchHalf(this.value)">
-                                <option value="first_half">SELF SERVICE 1<sup>st</sup> Half</option>
-                                <option value="second_half">SELF SERVICE 2<sup>nd</sup> Half</option>
+                            <select id="duration" class="da-pill-select">
+                                @foreach ($durationOptions as $opt)
+                                    <option value="{{ $opt }}">{{ $opt }} Minutes</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
 
-                    {{-- Shared form fields --}}
-                    <div id="sharedContent" class="da-half-content">
-                        <div class="da-date-time-row">
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Start Date :</span>
-                                <div class="da-dt-pill">
-                                    <input type="date" id="startDate" class="da-date-input" value="">
-                                    <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">End Date :</span>
-                                <div class="da-dt-pill">
-                                    <input type="date" id="endDate" class="da-date-input" value="">
-                                    <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Duration :</span>
-                                <div class="da-dropdown-pill">
-                                    <select id="duration" class="da-pill-select">
-                                        @foreach ($durationOptions as $opt)
-                                            <option value="{{ $opt }}">{{ $opt }} Minutes</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Start Time :</span>
-                                <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" id="startTime" class="da-pill-select" value="">
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">End Time :</span>
-                                <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" id="endTime" class="da-pill-select" value="">
-                                </div>
-                            </div>
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">Period :</span>
+                        <div class="da-dropdown-pill">
+                            <select id="halfSelector" name="half" class="da-pill-select" onchange="switchHalf(this.value)">
+                                <option value="first_half">1st Half</option>
+                                <option value="second_half">2nd Half</option>
+                            </select>
                         </div>
                     </div>
 
-                    {{-- Hidden fields for form submission --}}
-                    <input type="hidden" name="first_half_start_date" id="hf_start_date" value="">
-                    <input type="hidden" name="first_half_end_date" id="hf_end_date" value="">
-                    <input type="hidden" name="first_half_start_time" id="hf_start_time" value="">
-                    <input type="hidden" name="first_half_end_time" id="hf_end_time" value="">
-                    <input type="hidden" name="first_half_duration" id="hf_duration" value="">
+                    <div class="da-dt-group">
+                        <span class="da-dt-label">Target :</span>
+                        <div class="da-dt-pill">
+                            <input type="number" id="target" class="da-date-input" placeholder="total users..." min="0"
+                                   value="{{ $sh1['target'] ?? '' }}">
+                        </div>
+                    </div>
 
-                    <input type="hidden" name="second_half_start_date" id="sh_start_date" value="">
-                    <input type="hidden" name="second_half_end_date" id="sh_end_date" value="">
-                    <input type="hidden" name="second_half_start_time" id="sh_start_time" value="">
-                    <input type="hidden" name="second_half_end_time" id="sh_end_time" value="">
-                    <input type="hidden" name="second_half_duration" id="sh_duration" value="">
-                </div>{{-- .da-half-block --}}
+                </div>
+
+                {{-- Hidden fields for form submission --}}
+                <input type="hidden" name="first_half_start_date" id="hf_start_date" value="">
+                <input type="hidden" name="first_half_end_date" id="hf_end_date" value="">
+                <input type="hidden" name="first_half_start_time" id="hf_start_time" value="">
+                <input type="hidden" name="first_half_end_time" id="hf_end_time" value="">
+                <input type="hidden" name="first_half_duration" id="hf_duration" value="">
+                <input type="hidden" name="first_half_target" id="hf_target" value="">
+
+                <input type="hidden" name="second_half_start_date" id="sh_start_date" value="">
+                <input type="hidden" name="second_half_end_date" id="sh_end_date" value="">
+                <input type="hidden" name="second_half_start_time" id="sh_start_time" value="">
+                <input type="hidden" name="second_half_end_time" id="sh_end_time" value="">
+                <input type="hidden" name="second_half_duration" id="sh_duration" value="">
+                <input type="hidden" name="second_half_target" id="sh_target" value="">
+
             </div>
         </form>
     </section>
@@ -345,25 +354,27 @@ var selfServiceData = {
         end_date: "{{ $sh1['end_date'] ?? '' }}",
         start_time: "{{ $sh1['start_time'] ?? '' }}",
         end_time: "{{ $sh1['end_time'] ?? '' }}",
-        duration: "{{ $sh1['duration'] ?? 10 }}"
+        duration: "{{ $sh1['duration'] ?? 10 }}",
+        target: "{{ $sh1['target'] ?? '' }}"
     },
     second_half: {
         start_date: "{{ $sh2['start_date'] ?? '' }}",
         end_date: "{{ $sh2['end_date'] ?? '' }}",
         start_time: "{{ $sh2['start_time'] ?? '' }}",
         end_time: "{{ $sh2['end_time'] ?? '' }}",
-        duration: "{{ $sh2['duration'] ?? 10 }}"
+        duration: "{{ $sh2['duration'] ?? 10 }}",
+        target: "{{ $sh2['target'] ?? '' }}"
     }
 };
 
 function switchHalf(half) {
-    // Load data from the selected half into the UI
     var data = selfServiceData[half];
     document.getElementById('startDate').value = data.start_date;
     document.getElementById('endDate').value = data.end_date;
     document.getElementById('startTime').value = data.start_time;
     document.getElementById('endTime').value = data.end_time;
     document.getElementById('duration').value = data.duration;
+    document.getElementById('target').value = data.target;
 }
 
 function prepareSubmit(event) {
@@ -375,6 +386,7 @@ function prepareSubmit(event) {
     var startTime = document.getElementById('startTime').value;
     var endTime = document.getElementById('endTime').value;
     var duration = document.getElementById('duration').value;
+    var target = document.getElementById('target').value;
 
     // Clear all hidden fields
     document.getElementById('hf_start_date').value = '';
@@ -382,11 +394,13 @@ function prepareSubmit(event) {
     document.getElementById('hf_start_time').value = '';
     document.getElementById('hf_end_time').value = '';
     document.getElementById('hf_duration').value = '';
+    document.getElementById('hf_target').value = '';
     document.getElementById('sh_start_date').value = '';
     document.getElementById('sh_end_date').value = '';
     document.getElementById('sh_start_time').value = '';
     document.getElementById('sh_end_time').value = '';
     document.getElementById('sh_duration').value = '';
+    document.getElementById('sh_target').value = '';
 
     // Fill only the selected half's fields
     if (half === 'first_half') {
@@ -395,12 +409,14 @@ function prepareSubmit(event) {
         document.getElementById('hf_start_time').value = startTime;
         document.getElementById('hf_end_time').value = endTime;
         document.getElementById('hf_duration').value = duration;
+        document.getElementById('hf_target').value = target;
     } else {
         document.getElementById('sh_start_date').value = startDate;
         document.getElementById('sh_end_date').value = endDate;
         document.getElementById('sh_start_time').value = startTime;
         document.getElementById('sh_end_time').value = endTime;
         document.getElementById('sh_duration').value = duration;
+        document.getElementById('sh_target').value = target;
     }
 
     // Submit the form

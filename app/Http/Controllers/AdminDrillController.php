@@ -49,11 +49,13 @@ class AdminDrillController extends Controller
             'first_half_start_time'  => ['nullable'],
             'first_half_end_time'    => ['nullable'],
             'first_half_duration'    => ['nullable', 'integer', 'min:1'],
+            'first_half_target'      => ['nullable', 'integer', 'min:0'],
             'second_half_start_date' => ['nullable', 'date'],
             'second_half_end_date'   => ['nullable', 'date'],
             'second_half_start_time' => ['nullable'],
             'second_half_end_time'   => ['nullable'],
             'second_half_duration'   => ['nullable', 'integer', 'min:1'],
+            'second_half_target'     => ['nullable', 'integer', 'min:0'],
         ];
 
         // If first_half fields are populated, they must all be valid
