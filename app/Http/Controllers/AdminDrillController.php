@@ -42,18 +42,39 @@ class AdminDrillController extends Controller
             return redirect('/drill');
         }
 
-        $request->validate([
-            'first_half_start_date'  => ['required', 'date'],
-            'first_half_end_date'    => ['required', 'date'],
-            'first_half_start_time'  => ['required'],
-            'first_half_end_time'    => ['required'],
-            'first_half_duration'    => ['required', 'integer', 'min:1'],
-            'second_half_start_date' => ['required', 'date'],
-            'second_half_end_date'   => ['required', 'date'],
-            'second_half_start_time' => ['required'],
-            'second_half_end_time'   => ['required'],
-            'second_half_duration'   => ['required', 'integer', 'min:1'],
-        ]);
+        // Only validate the fields that were sent (one half at a time)
+        $rules = [
+            'first_half_start_date'  => ['nullable', 'date'],
+            'first_half_end_date'    => ['nullable', 'date'],
+            'first_half_start_time'  => ['nullable'],
+            'first_half_end_time'    => ['nullable'],
+            'first_half_duration'    => ['nullable', 'integer', 'min:1'],
+            'second_half_start_date' => ['nullable', 'date'],
+            'second_half_end_date'   => ['nullable', 'date'],
+            'second_half_start_time' => ['nullable'],
+            'second_half_end_time'   => ['nullable'],
+            'second_half_duration'   => ['nullable', 'integer', 'min:1'],
+        ];
+
+        // If first_half fields are populated, they must all be valid
+        if ($request->filled('first_half_start_date')) {
+            $rules['first_half_start_date']  = ['required', 'date'];
+            $rules['first_half_end_date']    = ['required', 'date'];
+            $rules['first_half_start_time']  = ['required'];
+            $rules['first_half_end_time']    = ['required'];
+            $rules['first_half_duration']    = ['required', 'integer', 'min:1'];
+        }
+
+        // If second_half fields are populated, they must all be valid
+        if ($request->filled('second_half_start_date')) {
+            $rules['second_half_start_date'] = ['required', 'date'];
+            $rules['second_half_end_date']   = ['required', 'date'];
+            $rules['second_half_start_time'] = ['required'];
+            $rules['second_half_end_time']   = ['required'];
+            $rules['second_half_duration']   = ['required', 'integer', 'min:1'];
+        }
+
+        $request->validate($rules);
 
         $this->store->saveSelfService($request->all());
 

@@ -73,10 +73,10 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════ --}}
-    {{-- ROW 1 — Self-Service Windows (1st Half & 2nd Half)            --}}
+    {{-- ROW 1 — Self-Service Windows (Unified with half selector)      --}}
     {{-- ══════════════════════════════════════════════════════════════ --}}
     <section class="content-span-12 fade-in-up">
-        <form method="POST" action="{{ url('/admin/drill/self-service') }}">
+        <form method="POST" action="{{ url('/admin/drill/self-service') }}" id="selfServiceForm">
             @csrf
             <div class="da-branded-card">
 
@@ -88,22 +88,24 @@
                     </button>
                 </div>
 
-                {{-- Two half-panels --}}
-                <div class="da-halves-row">
-
-                    {{-- ── 1st Half ──────────────────────────────────── --}}
-                    <div class="da-half-block">
-                        <div class="da-half-titlebar">
-                            <span class="da-half-label">SELF SERVICE 1<sup>st</sup> Half</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                {{-- Single panel with half selector --}}
+                <div class="da-half-block">
+                    <div class="da-half-titlebar">
+                        <div class="da-dropdown-pill">
+                            <select id="halfSelector" name="half" class="da-pill-select" onchange="switchHalf(this.value)">
+                                <option value="first_half">SELF SERVICE 1<sup>st</sup> Half</option>
+                                <option value="second_half">SELF SERVICE 2<sup>nd</sup> Half</option>
+                            </select>
                         </div>
+                    </div>
 
+                    {{-- Shared form fields --}}
+                    <div id="sharedContent" class="da-half-content">
                         <div class="da-date-time-row">
                             <div class="da-dt-group">
                                 <span class="da-dt-label">Start Date :</span>
                                 <div class="da-dt-pill">
-                                    <input type="date" name="first_half_start_date" class="da-date-input"
-                                           value="{{ $sh1['start_date'] ?? '' }}">
+                                    <input type="date" id="startDate" class="da-date-input" value="">
                                     <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
                                 </div>
                             </div>
@@ -111,8 +113,7 @@
                             <div class="da-dt-group">
                                 <span class="da-dt-label">End Date :</span>
                                 <div class="da-dt-pill">
-                                    <input type="date" name="first_half_end_date" class="da-date-input"
-                                           value="{{ $sh1['end_date'] ?? '' }}">
+                                    <input type="date" id="endDate" class="da-date-input" value="">
                                     <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
                                 </div>
                             </div>
@@ -120,93 +121,43 @@
                             <div class="da-dt-group">
                                 <span class="da-dt-label">Duration :</span>
                                 <div class="da-dropdown-pill">
-                                    <select name="first_half_duration" class="da-pill-select">
+                                    <select id="duration" class="da-pill-select">
                                         @foreach ($durationOptions as $opt)
-                                            <option value="{{ $opt }}" {{ ($sh1['duration'] ?? 10) == $opt ? 'selected' : '' }}>{{ $opt }} Minutes</option>
+                                            <option value="{{ $opt }}">{{ $opt }} Minutes</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                        </div>
 
-                        {{-- Time row for 1st half --}}
-                        <div class="da-time-row">
                             <div class="da-dt-group">
                                 <span class="da-dt-label">Start Time :</span>
                                 <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" name="first_half_start_time" class="da-pill-select"
-                                           value="{{ $sh1['start_time'] ?? '' }}">
+                                    <input type="time" id="startTime" class="da-pill-select" value="">
                                 </div>
                             </div>
+
                             <div class="da-dt-group">
                                 <span class="da-dt-label">End Time :</span>
                                 <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" name="first_half_end_time" class="da-pill-select"
-                                           value="{{ $sh1['end_time'] ?? '' }}">
+                                    <input type="time" id="endTime" class="da-pill-select" value="">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="da-half-divider"></div>
+                    {{-- Hidden fields for form submission --}}
+                    <input type="hidden" name="first_half_start_date" id="hf_start_date" value="">
+                    <input type="hidden" name="first_half_end_date" id="hf_end_date" value="">
+                    <input type="hidden" name="first_half_start_time" id="hf_start_time" value="">
+                    <input type="hidden" name="first_half_end_time" id="hf_end_time" value="">
+                    <input type="hidden" name="first_half_duration" id="hf_duration" value="">
 
-                    {{-- ── 2nd Half ──────────────────────────────────── --}}
-                    <div class="da-half-block">
-                        <div class="da-half-titlebar">
-                            <span class="da-half-label">SELF SERVICE 2<sup>nd</sup> Half</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </div>
-
-                        <div class="da-date-time-row">
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Start Date :</span>
-                                <div class="da-dt-pill">
-                                    <input type="date" name="second_half_start_date" class="da-date-input"
-                                           value="{{ $sh2['start_date'] ?? '' }}">
-                                    <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">End Date :</span>
-                                <div class="da-dt-pill">
-                                    <input type="date" name="second_half_end_date" class="da-date-input"
-                                           value="{{ $sh2['end_date'] ?? '' }}">
-                                    <svg class="da-cal-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-                                </div>
-                            </div>
-
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Duration :</span>
-                                <div class="da-dropdown-pill">
-                                    <select name="second_half_duration" class="da-pill-select">
-                                        @foreach ($durationOptions as $opt)
-                                            <option value="{{ $opt }}" {{ ($sh2['duration'] ?? 10) == $opt ? 'selected' : '' }}>{{ $opt }} Minutes</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="da-time-row">
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">Start Time :</span>
-                                <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" name="second_half_start_time" class="da-pill-select"
-                                           value="{{ $sh2['start_time'] ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="da-dt-group">
-                                <span class="da-dt-label">End Time :</span>
-                                <div class="da-dropdown-pill da-dropdown-pill--time">
-                                    <input type="time" name="second_half_end_time" class="da-pill-select"
-                                           value="{{ $sh2['end_time'] ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>{{-- .da-halves-row --}}
+                    <input type="hidden" name="second_half_start_date" id="sh_start_date" value="">
+                    <input type="hidden" name="second_half_end_date" id="sh_end_date" value="">
+                    <input type="hidden" name="second_half_start_time" id="sh_start_time" value="">
+                    <input type="hidden" name="second_half_end_time" id="sh_end_time" value="">
+                    <input type="hidden" name="second_half_duration" id="sh_duration" value="">
+                </div>{{-- .da-half-block --}}
             </div>
         </form>
     </section>
@@ -387,6 +338,82 @@
 
 @push('scripts')
 <script>
+// Self-service data management
+var selfServiceData = {
+    first_half: {
+        start_date: "{{ $sh1['start_date'] ?? '' }}",
+        end_date: "{{ $sh1['end_date'] ?? '' }}",
+        start_time: "{{ $sh1['start_time'] ?? '' }}",
+        end_time: "{{ $sh1['end_time'] ?? '' }}",
+        duration: "{{ $sh1['duration'] ?? 10 }}"
+    },
+    second_half: {
+        start_date: "{{ $sh2['start_date'] ?? '' }}",
+        end_date: "{{ $sh2['end_date'] ?? '' }}",
+        start_time: "{{ $sh2['start_time'] ?? '' }}",
+        end_time: "{{ $sh2['end_time'] ?? '' }}",
+        duration: "{{ $sh2['duration'] ?? 10 }}"
+    }
+};
+
+function switchHalf(half) {
+    // Load data from the selected half into the UI
+    var data = selfServiceData[half];
+    document.getElementById('startDate').value = data.start_date;
+    document.getElementById('endDate').value = data.end_date;
+    document.getElementById('startTime').value = data.start_time;
+    document.getElementById('endTime').value = data.end_time;
+    document.getElementById('duration').value = data.duration;
+}
+
+function prepareSubmit(event) {
+    event.preventDefault();
+
+    var half = document.getElementById('halfSelector').value;
+    var startDate = document.getElementById('startDate').value;
+    var endDate = document.getElementById('endDate').value;
+    var startTime = document.getElementById('startTime').value;
+    var endTime = document.getElementById('endTime').value;
+    var duration = document.getElementById('duration').value;
+
+    // Clear all hidden fields
+    document.getElementById('hf_start_date').value = '';
+    document.getElementById('hf_end_date').value = '';
+    document.getElementById('hf_start_time').value = '';
+    document.getElementById('hf_end_time').value = '';
+    document.getElementById('hf_duration').value = '';
+    document.getElementById('sh_start_date').value = '';
+    document.getElementById('sh_end_date').value = '';
+    document.getElementById('sh_start_time').value = '';
+    document.getElementById('sh_end_time').value = '';
+    document.getElementById('sh_duration').value = '';
+
+    // Fill only the selected half's fields
+    if (half === 'first_half') {
+        document.getElementById('hf_start_date').value = startDate;
+        document.getElementById('hf_end_date').value = endDate;
+        document.getElementById('hf_start_time').value = startTime;
+        document.getElementById('hf_end_time').value = endTime;
+        document.getElementById('hf_duration').value = duration;
+    } else {
+        document.getElementById('sh_start_date').value = startDate;
+        document.getElementById('sh_end_date').value = endDate;
+        document.getElementById('sh_start_time').value = startTime;
+        document.getElementById('sh_end_time').value = endTime;
+        document.getElementById('sh_duration').value = duration;
+    }
+
+    // Submit the form
+    document.getElementById('selfServiceForm').submit();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('selfServiceForm');
+    form.addEventListener('submit', prepareSubmit);
+    switchHalf('first_half');
+});
+
 function toggleEdit(id) {
     var row     = document.getElementById('row-' + id);
     var views   = row.querySelectorAll('.da-cell-view');

@@ -126,9 +126,9 @@
                 "title": "Ransomware Attack 1st Half",
                 "description": "Test your ability to detect advanced ransomware attacks. This simulation will send fake ransomware to your computer.",
                 "notifyNote": "",
-                "duration": "10 Minutes",
+                "duration": "30 Minutes",
                 "periodStart": "1 Apr 2026",
-                "periodEnd": "30 Apr 2026",
+                "periodEnd": "30 Jun 2026",
                 "completed": true
             },
             {
