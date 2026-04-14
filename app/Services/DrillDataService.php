@@ -687,7 +687,7 @@ class DrillDataService
                 'id'       => (int) $m['id'] + 10000,  // collision-free ID offset
                 'title'    => (string) ($m['title'] ?? ''),
                 'embedUrl' => null,
-                'filePath' => asset('storage/' . $m['file_path']),
+                'filePath' => asset($m['file_path']),
                 'fileType' => (string) ($m['file_type'] ?? ''),
                 'watched'  => false,  // watch-tracking is per embed-video only
             ];

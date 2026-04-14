@@ -30,7 +30,7 @@ class EducationJsonStore
 {
     // Absolute path to the JSON file inside Laravel's private storage.
     // This folder is NOT publicly accessible — only physical files in
-    // storage/app/public/education/ are served to the browser.
+    // public/education/ are served to the browser.
     private string $jsonPath;
 
     public function __construct()

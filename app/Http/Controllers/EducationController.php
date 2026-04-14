@@ -65,7 +65,7 @@ class EducationController extends Controller
 
         // 2. Add the public URL so the view can render/download files
         $materials = array_map(function (array $m) {
-            $m['public_url'] = asset('storage/' . $m['file_path']);
+            $m['public_url'] = asset($m['file_path']);
             return $m;
         }, $rawMaterials);
 

@@ -32,7 +32,7 @@
 @section('left_sidebar')
     <div class="d-flex flex-column h-100">
         <div class="brand-lockup">
-            <img src="{{ asset('storage/Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
+            <img src="{{ asset('Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
         </div>
 
         <div class="mt-4">
@@ -67,7 +67,7 @@
                 <span class="topbar-profile__id">{{ $authUser['employeeId'] ?? '' }}</span>
             </div>
             <div class="topbar-profile__avatar">
-                <img src="{{ asset('storage/icon_denso/icon_profile.png') }}" alt="Profile" class="topbar-profile__avatar-img">
+                <img src="{{ asset('icon_denso/icon_profile.png') }}" alt="Profile" class="topbar-profile__avatar-img">
             </div>
         </div>
     </x-ui.header>

@@ -25,7 +25,7 @@ $iconFile = $symbolIconMap[strtoupper($symbol)] ?? null;
     <a class="menu-card__link" href="{{ $url }}">{{ $cta }} <span aria-hidden="true">&rarr;</span></a>
     <div class="menu-card__symbol">
         @if ($iconFile)
-            <img src="{{ asset('storage/icon_denso/' . $iconFile) }}" alt="{{ $symbol }}" class="menu-card__symbol-img">
+            <img src="{{ asset('icon_denso/' . $iconFile) }}" alt="{{ $symbol }}" class="menu-card__symbol-img">
         @else
             {{ $symbol }}
         @endif

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 /**
  * Handles admin upload and delete of education materials.
  * All metadata is stored in storage/app/education-materials.json.
- * Physical files are stored in storage/app/public/education/ and
- * served publicly via the /storage/education/ URL path.
+ * Physical files are stored in public/education/ and
+ * served publicly via the /education/ URL path.
  * No database is used anywhere in this controller.
  */
 class EducationMaterialController extends Controller
@@ -30,7 +30,7 @@ class EducationMaterialController extends Controller
      * Handle the upload form submitted by the admin.
      *
      * 1. Validate title + file
-     * 2. Save the physical file → storage/app/public/education/<safe-name>
+     * 2. Save the physical file → public/education/<safe-name>
      * 3. Write a new record into education-materials.json (auto-incremented id)
      * 4. Redirect back to /education with a success message
      */
@@ -92,7 +92,7 @@ class EducationMaterialController extends Controller
      * Delete a material by id.
      *
      * 1. Look up the record in the JSON file
-     * 2. Delete the physical file from storage/app/public/education/
+     * 2. Delete the physical file from public/education/
      * 3. Remove the record from the JSON file
      * 4. Redirect back to /education with a success message
      */
@@ -109,7 +109,7 @@ class EducationMaterialController extends Controller
             return redirect('/education')->with('success', 'Material already removed.');
         }
 
-        // Delete the physical file from  storage/app/public/education/
+        // Delete the physical file from public/education/
         if (!empty($material['file_path'])) {
             Storage::disk('public')->delete($material['file_path']);
         }
