@@ -5,7 +5,7 @@ namespace App\Services;
 /**
  * DrillScheduleStore
  *
- * Manages the drill schedule JSON file stored at storage/app/drill-schedules.json
+ * Manages the drill schedule JSON file stored at public/data/drill-schedules.json
  *
  * JSON structure:
  * {
@@ -104,7 +104,7 @@ class DrillScheduleStore
 
     public function __construct()
     {
-        $this->path = storage_path('app/drill-schedules.json');
+        $this->path = public_path('data/drill-schedules.json');
     }
 
     // ── Self-service window ────────────────────────────────────────

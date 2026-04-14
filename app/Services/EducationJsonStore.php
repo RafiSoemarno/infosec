@@ -8,7 +8,7 @@ namespace App\Services;
  * The ONLY class that reads from and writes to education-materials.json.
  * No database is used anywhere in this class.
  *
- * JSON file location: storage/app/education-materials.json
+ * JSON file location: public/data/education-materials.json
  *
  * JSON structure:
  * {
@@ -28,14 +28,12 @@ namespace App\Services;
  */
 class EducationJsonStore
 {
-    // Absolute path to the JSON file inside Laravel's private storage.
-    // This folder is NOT publicly accessible — only physical files in
-    // public/education/ are served to the browser.
+    // Absolute path to the JSON file inside public/data/.
     private string $jsonPath;
 
     public function __construct()
     {
-        $this->jsonPath = storage_path('app/education-materials.json');
+        $this->jsonPath = public_path('data/education-materials.json');
     }
 
     // ── Read ─────────────────────────────────────────────────────
