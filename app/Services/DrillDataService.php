@@ -144,7 +144,8 @@ class DrillDataService
         $username = strtolower((string) ($authUser['username'] ?? ''));
         $isAdmin  = ($authUser['role'] ?? '') === 'admin';
 
-        // For admin users, redirect the "Drill Simulation" menu item to the admin page.
+        // For admin users, redirect the "Drill Simulation" menu item to the admin page
+        // and append the Summary Report menu item.
         if ($isAdmin) {
             $payload['menuData']['items'] = array_map(function (array $item) {
                 if (strtolower($item['url'] ?? '') === '/drill') {
@@ -152,6 +153,23 @@ class DrillDataService
                 }
                 return $item;
             }, $payload['menuData']['items'] ?? []);
+
+            // Add Summary Report if not already present
+            $hasSummaryReport = false;
+            foreach ($payload['menuData']['items'] as $item) {
+                if (strtolower($item['url'] ?? '') === '/admin/summary-report') {
+                    $hasSummaryReport = true;
+                    break;
+                }
+            }
+            if (!$hasSummaryReport) {
+                $payload['menuData']['items'][] = [
+                    'title'    => 'Summary Report',
+                    'subtitle' => 'Drill completion summary by division',
+                    'url'      => '/admin/summary-report',
+                    'symbol'   => 'SRP',
+                ];
+            }
         }
 
         if (!empty($authUser['isSpecial']) && $username !== 'dnia.admin') {

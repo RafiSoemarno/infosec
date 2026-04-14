@@ -178,11 +178,30 @@ class AdminDrillController extends Controller
         $items   = \is_array($decoded) ? ($decoded['menu']['items'] ?? []) : [];
 
         // Remap /drill → /admin/drill so the sidebar highlights the correct item.
-        return array_map(function (array $item) {
+        $items = array_map(function (array $item) {
             if (strtolower($item['url'] ?? '') === '/drill') {
                 $item['url'] = '/admin/drill';
             }
             return $item;
         }, $items);
+
+        // Append Summary Report if not already present
+        $hasSummaryReport = false;
+        foreach ($items as $item) {
+            if (strtolower($item['url'] ?? '') === '/admin/summary-report') {
+                $hasSummaryReport = true;
+                break;
+            }
+        }
+        if (!$hasSummaryReport) {
+            $items[] = [
+                'title'    => 'Summary Report',
+                'subtitle' => 'Drill completion summary by division',
+                'url'      => '/admin/summary-report',
+                'symbol'   => 'SRP',
+            ];
+        }
+
+        return $items;
     }
 }

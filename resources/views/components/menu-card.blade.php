@@ -13,6 +13,7 @@ $symbolIconMap = [
     'RES' => 'icon_my_result.png',
     'PRG' => 'icon_progress_drill.png',
     'DSH' => 'icon_dashboard.png',
+    'SRP' => 'icon_summary_report.png',
 ];
 $iconFile = $symbolIconMap[strtoupper($symbol)] ?? null;
 @endphp

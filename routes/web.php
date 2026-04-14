@@ -8,6 +8,7 @@ use App\Http\Controllers\EducationMaterialController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProgressDrillController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\SummaryReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,7 @@ Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
 
 // Admin drill scheduling
 Route::get('/admin/drill', [AdminDrillController::class, 'index']);
+Route::get('/admin/summary-report', [SummaryReportController::class, 'index']);
 Route::post('/admin/drill/self-service', [AdminDrillController::class, 'saveSelfService']);
 Route::post('/admin/drill/schedule', [AdminDrillController::class, 'saveScheduleDrill']);
 Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDrill']);

@@ -2324,3 +2324,309 @@ a {
 	color: var(--color-muted);
 	font-style: italic;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SUMMARY REPORT  (.sr-*)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Card wrapper */
+.sr-card {
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+	overflow: hidden;
+}
+
+/* Header */
+.sr-header {
+	padding: 20px 28px 0;
+}
+.sr-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--color-text);
+	margin: 0 0 16px;
+	letter-spacing: 0.01em;
+}
+
+/* ── Filters row ─────────────────────────────────────────────── */
+.sr-filters {
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+	padding: 0 28px 20px;
+	flex-wrap: wrap;
+}
+
+.sr-filter-group {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+.sr-filter-group--export {
+	margin-left: auto;
+	align-self: flex-end;
+	flex-direction: row;
+}
+
+.sr-filter-label {
+	font-size: 0.7rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	color: #fff;
+	background: var(--color-brand);
+	padding: 4px 14px;
+	border-radius: 6px;
+	text-align: center;
+	min-width: 80px;
+}
+
+/* Period dropdown */
+.sr-period-dropdown {
+	position: relative;
+}
+.sr-period-btn {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	background: #fff;
+	border: 2px solid var(--color-brand);
+	border-radius: 8px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--color-brand);
+	cursor: pointer;
+	min-width: 110px;
+	justify-content: space-between;
+}
+.sr-period-btn:hover { background: var(--color-brand-soft); }
+.sr-period-menu {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	background: #fff;
+	border: 1.5px solid var(--color-brand);
+	border-radius: 8px;
+	overflow: hidden;
+	z-index: 50;
+	min-width: 110px;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+.sr-period-option {
+	padding: 8px 16px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: var(--color-text);
+	cursor: pointer;
+	transition: background 0.12s;
+}
+.sr-period-option:hover { background: var(--color-brand-soft); }
+.sr-period-option--active {
+	background: var(--color-brand);
+	color: #fff;
+	font-weight: 700;
+}
+
+/* Date picker */
+.sr-date-picker {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	background: #fff;
+	border: 1.5px solid #e2e8f0;
+	border-radius: 8px;
+	min-width: 130px;
+}
+.sr-date-display {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--color-text);
+	flex: 1;
+}
+.sr-date-hidden {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+.sr-cal-btn {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: var(--color-muted);
+	display: flex;
+	align-items: center;
+}
+.sr-cal-btn:hover { color: var(--color-brand); }
+
+/* Time dropdown */
+.sr-time-dropdown {
+	position: relative;
+}
+.sr-time-btn {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	background: #fff;
+	border: 2px solid var(--color-brand);
+	border-radius: 8px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--color-brand);
+	cursor: pointer;
+	min-width: 110px;
+	justify-content: space-between;
+}
+.sr-time-btn:hover { background: var(--color-brand-soft); }
+.sr-time-menu {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	background: #fff;
+	border: 1.5px solid #e2e8f0;
+	border-radius: 8px;
+	overflow: hidden;
+	z-index: 50;
+	min-width: 130px;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+.sr-time-option {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	font-size: 0.85rem;
+	color: var(--color-text);
+	cursor: pointer;
+	transition: background 0.12s;
+}
+.sr-time-option:hover { background: var(--color-brand-soft); }
+.sr-time-option--active { font-weight: 700; color: var(--color-brand); }
+.sr-time-check { flex-shrink: 0; color: var(--color-brand); }
+
+/* Export button */
+.sr-export-btn {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 18px;
+	background: var(--color-brand);
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: background 0.15s;
+}
+.sr-export-btn:hover { background: #b91c1c; }
+
+/* ── Table ───────────────────────────────────────────────────── */
+.sr-table-wrap {
+	overflow-x: auto;
+	padding: 0 28px;
+}
+.sr-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.82rem;
+}
+.sr-table thead tr {
+	background: #f8fafc;
+}
+.sr-table th {
+	padding: 10px 14px;
+	text-align: left;
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.06em;
+	color: var(--color-muted);
+	border-bottom: 2px solid #e2e8f0;
+	white-space: nowrap;
+}
+.sr-th--ok { color: #16a34a; }
+.sr-th--ng { color: var(--color-brand); }
+
+.sr-table tbody td {
+	padding: 10px 14px;
+	color: var(--color-text);
+	border-bottom: 1px solid #f1f5f9;
+}
+.sr-table tbody tr:last-child td { border-bottom: none; }
+.sr-table tbody tr:hover td { background: #fafbfc; }
+
+.sr-td--ok {
+	color: #16a34a;
+	font-weight: 700;
+}
+.sr-td--ng {
+	color: var(--color-brand);
+	font-weight: 700;
+}
+.sr-td--remark {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+.sr-remark {
+	display: inline-block;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: var(--color-brand);
+}
+
+/* Total row */
+.sr-tr--total td {
+	background: #f8fafc;
+	font-weight: 700;
+	border-top: 2px solid #e2e8f0;
+}
+.sr-td--total-label {
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	color: var(--color-text);
+}
+
+.sr-table__empty {
+	text-align: center;
+	color: var(--color-muted);
+	padding: 40px;
+	font-size: 0.875rem;
+}
+
+/* ── Pagination ──────────────────────────────────────────────── */
+.sr-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 6px;
+	padding: 16px 28px;
+	border-top: 1px solid #f1f5f9;
+}
+.sr-page-btn {
+	padding: 6px 14px;
+	background: #fff;
+	border: 1.5px solid #e2e8f0;
+	border-radius: 7px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: var(--color-text);
+	cursor: pointer;
+	transition: background 0.12s, border-color 0.12s;
+}
+.sr-page-btn:hover:not(:disabled) { background: var(--color-brand-soft); border-color: var(--color-brand); color: var(--color-brand); }
+.sr-page-btn:disabled { opacity: 0.4; cursor: default; }
+.sr-page-btn--current {
+	background: var(--color-brand);
+	border-color: var(--color-brand);
+	color: #fff;
+	min-width: 32px;
+	text-align: center;
+}
