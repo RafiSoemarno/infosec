@@ -135,10 +135,10 @@
                 "id": 2,
                 "title": "Next Drill Schedule",
                 "description": "Follow schedule base on your plant.",
-                "notifyNote": "Company: DSIA — Plant: Fajar",
-                "duration": "20 Minutes",
-                "periodStart": "2026-04-15",
-                "periodEnd": "2026-04-15",
+                "notifyNote": "Company: DNIA — Plant: Bekasi",
+                "duration": "30 Minutes",
+                "periodStart": "2026-04-16",
+                "periodEnd": "2026-04-16",
                 "comingSoon": true
             }
         ]
