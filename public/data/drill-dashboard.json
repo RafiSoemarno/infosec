@@ -73,48 +73,6 @@
         "progressLabel": "Education Material",
         "progressNote": "Track All Ongoing education material",
         "videos": [
-            {
-                "id": 1,
-                "title": "Security Incident Response for Malware Infections",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 2,
-                "title": "How to Disconnect Network?",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 3,
-                "title": "Handling Information",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 4,
-                "title": "Usage E-mail, Web Browsing, and Cyber Security",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": false
-            },
-            {
-                "id": 5,
-                "title": "Photography & Videography",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": false
-            },
-            {
-                "id": 6,
-                "title": "ITake Out - Bring In of Information Equipment",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": false
-            },
-            {
-                "id": 7,
-                "title": "Incident Report",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": false
-            }
         ]
     },
     "drillSimulation": {
@@ -135,10 +93,10 @@
                 "id": 2,
                 "title": "Next Drill Schedule",
                 "description": "Follow schedule base on your plant.",
-                "notifyNote": "Company: DNIA — Plant: Bekasi",
-                "duration": "30 Minutes",
-                "periodStart": "2026-04-16",
-                "periodEnd": "2026-04-16",
+                "notifyNote": "Company: DSIA — Plant: Fajar",
+                "duration": "20 Minutes",
+                "periodStart": "2026-04-15",
+                "periodEnd": "2026-04-15",
                 "comingSoon": true
             }
         ]

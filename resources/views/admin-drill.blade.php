@@ -263,26 +263,32 @@
                     </thead>
                     <tbody>
                         @forelse ($sortedDrills as $drill)
-                            @php
-                                $drillDt = \Carbon\Carbon::parse($drill['date'] . ' ' . $drill['time']);
-                                $isPast  = $drillDt->lt($now);
-                                $drillId = $drill['id'];
-                            @endphp
-                            <tr id="row-{{ $drillId }}" class="{{ $isPast ? 'da-table__row--past' : '' }}">
-                                {{-- View cells --}}
-                                <td class="da-cell-view">{{ $drill['company'] }}</td>
-                                <td class="da-cell-view"><span class="da-plant-badge">{{ $drill['plant'] }}</span></td>
-                                <td class="da-cell-view">{{ $fmtDate($drill['date']) }}</td>
-                                <td class="da-cell-view">{{ $drill['time'] }}</td>
-                                <td class="da-cell-view">{{ $drill['duration'] }} Minutes</td>
-
-                                {{-- Edit cells (hidden) --}}
-                                <td class="da-cell-edit" style="display:none;"><input type="text"  class="da-input da-input--sm" value="{{ $drill['company'] }}"></td>
-                                <td class="da-cell-edit" style="display:none;"><input type="text"  class="da-input da-input--sm" value="{{ $drill['plant'] }}"></td>
-                                <td class="da-cell-edit" style="display:none;"><input type="date"  class="da-input da-input--sm" value="{{ $drill['date'] }}"></td>
-                                <td class="da-cell-edit" style="display:none;"><input type="time"  class="da-input da-input--sm" value="{{ $drill['time'] }}"></td>
-                                <td class="da-cell-edit" style="display:none;">
-                                    <select class="da-input da-input--sm">
+                            @php $drillId = $drill['id']; @endphp
+                            <tr id="row-{{ $drillId }}">
+                                {{-- Company --}}
+                                <td>
+                                    <span class="da-cell-view">{{ $drill['company'] }}</span>
+                                    <input type="text" class="da-cell-edit da-input da-input--sm" style="display:none;" value="{{ $drill['company'] }}">
+                                </td>
+                                {{-- Plant --}}
+                                <td>
+                                    <span class="da-cell-view da-plant-badge">{{ $drill['plant'] }}</span>
+                                    <input type="text" class="da-cell-edit da-input da-input--sm" style="display:none;" value="{{ $drill['plant'] }}">
+                                </td>
+                                {{-- Date --}}
+                                <td>
+                                    <span class="da-cell-view">{{ $fmtDate($drill['date']) }}</span>
+                                    <input type="date" class="da-cell-edit da-input da-input--sm" style="display:none;" value="{{ $drill['date'] }}">
+                                </td>
+                                {{-- Time --}}
+                                <td>
+                                    <span class="da-cell-view">{{ $drill['time'] }}</span>
+                                    <input type="time" class="da-cell-edit da-input da-input--sm" style="display:none;" value="{{ $drill['time'] }}">
+                                </td>
+                                {{-- Duration --}}
+                                <td>
+                                    <span class="da-cell-view">{{ $drill['duration'] }} Minutes</span>
+                                    <select class="da-cell-edit da-input da-input--sm" style="display:none;">
                                         @foreach ($durationOptions as $opt)
                                             <option value="{{ $opt }}" {{ $drill['duration'] == $opt ? 'selected' : '' }}>{{ $opt }}</option>
                                         @endforeach
@@ -291,45 +297,31 @@
 
                                 {{-- Actions --}}
                                 <td class="da-cell-actions">
-                                    @if (!$isPast)
-                                        {{-- Hidden submit form for edit --}}
-                                        <form id="editForm-{{ $drillId }}"
-                                              method="POST"
-                                              action="{{ url('/admin/drill/drills/' . $drillId) }}"
-                                              style="display:none;">
-                                            @csrf
-                                            <input type="hidden" name="company"  class="ef-company"  value="{{ $drill['company'] }}">
-                                            <input type="hidden" name="plant"    class="ef-plant"    value="{{ $drill['plant'] }}">
-                                            <input type="hidden" name="date"     class="ef-date"     value="{{ $drill['date'] }}">
-                                            <input type="hidden" name="time"     class="ef-time"     value="{{ $drill['time'] }}">
-                                            <input type="hidden" name="duration" class="ef-duration" value="{{ $drill['duration'] }}">
-                                        </form>
+                                    {{-- Hidden submit form for edit --}}
+                                    <form id="editForm-{{ $drillId }}"
+                                          method="POST"
+                                          action="{{ url('/admin/drill/drills/' . $drillId) }}"
+                                          style="display:none;">
+                                        @csrf
+                                        <input type="hidden" name="company"  class="ef-company"  value="{{ $drill['company'] }}">
+                                        <input type="hidden" name="plant"    class="ef-plant"    value="{{ $drill['plant'] }}">
+                                        <input type="hidden" name="date"     class="ef-date"     value="{{ $drill['date'] }}">
+                                        <input type="hidden" name="time"     class="ef-time"     value="{{ $drill['time'] }}">
+                                        <input type="hidden" name="duration" class="ef-duration" value="{{ $drill['duration'] }}">
+                                    </form>
 
-                                        <button type="button" class="da-tbl-btn da-tbl-btn--edit"
-                                                id="editBtn-{{ $drillId }}"
-                                                title="Edit" onclick="toggleEdit({{ $drillId }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.5-6.5a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-.914.513l-3.414.853.853-3.414a2 2 0 01.513-.914z"/></svg>
-                                        </button>
+                                    <button type="button" class="da-tbl-btn da-tbl-btn--edit"
+                                            id="editBtn-{{ $drillId }}"
+                                            title="Edit" onclick="toggleEdit({{ $drillId }})">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.5-6.5a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-.914.513l-3.414.853.853-3.414a2 2 0 01.513-.914z"/></svg>
+                                    </button>
 
-                                        <button type="button" class="da-tbl-btn da-tbl-btn--save"
-                                                id="saveBtn-{{ $drillId }}"
-                                                title="Save" style="display:none;"
-                                                onclick="submitEdit({{ $drillId }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        </button>
-
-                                        <form method="POST"
-                                              action="{{ url('/admin/drill/drills/' . $drillId . '/delete') }}"
-                                              onsubmit="return confirm('Delete this drill entry?')"
-                                              style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="da-tbl-btn da-tbl-btn--delete" title="Delete">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <span class="da-past-label">Past</span>
-                                    @endif
+                                    <button type="button" class="da-tbl-btn da-tbl-btn--save"
+                                            id="saveBtn-{{ $drillId }}"
+                                            title="Save" style="display:none;"
+                                            onclick="submitEdit({{ $drillId }})">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -445,7 +437,7 @@ function toggleEdit(id) {
         saveBtn.style.display = 'none';
     } else {
         views.forEach(function(el){ el.style.display = 'none'; });
-        edits.forEach(function(el){ el.style.display = ''; });
+        edits.forEach(function(el){ el.style.display = 'inline-block'; });
         editBtn.style.display = 'none';
         saveBtn.style.display = '';
     }
@@ -454,7 +446,7 @@ function toggleEdit(id) {
 function submitEdit(id) {
     var row    = document.getElementById('row-' + id);
     var form   = document.getElementById('editForm-' + id);
-    var inputs = row.querySelectorAll('.da-cell-edit input, .da-cell-edit select');
+    var inputs = row.querySelectorAll('.da-cell-edit');
     var fields = ['company', 'plant', 'date', 'time', 'duration'];
     inputs.forEach(function(input, i) {
         var h = form.querySelector('.ef-' + fields[i]);
