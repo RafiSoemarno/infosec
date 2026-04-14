@@ -27,7 +27,7 @@ $symbolIconMap = [
         >
             <span class="sidebar-nav__symbol">
                 @if ($iconFile)
-                    <img src="{{ asset('storage/icon_denso/' . $iconFile) }}" alt="{{ $symbol }}" class="sidebar-nav__symbol-img">
+                    <img src="{{ asset('icon_denso/' . $iconFile) }}" alt="{{ $symbol }}" class="sidebar-nav__symbol-img">
                 @else
                     {{ $symbol }}
                 @endif

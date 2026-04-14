@@ -31,7 +31,7 @@
 @section('left_sidebar')
     <div class="d-flex flex-column h-100">
         <div class="brand-lockup">
-            <img src="{{ asset('storage/Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
+            <img src="{{ asset('Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
         </div>
 
         <div class="mt-4">

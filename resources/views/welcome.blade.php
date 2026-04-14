@@ -20,7 +20,7 @@
     <div class="d-flex flex-column h-100">
         <div>
             <div class="brand-lockup fade-in-up">
-                <img src="{{ asset('storage/Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
+                <img src="{{ asset('Red_DENSO_Hires.png') }}" alt="DENSO - Crafting the Core" class="brand-lockup__logo">
             </div>
 
             <div class="sidebar-section fade-in-up delay-1">
