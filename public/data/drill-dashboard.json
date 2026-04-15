@@ -77,7 +77,7 @@
             {
                 "id": 1,
                 "title": "Information Security Video",
-                "embedUrl": "/files/education/information-security-video_1776153542_0.mp4",
+                "embedUrl": "/storage/education/information-security-video_1776153542_0.mp4",
                 "fileType": "video/mp4",
                 "originalFilename": "Information Security Video.mp4",
                 "watched": true
@@ -85,14 +85,14 @@
             {
                 "id": 2,
                 "title": "Education Malware Video",
-                "embedUrl": "/files/education/6963744-hd-1920-1080-25fps_1776153542_1.mp4",
+                "embedUrl": "/storage/education/6963744-hd-1920-1080-25fps_1776153542_1.mp4",
                 "fileType": "video/mp4",
                 "originalFilename": "6963744-hd_1920_1080_25fps.mp4",
                 "watched": false
             },
             {
                 "title": "Video Learning 2",
-                "embedUrl": "/files/education/information-security-video_1776214864_0.mp4",
+                "embedUrl": "/storage/education/information-security-video_1776214864_0.mp4",
                 "fileType": "video/mp4",
                 "originalFilename": "Information Security Video.mp4",
                 "uploadedBy": "dnia.admin",
@@ -119,8 +119,8 @@
                 "id": 2,
                 "title": "Next Drill Schedule",
                 "description": "Follow schedule base on your plant.",
-                "notifyNote": "Company: DSIA — Plant: Fajar",
-                "duration": "20 Minutes",
+                "notifyNote": "Company: DNIA — Plant: Bekasi",
+                "duration": "10 Minutes",
                 "periodStart": "2026-04-15",
                 "periodEnd": "2026-04-15",
                 "comingSoon": true

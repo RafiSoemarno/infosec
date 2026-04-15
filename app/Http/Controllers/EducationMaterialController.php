@@ -55,7 +55,7 @@ class EducationMaterialController extends Controller
 
             $newVideos[] = [
                 'title'             => $titles[$count] ?? $originalName,
-                'embedUrl'          => '/files/' . $storagePath,
+                'embedUrl'          => '/storage/' . $storagePath,
                 'fileType'          => $mimeType,
                 'originalFilename'  => $originalName,
                 'uploadedBy'        => $uploadedBy,
@@ -99,8 +99,8 @@ class EducationMaterialController extends Controller
 
         // Delete the physical file if it was an upload (has fileType, not a plain embedUrl)
         if (!empty($target['fileType']) && !empty($target['embedUrl'])) {
-            // embedUrl is "/files/education/filename.ext" — strip the leading "/files/"
-            $storagePath = preg_replace('#^/files/#', '', $target['embedUrl']);
+            // embedUrl is "/storage/education/filename.ext" — strip the leading "/storage/"
+            $storagePath = preg_replace('#^/storage/#', '', $target['embedUrl']);
             Storage::disk('public')->delete($storagePath);
         }
 
