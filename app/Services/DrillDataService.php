@@ -680,11 +680,17 @@ class DrillDataService
 
         // Normalise to a consistent shape for the view
         $videos = array_map(function (array $v) {
+            $fileType = (string) ($v['fileType'] ?? '');
+            $embedUrl = (string) ($v['embedUrl'] ?? '');
+            // For uploaded files (fileType is set), the view expects filePath;
+            // for external embeds (no fileType), the view uses embedUrl.
+            $filePath = $fileType !== '' ? $embedUrl : null;
             return [
                 'id'               => (int) ($v['id'] ?? 0),
                 'title'            => (string) ($v['title'] ?? ''),
-                'embedUrl'         => (string) ($v['embedUrl'] ?? ''),
-                'fileType'         => (string) ($v['fileType'] ?? ''),
+                'embedUrl'         => $filePath === null ? $embedUrl : null,
+                'filePath'         => $filePath,
+                'fileType'         => $fileType,
                 'originalFilename' => (string) ($v['originalFilename'] ?? ''),
                 'watched'          => (bool) ($v['watched'] ?? false),
             ];

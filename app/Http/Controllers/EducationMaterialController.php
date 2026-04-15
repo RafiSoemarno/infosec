@@ -47,15 +47,23 @@ class EducationMaterialController extends Controller
             $mimeType     = $uploadedFile->getMimeType();
             $extension    = $uploadedFile->getClientOriginalExtension();
 
-            $safeName    = Str::slug(pathinfo($originalName, PATHINFO_FILENAME))
-                         . '_' . time() . '_' . $count
-                         . '.' . $extension;
+            $safeName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME))
+                      . '_' . time() . '_' . $count
+                      . '.' . $extension;
 
-            $storagePath = $uploadedFile->storeAs('education', $safeName, 'public');
+            // Store directly in public/edu_material so the file is accessible
+            // without a storage symlink and can be played natively by browsers.
+            $destDir = public_path('edu_material');
+            if (!is_dir($destDir)) {
+                mkdir($destDir, 0755, true);
+            }
+            $uploadedFile->move($destDir, $safeName);
+
+            $publicUrl = '/edu_material/' . $safeName;
 
             $newVideos[] = [
                 'title'             => $titles[$count] ?? $originalName,
-                'embedUrl'          => '/storage/' . $storagePath,
+                'embedUrl'          => $publicUrl,
                 'fileType'          => $mimeType,
                 'originalFilename'  => $originalName,
                 'uploadedBy'        => $uploadedBy,
@@ -99,9 +107,18 @@ class EducationMaterialController extends Controller
 
         // Delete the physical file if it was an upload (has fileType, not a plain embedUrl)
         if (!empty($target['fileType']) && !empty($target['embedUrl'])) {
-            // embedUrl is "/storage/education/filename.ext" — strip the leading "/storage/"
-            $storagePath = preg_replace('#^/storage/#', '', $target['embedUrl']);
-            Storage::disk('public')->delete($storagePath);
+            $embedUrl = $target['embedUrl'];
+            if (str_starts_with($embedUrl, '/edu_material/')) {
+                // Stored directly in public/edu_material/
+                $filePath = public_path(ltrim($embedUrl, '/'));
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            } elseif (str_starts_with($embedUrl, '/storage/')) {
+                // Legacy: stored via storage symlink
+                $storagePath = preg_replace('#^/storage/#', '', $embedUrl);
+                Storage::disk('public')->delete($storagePath);
+            }
         }
 
         $dash['education']['videos'] = $remaining;
