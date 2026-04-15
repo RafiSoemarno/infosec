@@ -1,0 +1,13 @@
+CREATE TABLE [dbo].[tb_logs_main](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[ComputerName] [nvarchar](100) NOT NULL,
+	[IPAddress] [nvarchar](50) NOT NULL,
+	[CountToStop] [int] NOT NULL,
+	[TestRound] [datetime] NOT NULL,
+	[EmployeeId] [nvarchar](50) NOT NULL,
+	[LogTime] [datetime] NOT NULL,
+ CONSTRAINT [PK__Security__3214EC27D1D6BEDC] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
