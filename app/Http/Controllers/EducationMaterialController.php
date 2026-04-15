@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\EducationJsonStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -10,37 +9,23 @@ use Illuminate\Support\Str;
 
 /**
  * Handles admin upload and delete of education materials.
- * All metadata is stored in storage/app/education-materials.json.
- * Physical files are stored in public/education/ and
- * served publicly via the /education/ URL path.
- * No database is used anywhere in this controller.
+ * All metadata is stored directly in public/data/drill-dashboard.json
+ * under education.videos. No secondary JSON file is used.
+ * Physical files are stored via the 'public' storage disk.
  */
 class EducationMaterialController extends Controller
 {
     private const MAX_FILE_SIZE_MB = 500;
+    private const DASH_JSON = 'data/drill-dashboard.json';
 
-    private EducationJsonStore $store;
+    // ── Public API ────────────────────────────────────────────────
 
-    public function __construct(EducationJsonStore $store)
-    {
-        $this->store = $store;
-    }
-
-    /**
-     * Handle the upload form submitted by the admin.
-     *
-     * 1. Validate title + file
-     * 2. Save the physical file → public/education/<safe-name>
-     * 3. Write a new record into education-materials.json (auto-incremented id)
-     * 4. Redirect back to /education with a success message
-     */
     public function store(Request $request): RedirectResponse
     {
         if (!$this->isAdmin()) {
             abort(403);
         }
 
-        // --- Validate input ------------------------------------------------
         $request->validate([
             'titles'   => ['required', 'array', 'min:1'],
             'titles.*' => ['required', 'string', 'max:255'],
@@ -54,8 +39,8 @@ class EducationMaterialController extends Controller
 
         $titles     = $request->input('titles');
         $uploadedBy = session('auth_user.username', 'admin');
-        $batch      = [];
         $count      = 0;
+        $newVideos  = [];
 
         foreach ($request->file('files') as $uploadedFile) {
             $originalName = $uploadedFile->getClientOriginalName();
@@ -68,19 +53,19 @@ class EducationMaterialController extends Controller
 
             $storagePath = $uploadedFile->storeAs('education', $safeName, 'public');
 
-            $batch[] = [
+            $newVideos[] = [
                 'title'             => $titles[$count] ?? $originalName,
-                'file_path'         => $storagePath,
-                'file_type'         => $mimeType,
-                'original_filename' => $originalName,
-                'uploaded_by'       => $uploadedBy,
+                'embedUrl'          => '/files/' . $storagePath,
+                'fileType'          => $mimeType,
+                'originalFilename'  => $originalName,
+                'uploadedBy'        => $uploadedBy,
+                'watched'           => false,
             ];
 
             $count++;
         }
 
-        // Write all records in one read-modify-write cycle so each gets a unique id
-        $this->store->createMany($batch);
+        $this->appendToDashboard($newVideos);
 
         $label = $count === 1 ? '"' . ($titles[0] ?? '') . '"' : $count . ' files';
 
@@ -88,40 +73,80 @@ class EducationMaterialController extends Controller
             ->with('success', 'Material ' . $label . ' uploaded successfully.');
     }
 
-    /**
-     * Delete a material by id.
-     *
-     * 1. Look up the record in the JSON file
-     * 2. Delete the physical file from public/education/
-     * 3. Remove the record from the JSON file
-     * 4. Redirect back to /education with a success message
-     */
     public function destroy(int $id): RedirectResponse
     {
         if (!$this->isAdmin()) {
             abort(403);
         }
 
-        // Find the record in the JSON store
-        $material = $this->store->find($id);
+        $dash   = $this->readDashboard();
+        $videos = $dash['education']['videos'] ?? [];
 
-        if (!$material) {
+        $target    = null;
+        $remaining = [];
+
+        foreach ($videos as $v) {
+            if ((int) ($v['id'] ?? 0) === $id) {
+                $target = $v;
+            } else {
+                $remaining[] = $v;
+            }
+        }
+
+        if (!$target) {
             return redirect('/education')->with('success', 'Material already removed.');
         }
 
-        // Delete the physical file from public/education/
-        if (!empty($material['file_path'])) {
-            Storage::disk('public')->delete($material['file_path']);
+        // Delete the physical file if it was an upload (has fileType, not a plain embedUrl)
+        if (!empty($target['fileType']) && !empty($target['embedUrl'])) {
+            // embedUrl is "/files/education/filename.ext" — strip the leading "/files/"
+            $storagePath = preg_replace('#^/files/#', '', $target['embedUrl']);
+            Storage::disk('public')->delete($storagePath);
         }
 
-        // Remove the record from the JSON file
-        $this->store->delete($id);
+        $dash['education']['videos'] = $remaining;
+        $this->writeDashboard($dash);
 
         return redirect('/education')
             ->with('success', 'Material deleted successfully.');
     }
 
-    // ── Helper ────────────────────────────────────────────────────
+    // ── Helpers ───────────────────────────────────────────────────
+
+    private function appendToDashboard(array $newVideos): void
+    {
+        $dash   = $this->readDashboard();
+        $nextId = (int) ($dash['education']['next_id'] ?? 1);
+
+        foreach ($newVideos as $v) {
+            $v['id']                      = $nextId;
+            $dash['education']['videos'][] = $v;
+            $nextId++;
+        }
+
+        $dash['education']['next_id'] = $nextId;
+        $this->writeDashboard($dash);
+    }
+
+    private function readDashboard(): array
+    {
+        $path = public_path(self::DASH_JSON);
+
+        if (!file_exists($path)) {
+            return [];
+        }
+
+        $decoded = json_decode(file_get_contents($path), true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    private function writeDashboard(array $data): void
+    {
+        file_put_contents(
+            public_path(self::DASH_JSON),
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
+    }
 
     private function isAdmin(): bool
     {

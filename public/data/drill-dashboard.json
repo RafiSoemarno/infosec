@@ -67,6 +67,7 @@
         ]
     },
     "education": {
+        "next_id": 4,
         "title": "Education",
         "subtitle": "Upload Video on Devas and embed link to show web",
         "searchPlaceholder": "Search education ...",
@@ -75,45 +76,28 @@
         "videos": [
             {
                 "id": 1,
-                "title": "Security Incident Response for Malware Infections",
-                "embedUrl": "/videos/Information Security Video.mp4",
+                "title": "Information Security Video",
+                "embedUrl": "/files/education/information-security-video_1776153542_0.mp4",
+                "fileType": "video/mp4",
+                "originalFilename": "Information Security Video.mp4",
                 "watched": true
             },
             {
                 "id": 2,
-                "title": "How to Disconnect Network?",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
+                "title": "Education Malware Video",
+                "embedUrl": "/files/education/6963744-hd-1920-1080-25fps_1776153542_1.mp4",
+                "fileType": "video/mp4",
+                "originalFilename": "6963744-hd_1920_1080_25fps.mp4",
+                "watched": false
             },
             {
-                "id": 3,
-                "title": "Handling Information",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 4,
-                "title": "Usage E-mail, Web Browsing, and Cyber Security",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 5,
-                "title": "Photography & Videography",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 6,
-                "title": "ITake Out - Bring In of Information Equipment",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 7,
-                "title": "Incident Report",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
+                "title": "Video Learning 2",
+                "embedUrl": "/files/education/information-security-video_1776214864_0.mp4",
+                "fileType": "video/mp4",
+                "originalFilename": "Information Security Video.mp4",
+                "uploadedBy": "dnia.admin",
+                "watched": false,
+                "id": 3
             }
         ]
     },

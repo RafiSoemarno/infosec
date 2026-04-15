@@ -3,27 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
-use App\Services\EducationJsonStore;
 use Illuminate\Http\Request;
 
 /**
  * Shows the Education page.
  *
- * - admin role  → admin-education.blade.php  (upload UI + material list from JSON store)
- * - all others  → education.blade.php        (viewer, reads from drill-dashboard.json
- *                                             merged with education-materials.json)
+ * - admin role  → admin-education.blade.php  (upload UI + material list)
+ * - all others  → education.blade.php        (viewer)
  *
- * No database is used anywhere in this controller.
+ * All material metadata lives in public/data/drill-dashboard.json
+ * under education.videos. No secondary JSON file is used.
  */
 class EducationController extends Controller
 {
-    private DrillDataService  $drillData;
-    private EducationJsonStore $store;
+    private DrillDataService $drillData;
 
-    public function __construct(DrillDataService $drillData, EducationJsonStore $store)
+    public function __construct(DrillDataService $drillData)
     {
         $this->drillData = $drillData;
-        $this->store     = $store;
     }
 
     public function index(Request $request)
@@ -38,8 +35,6 @@ class EducationController extends Controller
             return $this->adminIndex($authUser);
         }
 
-        // Regular / special user — existing payload builder (reads drill-dashboard.json
-        // and merges education-materials.json inside DrillDataService)
         $payload = $this->drillData->getEducationPayload(
             $authUser,
             (int) $request->query('video', 0)
@@ -50,50 +45,30 @@ class EducationController extends Controller
 
     // ── Admin view ────────────────────────────────────────────────
 
-    /**
-     * Build the admin education page payload entirely from static files.
-     *
-     * Materials list  → storage/app/education-materials.json  (via EducationJsonStore)
-     * Sidebar menu    → public/data/drill-dashboard.json       (existing file)
-     */
     private function adminIndex(array $authUser)
     {
-        // 1. Read all uploaded materials from the JSON store
-        //    Each record already has: id, title, file_path, file_type,
-        //    original_filename, uploaded_by, created_at
-        $rawMaterials = $this->store->all();
+        $path    = public_path('data/drill-dashboard.json');
+        $decoded = file_exists($path)
+            ? json_decode(file_get_contents($path), true)
+            : [];
 
-        // 2. Add the public URL so the view can render/download files
-        $materials = array_map(function (array $m) {
-            $m['public_url'] = asset($m['file_path']);
-            return $m;
-        }, $rawMaterials);
+        $raw       = is_array($decoded) ? ($decoded['education']['videos'] ?? []) : [];
+        $menuItems = is_array($decoded) ? ($decoded['menu']['items'] ?? []) : [];
 
-        // 3. Load the sidebar menu from drill-dashboard.json (same source the
-        //    rest of the app uses — no DB call needed)
-        $menuItems = $this->getMenuItemsFromJson();
+        // Only show uploaded materials (those with a fileType) in the admin list
+        $materials = array_values(array_filter($raw, fn($v) => !empty($v['fileType'])));
+
+        // Add a public URL for each so the view can render/download
+        $materials = array_map(function (array $v) {
+            // embedUrl is stored as "/files/<storage_path>" — serve it directly
+            $v['public_url'] = $v['embedUrl'] ?? '';
+            return $v;
+        }, $materials);
 
         return view('admin-education', [
             'user'      => $authUser,
             'menuData'  => ['items' => $menuItems],
             'materials' => $materials,
         ]);
-    }
-
-    /**
-     * Pull the menu items array out of drill-dashboard.json.
-     * Returns an empty array if the file is missing (safe fallback).
-     */
-    private function getMenuItemsFromJson(): array
-    {
-        $path = public_path('data/drill-dashboard.json');
-
-        if (!file_exists($path)) {
-            return [];
-        }
-
-        $decoded = json_decode(file_get_contents($path), true);
-
-        return is_array($decoded) ? ($decoded['menu']['items'] ?? []) : [];
     }
 }
