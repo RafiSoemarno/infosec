@@ -67,6 +67,7 @@
         ]
     },
     "education": {
+        "next_id": 3,
         "title": "Education",
         "subtitle": "Upload Video on Devas and embed link to show web",
         "searchPlaceholder": "Search education ...",
@@ -75,45 +76,20 @@
         "videos": [
             {
                 "id": 1,
-                "title": "Security Incident Response for Malware Infections",
+                "title": "Information Security Video",
                 "embedUrl": "/videos/Information Security Video.mp4",
+                "fileType": "video/mp4",
+                "originalFilename": "Information Security Video.mp4",
                 "watched": true
             },
             {
-                "id": 2,
-                "title": "How to Disconnect Network?",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 3,
-                "title": "Handling Information",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 4,
-                "title": "Usage E-mail, Web Browsing, and Cyber Security",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 5,
-                "title": "Photography & Videography",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 6,
-                "title": "ITake Out - Bring In of Information Equipment",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
-            },
-            {
-                "id": 7,
-                "title": "Incident Report",
-                "embedUrl": "/videos/Information Security Video.mp4",
-                "watched": true
+                "title": "Video Malware",
+                "embedUrl": "/edu_material/6963744-hd-1920-1080-25fps_1776225323_0.mp4",
+                "fileType": "video/mp4",
+                "originalFilename": "6963744-hd_1920_1080_25fps.mp4",
+                "uploadedBy": "dnia.admin",
+                "watched": false,
+                "id": 2
             }
         ]
     },
@@ -135,8 +111,8 @@
                 "id": 2,
                 "title": "Next Drill Schedule",
                 "description": "Follow schedule base on your plant.",
-                "notifyNote": "Company: DSIA — Plant: Fajar",
-                "duration": "20 Minutes",
+                "notifyNote": "Company: DNIA — Plant: Bekasi",
+                "duration": "10 Minutes",
                 "periodStart": "2026-04-15",
                 "periodEnd": "2026-04-15",
                 "comingSoon": true

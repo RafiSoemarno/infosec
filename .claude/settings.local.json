@@ -13,7 +13,8 @@
       "Bash(python3 -c ':*)",
       "Bash(mkdir -p \"c:/Users/CMM/Documents/Dana/infosec/infosec/storage/app/public/education\")",
       "Bash(mv \"c:/Users/CMM/Documents/Dana/infosec/infosec/public/education/6963744-hd-1920-1080-25fps_1776064677_0.mp4\" \"c:/Users/CMM/Documents/Dana/infosec/infosec/storage/app/public/education/\")",
-      "Bash(mv \"c:/Users/CMM/Documents/Dana/infosec/infosec/public/education/information-security-video_1776064677_1.mp4\" \"c:/Users/CMM/Documents/Dana/infosec/infosec/storage/app/public/education/\")"
+      "Bash(mv \"c:/Users/CMM/Documents/Dana/infosec/infosec/public/education/information-security-video_1776064677_1.mp4\" \"c:/Users/CMM/Documents/Dana/infosec/infosec/storage/app/public/education/\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(v.get\\('embedUrl',''\\), '|', v.get\\('fileType',''\\), '|', v.get\\('title',''\\)\\) for v in d.get\\('education',{}\\).get\\('videos',[]\\)]\")"
     ]
   }
 }
