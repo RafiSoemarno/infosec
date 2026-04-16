@@ -152,8 +152,8 @@
                     <h2 class="section-title mb-0">PROGRESS DRILL</h2>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <span class="legend-dot-row"><span class="legend-dot" style="background: var(--color-accent);"></span>ACTUAL</span>
                     <span class="legend-dot-row"><span class="legend-dot" style="background: var(--color-brand);"></span>TARGET</span>
+                    <span class="legend-dot-row"><span class="legend-dot" style="background: var(--color-accent);"></span>ACTUAL</span>
                 </div>
             </div>
 
@@ -288,18 +288,18 @@
                     labels: initialStats.map((item) => item.label || '-'),
                     datasets: [
                         {
-                            label: 'ACTUAL',
-                            data: initialStats.map((item) => Number(item.actual || 0)),
-                            backgroundColor: '#52c6cd',
+                            label: 'TARGET',
+                            data: initialStats.map((item) => Number(item.target || 0)),
+                            backgroundColor: '#d62839',
                             borderRadius: 8,
                             borderSkipped: false,
                             barPercentage: 0.75,
                             categoryPercentage: 0.62,
                         },
                         {
-                            label: 'TARGET',
-                            data: initialStats.map((item) => Number(item.target || 0)),
-                            backgroundColor: '#d62839',
+                            label: 'ACTUAL',
+                            data: initialStats.map((item) => Number(item.actual || 0)),
+                            backgroundColor: '#52c6cd',
                             borderRadius: 8,
                             borderSkipped: false,
                             barPercentage: 0.75,
@@ -343,8 +343,8 @@
                 if (ratioMetric) ratioMetric.textContent = `${Number(record.percentage || 0)}%`;
 
                 chart.data.labels = stats.map((item) => item.label || '-');
-                chart.data.datasets[0].data = stats.map((item) => Number(item.actual || 0));
-                chart.data.datasets[1].data = stats.map((item) => Number(item.target || 0));
+                chart.data.datasets[0].data = stats.map((item) => Number(item.target || 0));
+                chart.data.datasets[1].data = stats.map((item) => Number(item.actual || 0));
                 chart.update();
             };
 

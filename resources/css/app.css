@@ -2888,11 +2888,11 @@ a {
 	transition: height 0.3s ease;
 }
 .dsh-bar--target {
-	background: var(--color-accent);
-	opacity: 0.55;
+	background: var(--color-brand);
+	opacity: 0.85;
 }
 .dsh-bar--actual {
-	background: var(--color-brand);
+	background: var(--color-accent);
 }
 .dsh-bar__label {
 	position: absolute;
@@ -2926,8 +2926,8 @@ a {
 	border-radius: 50%;
 	display: inline-block;
 }
-.dsh-legend-dot--target { background: var(--color-accent); opacity: 0.7; }
-.dsh-legend-dot--actual { background: var(--color-brand); }
+.dsh-legend-dot--target { background: var(--color-brand); }
+.dsh-legend-dot--actual { background: var(--color-accent); }
 .dsh-no-data {
 	font-size: 0.82rem;
 	color: var(--color-muted);
