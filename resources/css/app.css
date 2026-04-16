@@ -1927,7 +1927,7 @@ a {
 
 .edu-admin-material-item {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: 10px;
 	padding: 10px 8px;
 	border-radius: var(--radius-sm);
@@ -1957,10 +1957,13 @@ a {
 
 .edu-admin-material-item__del {
 	flex-shrink: 0;
-	margin-top: 2px;
 	display: flex;
 	align-items: center;
 	gap: 2px;
+}
+
+.edu-admin-material-item__del form {
+	display: contents;
 }
 
 .edu-admin-del-btn {
