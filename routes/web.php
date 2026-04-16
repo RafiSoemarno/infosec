@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\AdminDrillController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DrillController;
@@ -10,8 +9,6 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProgressDrillController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SummaryReportController;
-=======
->>>>>>> rafi
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 */
-<<<<<<< HEAD
+
 Route::get('/', [AuthController::class, 'showLogin']);
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -43,10 +40,3 @@ Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDri
 Route::post('/admin/drill/drills/{id}/delete', [AdminDrillController::class, 'destroyDrill']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
-=======
-
-Route::get('/', function () {
-    return response()->json(['status' => 'ok', 'message' => 'infosec API is running.']);
-});
-
->>>>>>> rafi
