@@ -1,0 +1,27 @@
+{
+  "name": "Laravel Dev (Docker Compose)",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/var/www/html",
+  "shutdownAction": "stopCompose",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "ms-azuretools.vscode-docker",
+        "onecentlin.laravel-blade",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+
+  "postCreateCommand": "composer install && cp -n .env.example .env || true && php artisan key:generate || true && npm ci || npm install && npm run build || true",
+
+  "remoteEnv": {
+    "COMPOSER_ALLOW_SUPERUSER": "1"
+  }
+}
