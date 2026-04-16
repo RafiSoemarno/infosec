@@ -110,26 +110,28 @@
                 {{-- Company filter --}}
                 <div class="dsh-filter-group">
                     <label class="dsh-filter-label">COMPANY</label>
-                    <div class="dsh-multi-select" id="companyFilter">
-                        @foreach ($companies as $code => $co)
-                            <label class="dsh-check-pill">
-                                <input type="checkbox" class="dsh-check-pill__input company-cb" value="{{ $code }}" checked>
-                                <span class="dsh-check-pill__label">{{ $code }}</span>
-                            </label>
-                        @endforeach
+                    <div class="dsh-select-wrap">
+                        <select class="dsh-select" id="companyFilter">
+                            <option value="">All Companies</option>
+                            @foreach ($companies as $code => $co)
+                                <option value="{{ $code }}">{{ $code }}</option>
+                            @endforeach
+                        </select>
+                        <svg class="dsh-select-caret" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                 </div>
 
-                {{-- Directorate filter (dynamic, dependent on Company) --}}
+                {{-- Directorate filter (dropdown, dependent on Company) --}}
                 <div class="dsh-filter-group">
                     <label class="dsh-filter-label">DIRECTORATE</label>
-                    <div class="dsh-multi-select" id="directorateFilter">
-                        @foreach ($directorates as $code => $dir)
-                            <label class="dsh-check-pill dsh-dir-pill" data-company="{{ $dir['company'] }}">
-                                <input type="checkbox" class="dsh-check-pill__input dir-cb" value="{{ $code }}" checked>
-                                <span class="dsh-check-pill__label">{{ $dir['label'] }}</span>
-                            </label>
-                        @endforeach
+                    <div class="dsh-select-wrap">
+                        <select class="dsh-select" id="directorateFilter">
+                            <option value="">All Directorates</option>
+                            @foreach ($directorates as $code => $dir)
+                                <option value="{{ $code }}" data-company="{{ $dir['company'] }}">{{ $dir['label'] }}</option>
+                            @endforeach
+                        </select>
+                        <svg class="dsh-select-caret" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                 </div>
             </div>
@@ -309,8 +311,8 @@ var DSH = {
 
     // State (chart layer — affected by Period, Company, Directorate)
     currentPeriod:     '{{ $selectedPeriod }}',
-    selectedCompanies: Object.keys(@json($dashData['companies'])),   // all by default
-    selectedDirs:      Object.keys(@json($dashData['directorates'])), // all by default
+    selectedCompany:   '',   // '' = All Companies
+    selectedDir:       '',   // '' = All Directorates
 
     // State (table layer — affected by Division, Responsible Person)
     selectedDivision:  '',
@@ -332,12 +334,13 @@ var DSH = {
 function getFilteredStats() {
     var raw = (DSH.periodData[DSH.currentPeriod] || {}).stats || [];
 
-    // Keep only companies that have at least one selected directorate
-    // AND are themselves selected.
-    var activeCos = DSH.selectedCompanies.filter(function(co) {
-        // Does this company have any selected directorate?
+    // Keep only companies matching the selected company (if any) AND directorate (if any).
+    var allCos = Object.keys(DSH.companies);
+    var activeCos = allCos.filter(function(co) {
+        if (DSH.selectedCompany && co !== DSH.selectedCompany) return false;
+        if (!DSH.selectedDir) return true;
         var dirs = (DSH.companies[co] || {}).directorates || [];
-        return dirs.some(function(d) { return DSH.selectedDirs.indexOf(d) >= 0; });
+        return dirs.indexOf(DSH.selectedDir) >= 0;
     });
 
     var filtered = raw.filter(function(s) { return activeCos.indexOf(s.label) >= 0; });
@@ -464,41 +467,31 @@ document.querySelectorAll('#fyMenu .dsh-period-option').forEach(function(opt) {
     });
 });
 
-// ── Company checkboxes → filter Directorate pills → update charts ─
-document.querySelectorAll('.company-cb').forEach(function(cb) {
-    cb.addEventListener('change', syncCompanyFilter);
+// ── Company dropdown → filter Directorate dropdown options → update charts ─
+document.getElementById('companyFilter').addEventListener('change', function() {
+    DSH.selectedCompany = this.value;
+
+    // Show/hide directorate options based on selected company
+    var dirSelect = document.getElementById('directorateFilter');
+    Array.prototype.forEach.call(dirSelect.options, function(opt) {
+        if (!opt.value) return; // keep "All Directorates"
+        opt.hidden = DSH.selectedCompany ? opt.dataset.company !== DSH.selectedCompany : false;
+    });
+
+    // If the currently selected dir is now hidden, reset to All
+    var selected = dirSelect.options[dirSelect.selectedIndex];
+    if (selected && selected.hidden) {
+        dirSelect.value = '';
+        DSH.selectedDir = '';
+    }
+
+    refreshChartLayer();
 });
 
-function syncCompanyFilter() {
-    DSH.selectedCompanies = [];
-    document.querySelectorAll('.company-cb:checked').forEach(function(cb) {
-        DSH.selectedCompanies.push(cb.value);
-    });
-
-    // Show/hide directorate pills based on selected companies
-    document.querySelectorAll('.dsh-dir-pill').forEach(function(pill) {
-        var co = pill.dataset.company;
-        var visible = DSH.selectedCompanies.indexOf(co) >= 0;
-        pill.style.display = visible ? '' : 'none';
-        if (!visible) {
-            var input = pill.querySelector('.dir-cb');
-            if (input) input.checked = false;
-        }
-    });
-
-    syncDirFilter();
-}
-
-function syncDirFilter() {
-    DSH.selectedDirs = [];
-    document.querySelectorAll('.dir-cb:checked').forEach(function(cb) {
-        DSH.selectedDirs.push(cb.value);
-    });
+// ── Directorate dropdown ──────────────────────────────────────────
+document.getElementById('directorateFilter').addEventListener('change', function() {
+    DSH.selectedDir = this.value;
     refreshChartLayer();
-}
-
-document.querySelectorAll('.dir-cb').forEach(function(cb) {
-    cb.addEventListener('change', syncDirFilter);
 });
 
 // ═══════════════════════════════════════════════════════════════════
