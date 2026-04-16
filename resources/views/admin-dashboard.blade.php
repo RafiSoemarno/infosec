@@ -43,41 +43,6 @@
 
 @section('topbar')
     <x-ui.header eyebrow="Drill" title="Self-Service Cyber Attack" subtitle="">
-        {{-- Period selector --}}
-        <div class="dsh-topbar-controls">
-            <div class="dsh-period-selector">
-                <span class="dsh-period-selector__label">PERIOD:</span>
-                <div class="dsh-period-dropdown" id="topPeriodDropdown">
-                    <button class="dsh-period-btn" id="topPeriodBtn" type="button">
-                        <span id="topPeriodText">{{ $selectedPeriod }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="dsh-period-menu" id="topPeriodMenu" style="display:none;">
-                        @foreach ($periodOptions as $p)
-                            <div class="dsh-period-option {{ $p === $selectedPeriod ? 'dsh-period-option--active' : '' }}"
-                                 data-period="{{ $p }}">{{ $p }}</div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <div class="dsh-fy-selector">
-                <span class="dsh-period-selector__label">FY:</span>
-                <div class="dsh-period-dropdown" id="fyDropdown">
-                    <button class="dsh-period-btn" id="fyBtn" type="button">
-                        <span id="fyText">{{ $selectedFY }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="dsh-period-menu" id="fyMenu" style="display:none;">
-                        @foreach ($fiscalYears as $fy)
-                            <div class="dsh-period-option {{ $fy == $selectedFY ? 'dsh-period-option--active' : '' }}"
-                                 data-fy="{{ $fy }}">{{ $fy }}</div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="topbar-profile">
             <div class="topbar-profile__text">
                 <span class="topbar-profile__name">{{ $authUser['name'] ?? '' }}</span>
@@ -101,7 +66,44 @@
 
         {{-- Header row --}}
         <div class="dsh-overview__header">
-            <h2 class="dsh-overview__title">Statistic Overview</h2>
+            <div class="dsh-overview__title-row">
+                <h2 class="dsh-overview__title">Statistic Overview</h2>
+
+                {{-- Period & FY selectors --}}
+                <div class="dsh-topbar-controls">
+                    <div class="dsh-period-selector">
+                        <span class="dsh-period-selector__label">PERIOD:</span>
+                        <div class="dsh-period-dropdown" id="topPeriodDropdown">
+                            <button class="dsh-period-btn" id="topPeriodBtn" type="button">
+                                <span id="topPeriodText">{{ $selectedPeriod }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="dsh-period-menu" id="topPeriodMenu" style="display:none;">
+                                @foreach ($periodOptions as $p)
+                                    <div class="dsh-period-option {{ $p === $selectedPeriod ? 'dsh-period-option--active' : '' }}"
+                                         data-period="{{ $p }}">{{ $p }}</div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dsh-fy-selector">
+                        <span class="dsh-period-selector__label">FY:</span>
+                        <div class="dsh-period-dropdown" id="fyDropdown">
+                            <button class="dsh-period-btn" id="fyBtn" type="button">
+                                <span id="fyText">{{ $selectedFY }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="dsh-period-menu" id="fyMenu" style="display:none;">
+                                @foreach ($fiscalYears as $fy)
+                                    <div class="dsh-period-option {{ $fy == $selectedFY ? 'dsh-period-option--active' : '' }}"
+                                         data-fy="{{ $fy }}">{{ $fy }}</div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {{-- Chart-layer filters: Company & Directorate --}}
             <div class="dsh-chart-filters" id="chartFilters">

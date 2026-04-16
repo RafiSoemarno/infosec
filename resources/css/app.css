@@ -2644,12 +2644,19 @@ a {
    Prefix: .dsh-*
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Topbar controls (period + FY selectors) ─────────────────────── */
+/* ── Overview title row (title + Period/FY selectors inline) ─────── */
+.dsh-overview__title-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+/* ── Period / FY selector controls ──────────────────────────────── */
 .dsh-topbar-controls {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	margin-right: 20px;
 }
 .dsh-period-selector,
 .dsh-fy-selector {
