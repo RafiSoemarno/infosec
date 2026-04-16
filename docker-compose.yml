@@ -1,0 +1,82 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: infosec-app
+    env_file:
+      - .env
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      sqlserver:
+        condition: service_healthy
+    volumes:
+      - ./:/var/www/html
+      # Anonymous volume prevents the host-side vendor/ directory (if present)
+      # from shadowing the vendor/ installed inside the image
+      - /var/www/html/vendor
+    networks:
+      - infosec
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: infosec-nginx
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - infosec
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: infosec-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ehelpdesk_dnia
+      MYSQL_USER: helpdesk
+      MYSQL_PASSWORD: helpdeskpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - infosec
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: infosec-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "SqlServer2024!"
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - infosec
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' -No || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+volumes:
+  mariadb_data:
+  sqlserver_data:
+
+networks:
+  infosec:
+    driver: bridge

@@ -1,0 +1,38 @@
+db_drill_webapp:
+  tb_user:
+    - ID: int PK
+    - MailAddress: nvarchar(100) # equipment_user_mail -> used to get user & device info
+    - AuthLevel: nvarchar(10) # regular/special/admin
+    - PasswordHash: varbinary(128)
+    - PasswordSalt: varbinary(32)
+    - HashAlgorithm: nvarchar(20)
+    - HashIterations: int
+  tb_education: # overwrite or persist?
+    - ID: int PK
+    - Title: nvarchar(100)
+    - Created: datetime2(0)
+    - FilePath: nvarchar(100)
+  tb_drill_schedule:
+    - ID: int PK
+    - Title: nvarchar(100)
+    - Company: nvarchar(50)
+    - Plant: nvarchar(50)
+    - Period: tinyint
+    - FiscalYear: smallint
+    - Target: smallint # can be automated?
+    - ScheduledTime: datetime2(0)
+    - ScheduledDuration: smallint
+    - SelfServiceStart: datetime2(0)
+    - SelfServiceEnd: datetime2(0)
+    - SelfServiceDuration: smallint
+
+# collapse self service & scheduled time
+# same start and end for scheduled drill
+# add category (selfserve or scheduled)
+# for drill history -> use tb_logs_main or new db?
+# missing drill name, category, score, status
+# if mixed, add drill type (self service or scheduled) and drill schedule ID
+# is performance (SSR) a problem? -> make caches
+# no division, responsible person, NPK data; limited BU data
+# status di atas 60s failed
+# confirm design UI self service -> no company/plant

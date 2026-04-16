@@ -15,20 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Data Source Toggle
-    |--------------------------------------------------------------------------
-    |
-    | This flag allows a controlled migration from JSON file-backed data to
-    | database-backed reads/writes. Keep this disabled until seed data and
-    | handlers have been validated.
-    |
-    */
-
-    'use_database' => (bool) env('USE_DATABASE', false),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -93,15 +80,15 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('DB2_HOST', 'localhost'),
+            'port' => env('DB2_PORT', '1433'),
+            'database' => env('DB2_DATABASE', 'db_drill_logs'),
+            'username' => env('DB2_USERNAME', 'sa'),
+            'password' => env('DB2_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'trust_server_certificate' => env('DB2_TRUST_SERVER_CERTIFICATE', false),
         ],
 
     ],
