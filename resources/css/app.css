@@ -2107,6 +2107,141 @@ a {
 	font-weight: 400;
 }
 
+/* ── Admin Education: Create panel (new link-based flow) ─────── */
+.edu-admin-create-panel {
+	padding: 0;
+	overflow: hidden;
+}
+
+/* Link input — sits below the preview, matches title-input style */
+.edu-admin-link-input {
+	display: block;
+	width: 100%;
+	padding: 16px 28px;
+	border: 0;
+	border-top: 1px solid var(--color-line);
+	background: transparent;
+	font-family: var(--font-sans);
+	font-size: 1rem;
+	color: var(--color-text);
+	outline: none;
+}
+
+.edu-admin-link-input::placeholder {
+	color: var(--color-muted);
+}
+
+.edu-admin-link-input:focus {
+	background: var(--color-panel-muted);
+}
+
+/* Video preview area */
+.edu-admin-video-preview {
+	position: relative;
+	margin: 0 28px;
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	background: var(--color-panel-muted);
+	border: 1.5px solid var(--color-line);
+	aspect-ratio: 16 / 9;
+	min-height: 200px;
+}
+
+.edu-admin-video-preview__placeholder {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: var(--color-muted);
+	text-align: center;
+	padding: 24px;
+}
+
+.edu-admin-video-preview__placeholder svg {
+	opacity: 0.35;
+}
+
+.edu-admin-video-preview__placeholder p {
+	margin: 0;
+	font-size: 0.88rem;
+}
+
+.edu-admin-video-preview__hint {
+	font-size: 0.75rem !important;
+	opacity: 0.7;
+}
+
+.edu-admin-video-preview__frame {
+	position: absolute;
+	inset: 0;
+}
+
+/* Save button footer */
+.edu-admin-create-footer {
+	display: flex;
+	justify-content: center;
+	padding: 20px 28px 24px;
+	border-top: 1px solid var(--color-line);
+}
+
+.edu-admin-save-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	justify-content: center;
+}
+
+/* Publish (Upload Video) button in right sidebar */
+.edu-admin-publish-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	flex-shrink: 0;
+}
+
+/* Selected item highlight */
+.edu-admin-material-item--selected {
+	background: var(--color-brand-soft);
+	border-left: 3px solid var(--color-brand);
+}
+
+/* Status badges */
+.edu-admin-status-badge {
+	display: inline-block;
+	font-size: 0.65rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 1px 6px;
+	border-radius: 999px;
+}
+
+.edu-admin-status-badge--draft {
+	background: #fef9c3;
+	color: #854d0e;
+}
+
+.edu-admin-status-badge--published {
+	background: #dcfce7;
+	color: #166534;
+}
+
+/* Draft dot (yellow) */
+.edu-admin-dot--draft {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+	background: #f59e0b;
+}
+
 /* File download panel (non-previewable uploads) */
 .edu-video-panel__download {
 	display: flex;

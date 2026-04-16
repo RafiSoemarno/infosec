@@ -5,20 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
- * Handles admin upload and delete of education materials.
- * All metadata is stored directly in public/data/drill-dashboard.json
- * under education.videos. No secondary JSON file is used.
- * Physical files are stored via the 'public' storage disk.
+ * Handles admin creation, editing, publishing, and deletion of education materials.
+ * Materials are link-based (SharePoint / embed URLs) — no file uploads.
+ * All metadata lives in public/data/drill-dashboard.json under education.videos.
+ *
+ * Statuses:
+ *   draft     – saved by admin, not visible to users
+ *   published – uploaded/published, visible in the User education page
  */
 class EducationMaterialController extends Controller
 {
-    private const MAX_FILE_SIZE_MB = 500;
     private const DASH_JSON = 'data/drill-dashboard.json';
 
-    // ── Public API ────────────────────────────────────────────────
+    // ── Store (Save Video — draft) ─────────────────────────────────
 
     public function store(Request $request): RedirectResponse
     {
@@ -27,59 +28,29 @@ class EducationMaterialController extends Controller
         }
 
         $request->validate([
-            'titles'   => ['required', 'array', 'min:1'],
-            'titles.*' => ['required', 'string', 'max:255'],
-            'files'    => ['required', 'array', 'min:1'],
-            'files.*'  => [
-                'file',
-                'max:' . (self::MAX_FILE_SIZE_MB * 1024),
-                'mimes:mp4,webm,ogv,mov,avi,pdf,ppt,pptx,doc,docx',
-            ],
+            'title'      => ['required', 'string', 'max:255'],
+            'video_link' => ['required', 'string', 'max:2048'],
         ]);
 
-        $titles     = $request->input('titles');
         $uploadedBy = session('auth_user.username', 'admin');
-        $count      = 0;
-        $newVideos  = [];
 
-        foreach ($request->file('files') as $uploadedFile) {
-            $originalName = $uploadedFile->getClientOriginalName();
-            $mimeType     = $uploadedFile->getMimeType();
-            $extension    = $uploadedFile->getClientOriginalExtension();
+        $newVideo = [
+            'title'      => $request->input('title'),
+            'embedUrl'   => $request->input('video_link'),
+            'fileType'   => 'video/link',
+            'status'     => 'draft',
+            'uploadedBy' => $uploadedBy,
+            'watched'    => false,
+            'created_at' => now()->toIso8601String(),
+        ];
 
-            $safeName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME))
-                      . '_' . time() . '_' . $count
-                      . '.' . $extension;
-
-            // Store directly in public/edu_material so the file is accessible
-            // without a storage symlink and can be played natively by browsers.
-            $destDir = public_path('edu_material');
-            if (!is_dir($destDir)) {
-                mkdir($destDir, 0755, true);
-            }
-            $uploadedFile->move($destDir, $safeName);
-
-            $publicUrl = '/edu_material/' . $safeName;
-
-            $newVideos[] = [
-                'title'             => $titles[$count] ?? $originalName,
-                'embedUrl'          => $publicUrl,
-                'fileType'          => $mimeType,
-                'originalFilename'  => $originalName,
-                'uploadedBy'        => $uploadedBy,
-                'watched'           => false,
-            ];
-
-            $count++;
-        }
-
-        $this->appendToDashboard($newVideos);
-
-        $label = $count === 1 ? '"' . ($titles[0] ?? '') . '"' : $count . ' files';
+        $this->appendToDashboard([$newVideo]);
 
         return redirect('/education')
-            ->with('success', 'Material ' . $label . ' uploaded successfully.');
+            ->with('success', 'Video "' . $request->input('title') . '" saved as draft.');
     }
+
+    // ── Update (Edit title / link) ─────────────────────────────────
 
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -88,7 +59,8 @@ class EducationMaterialController extends Controller
         }
 
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title'      => ['required', 'string', 'max:255'],
+            'video_link' => ['nullable', 'string', 'max:2048'],
         ]);
 
         $dash   = $this->readDashboard();
@@ -98,6 +70,9 @@ class EducationMaterialController extends Controller
         foreach ($videos as &$v) {
             if ((int) ($v['id'] ?? 0) === $id) {
                 $v['title'] = $request->input('title');
+                if ($request->filled('video_link')) {
+                    $v['embedUrl'] = $request->input('video_link');
+                }
                 $found = true;
                 break;
             }
@@ -112,10 +87,12 @@ class EducationMaterialController extends Controller
         $this->writeDashboard($dash);
 
         return redirect('/education')
-            ->with('success', 'Material title updated successfully.');
+            ->with('success', 'Material updated successfully.');
     }
 
-    public function destroy(int $id): RedirectResponse
+    // ── Publish (Upload Video — draft → published) ─────────────────
+
+    public function publish(int $id): RedirectResponse
     {
         if (!$this->isAdmin()) {
             abort(403);
@@ -123,7 +100,38 @@ class EducationMaterialController extends Controller
 
         $dash   = $this->readDashboard();
         $videos = $dash['education']['videos'] ?? [];
+        $found  = false;
 
+        foreach ($videos as &$v) {
+            if ((int) ($v['id'] ?? 0) === $id) {
+                $v['status'] = 'published';
+                $found = true;
+                break;
+            }
+        }
+        unset($v);
+
+        if (!$found) {
+            return redirect('/education')->with('success', 'Material not found.');
+        }
+
+        $dash['education']['videos'] = $videos;
+        $this->writeDashboard($dash);
+
+        return redirect('/education')
+            ->with('success', 'Video published and is now visible to users.');
+    }
+
+    // ── Destroy ────────────────────────────────────────────────────
+
+    public function destroy(int $id): RedirectResponse
+    {
+        if (!$this->isAdmin()) {
+            abort(403);
+        }
+
+        $dash      = $this->readDashboard();
+        $videos    = $dash['education']['videos'] ?? [];
         $target    = null;
         $remaining = [];
 
@@ -139,17 +147,15 @@ class EducationMaterialController extends Controller
             return redirect('/education')->with('success', 'Material already removed.');
         }
 
-        // Delete the physical file if it was an upload (has fileType, not a plain embedUrl)
-        if (!empty($target['fileType']) && !empty($target['embedUrl'])) {
+        // Delete physical files for legacy file-based uploads only
+        if (!empty($target['fileType']) && $target['fileType'] !== 'video/link' && !empty($target['embedUrl'])) {
             $embedUrl = $target['embedUrl'];
             if (str_starts_with($embedUrl, '/edu_material/')) {
-                // Stored directly in public/edu_material/
                 $filePath = public_path(ltrim($embedUrl, '/'));
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }
             } elseif (str_starts_with($embedUrl, '/storage/')) {
-                // Legacy: stored via storage symlink
                 $storagePath = preg_replace('#^/storage/#', '', $embedUrl);
                 Storage::disk('public')->delete($storagePath);
             }
@@ -162,7 +168,7 @@ class EducationMaterialController extends Controller
             ->with('success', 'Material deleted successfully.');
     }
 
-    // ── Helpers ───────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────────
 
     private function appendToDashboard(array $newVideos): void
     {
@@ -170,7 +176,7 @@ class EducationMaterialController extends Controller
         $nextId = (int) ($dash['education']['next_id'] ?? 1);
 
         foreach ($newVideos as $v) {
-            $v['id']                      = $nextId;
+            $v['id']                       = $nextId;
             $dash['education']['videos'][] = $v;
             $nextId++;
         }
@@ -181,13 +187,8 @@ class EducationMaterialController extends Controller
 
     private function readDashboard(): array
     {
-        $path = public_path(self::DASH_JSON);
-
-        if (!file_exists($path)) {
-            return [];
-        }
-
-        $decoded = json_decode(file_get_contents($path), true);
+        $path    = public_path(self::DASH_JSON);
+        $decoded = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
         return is_array($decoded) ? $decoded : [];
     }
 

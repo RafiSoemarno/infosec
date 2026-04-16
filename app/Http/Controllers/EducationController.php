@@ -55,15 +55,8 @@ class EducationController extends Controller
         $raw       = is_array($decoded) ? ($decoded['education']['videos'] ?? []) : [];
         $menuItems = is_array($decoded) ? ($decoded['menu']['items'] ?? []) : [];
 
-        // Only show uploaded materials (those with a fileType) in the admin list
-        $materials = array_values(array_filter($raw, fn($v) => !empty($v['fileType'])));
-
-        // Add a public URL for each so the view can render/download
-        $materials = array_map(function (array $v) {
-            // embedUrl is stored as "/files/<storage_path>" — serve it directly
-            $v['public_url'] = $v['embedUrl'] ?? '';
-            return $v;
-        }, $materials);
+        // Show all saved materials (link-based and legacy file-based)
+        $materials = array_values(array_filter($raw, fn($v) => !empty($v['embedUrl'])));
 
         $payload = $this->drillData->getEducationPayload($authUser);
 

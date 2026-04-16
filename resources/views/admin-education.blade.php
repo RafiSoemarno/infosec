@@ -17,7 +17,6 @@
         </div>
 
         <div class="edu-nav mt-auto">
-            {{-- Prev/Next placeholders to keep layout consistent --}}
             <button class="app-btn-secondary" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                 Previous Video
@@ -58,81 +57,61 @@
         </section>
     @endif
 
-    {{-- Upload panel --}}
+    {{-- Video creation panel --}}
     <section class="content-span-12 fade-in-up">
-        <div class="panel-card edu-admin-upload-panel">
-            {{-- Title input --}}
-            <form method="POST" action="{{ url('/education/materials') }}" enctype="multipart/form-data" id="uploadForm">
+        <div class="panel-card edu-admin-create-panel">
+            <form method="POST" action="{{ url('/education/materials') }}" id="saveVideoForm">
                 @csrf
 
-                {{-- Drop zone --}}
-                <div
-                    class="edu-admin-dropzone"
-                    id="dropzone"
-                    ondragover="handleDragOver(event)"
-                    ondragleave="handleDragLeave(event)"
-                    ondrop="handleDrop(event)"
+                {{-- Title input --}}
+                <input
+                    type="text"
+                    name="title"
+                    id="videoTitle"
+                    class="edu-admin-title-input"
+                    placeholder="Create Title...."
+                    maxlength="255"
+                    value="{{ old('title') }}"
+                    autocomplete="off"
                 >
-                    <input
-                        type="file"
-                        name="files[]"
-                        id="fileInput"
-                        class="edu-admin-dropzone__input"
-                        accept=".mp4,.webm,.ogv,.mov,.avi,.pdf,.ppt,.pptx,.doc,.docx"
-                        multiple
-                    >
 
-                    <div class="edu-admin-dropzone__content" id="dropzoneContent">
-                        {{-- Cloud upload illustration --}}
-                        <div class="edu-admin-dropzone__icon">
-                            <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" class="edu-admin-cloud-svg">
-                                <!-- Cloud body -->
-                                <ellipse cx="45" cy="52" rx="32" ry="22" fill="url(#cloudGrad)"/>
-                                <ellipse cx="68" cy="50" rx="24" ry="18" fill="url(#cloudGrad2)"/>
-                                <ellipse cx="30" cy="58" rx="20" ry="14" fill="url(#cloudGrad3)"/>
-                                <!-- Arrow shaft -->
-                                <rect x="56" y="38" width="8" height="26" rx="4" fill="url(#arrowGrad)"/>
-                                <!-- Arrow head -->
-                                <polygon points="60,18 45,40 75,40" fill="url(#arrowGrad)"/>
-                                <defs>
-                                    <linearGradient id="cloudGrad" x1="13" y1="30" x2="77" y2="74" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#5ee7ff"/>
-                                        <stop offset="100%" stop-color="#2278d9"/>
-                                    </linearGradient>
-                                    <linearGradient id="cloudGrad2" x1="44" y1="32" x2="92" y2="68" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#7dd6f8"/>
-                                        <stop offset="100%" stop-color="#3a8fe8"/>
-                                    </linearGradient>
-                                    <linearGradient id="cloudGrad3" x1="10" y1="44" x2="50" y2="72" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#4ecff5"/>
-                                        <stop offset="100%" stop-color="#1a5cb8"/>
-                                    </linearGradient>
-                                    <linearGradient id="arrowGrad" x1="60" y1="14" x2="60" y2="64" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#b8e6ff"/>
-                                        <stop offset="100%" stop-color="#6ec6f5"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-
-                        <p class="edu-admin-dropzone__hint">Drop your content here or</p>
-
-                        <div class="edu-admin-dropzone__actions">
-                            <label for="fileInput" class="edu-admin-btn-outline" role="button" tabindex="0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                Add files
-                            </label>
-                        </div>
-
-                        <p class="edu-admin-dropzone__formats">Supported: MP4, WebM, MOV, AVI, PDF, PPT, PPTX, DOC, DOCX &mdash; max {{ 500 }} MB</p>
+                {{-- Video preview area --}}
+                <div class="edu-admin-video-preview" id="videoPreviewArea">
+                    <div class="edu-admin-video-preview__placeholder" id="previewPlaceholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                            <rect x="2" y="3" width="20" height="18" rx="3" stroke-width="1.2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 9l5 3-5 3V9z"/>
+                        </svg>
+                        <p>Video preview will appear here</p>
+                        <p class="edu-admin-video-preview__hint">Paste a SharePoint or embed link below</p>
+                    </div>
+                    <div class="edu-admin-video-preview__frame" id="previewFrame" style="display:none">
+                        <iframe
+                            id="previewIframe"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="position:absolute;inset:0;width:100%;height:100%;"
+                        ></iframe>
                     </div>
                 </div>
 
-                {{-- Submit --}}
-                <div class="edu-admin-upload-footer">
-                    <button type="submit" class="app-btn-primary edu-admin-submit-btn" id="submitBtn" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        Save Material
+                {{-- Link input --}}
+                <input
+                    type="url"
+                    name="video_link"
+                    id="videoLink"
+                    class="edu-admin-link-input"
+                    placeholder="Link Video...."
+                    value="{{ old('video_link') }}"
+                    autocomplete="off"
+                >
+
+                {{-- Save button --}}
+                <div class="edu-admin-create-footer">
+                    <button type="submit" class="app-btn-primary edu-admin-save-btn" id="saveBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 3H7a2 2 0 00-2 2v14l7-3 7 3V5a2 2 0 00-2-2z"/></svg>
+                        Save Video
                     </button>
                 </div>
             </form>
@@ -142,42 +121,43 @@
 
 @section('right_sidebar')
     <div class="d-flex flex-column h-100 gap-3">
+        {{-- Search --}}
         <div class="edu-search">
             <svg class="edu-search__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
-            <input class="edu-search__input" type="text" placeholder="Search education ..." id="adminSearchInput">
+            <input class="edu-search__input" type="text" placeholder="Search education..." id="adminSearchInput">
         </div>
 
+        {{-- List header --}}
         <div class="edu-list-header">
             <p class="edu-list-header__title">Education Material</p>
             <p class="edu-list-header__note">Track All Ongoing education material</p>
         </div>
 
+        {{-- Material list --}}
         <div class="edu-video-list edu-admin-material-list" id="adminMaterialList">
-            {{-- Pending (staged) files — added by JS before save --}}
-            <div id="pendingList"></div>
-
             @forelse ($materials as $material)
-                <div class="edu-admin-material-item" data-title="{{ strtolower($material['title']) }}">
-                    {{-- Dot is always red/active because every stored material is live --}}
-                    <span class="edu-video-item__dot edu-video-item__dot--watched"></span>
+                <div
+                    class="edu-admin-material-item"
+                    data-title="{{ strtolower($material['title']) }}"
+                    data-id="{{ $material['id'] }}"
+                >
+                    <span class="edu-video-item__dot {{ ($material['status'] ?? 'draft') === 'published' ? 'edu-video-item__dot--watched' : 'edu-admin-dot--draft' }}"></span>
                     <div class="edu-admin-material-item__body">
                         <span class="edu-video-item__title">{{ $material['title'] }}</span>
-                        {{-- original_filename and created_at come directly from the JSON store --}}
-                        @if (!empty($material['original_filename']))
-                            <span class="edu-admin-material-item__meta">{{ $material['original_filename'] }}</span>
-                        @endif
-                        @if (!empty($material['created_at']))
-                            <span class="edu-admin-material-item__meta">
-                                {{ \Carbon\Carbon::parse($material['created_at'])->format('d M Y') }}
-                                &bull; by {{ $material['uploaded_by'] ?? 'admin' }}
+                        <span class="edu-admin-material-item__meta">
+                            Video
+                            &bull;
+                            <span class="edu-admin-status-badge edu-admin-status-badge--{{ $material['status'] ?? 'draft' }}">
+                                {{ ucfirst($material['status'] ?? 'draft') }}
                             </span>
-                        @endif
+                        </span>
                     </div>
                     <div class="edu-admin-material-item__del">
                         <button type="button" class="edu-admin-edit-btn" title="Edit"
                             data-id="{{ $material['id'] }}"
                             data-title="{{ addslashes($material['title']) }}"
-                            onclick="openEditModal(this.dataset.id, this.dataset.title)">
+                            data-link="{{ addslashes($material['embedUrl'] ?? '') }}"
+                            onclick="openEditModal(this.dataset.id, this.dataset.title, this.dataset.link)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         </button>
                         <form method="POST" action="{{ url('/education/materials/' . $material['id']) }}"
@@ -192,11 +172,30 @@
                 </div>
             @empty
                 <div class="edu-admin-empty">
-                    <p>No materials uploaded yet.</p>
+                    <p>No materials saved yet.</p>
                 </div>
             @endforelse
         </div>
 
+        {{-- Upload (Publish) button --}}
+        <button
+            type="button"
+            class="app-btn-primary edu-admin-publish-btn"
+            id="publishBtn"
+            onclick="publishSelected()"
+            disabled
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Upload Video
+        </button>
+
+        {{-- Publish form (hidden) --}}
+        <form method="POST" id="publishForm" style="display:none">
+            @csrf
+            @method('PUT')
+        </form>
+
+        {{-- Summary card --}}
         <div class="edu-progress-badge mt-auto">
             <div class="edu-progress-badge__score">
                 <span class="edu-progress-badge__num">{{ count($materials) }}</span>
@@ -213,13 +212,17 @@
 {{-- Edit modal --}}
 <div id="editModal" class="edu-admin-modal-overlay" style="display:none" onclick="closeEditModal(event)">
     <div class="edu-admin-modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
-        <p class="edu-admin-modal__title" id="editModalTitle">Rename Material</p>
+        <p class="edu-admin-modal__title" id="editModalTitle">Edit Material</p>
         <form method="POST" id="editForm">
             @csrf
             @method('PUT')
             <div class="edu-admin-modal__field">
                 <label class="edu-admin-modal__label" for="editTitleInput">Title</label>
                 <input class="edu-admin-modal__input" type="text" id="editTitleInput" name="title" required maxlength="255">
+            </div>
+            <div class="edu-admin-modal__field">
+                <label class="edu-admin-modal__label" for="editLinkInput">Video Link</label>
+                <input class="edu-admin-modal__input" type="url" id="editLinkInput" name="video_link">
             </div>
             <div class="edu-admin-modal__actions">
                 <button type="button" class="app-btn-secondary" onclick="closeEditModal()">Cancel</button>
@@ -231,179 +234,106 @@
 
 @push('scripts')
 <script>
-    // ── State ────────────────────────────────────────────────────
-    const fileInput   = document.getElementById('fileInput');
-    const dropzone    = document.getElementById('dropzone');
-    const dzContent   = document.getElementById('dropzoneContent');
-    const submitBtn   = document.getElementById('submitBtn');
-    const pendingList = document.getElementById('pendingList');
+(function () {
+    // ── Video link preview ──────────────────────────────────────
+    var linkInput       = document.getElementById('videoLink');
+    var previewIframe   = document.getElementById('previewIframe');
+    var previewPlaceholder = document.getElementById('previewPlaceholder');
+    var previewFrame    = document.getElementById('previewFrame');
 
-    // Each entry: { file: File, title: string }
-    let stagedFiles = [];
+    function toEmbedUrl(raw) {
+        if (!raw) return '';
+        var trimmed = raw.trim();
 
-    // ── Add files to the staging list ────────────────────────────
-    function stageFiles(newFiles) {
-        Array.from(newFiles).forEach(function (file) {
-            // Default title: filename without extension
-            const defaultTitle = file.name.replace(/\.[^.]+$/, '');
-            stagedFiles.push({ file: file, title: defaultTitle });
-        });
-        renderPendingList();
-        updateSubmitBtn();
+        // SharePoint embed: already contains ":x:/r" or "embed" path — serve as-is
+        if (trimmed.includes('sharepoint.com') || trimmed.includes('sharepointonline.com')) {
+            // Convert sharing links to embed links if needed
+            if (!trimmed.includes('embed') && trimmed.includes('?')) {
+                return trimmed.replace('?', '?action=embedview&');
+            }
+            return trimmed;
+        }
+
+        // YouTube watch URL → embed
+        var ytMatch = trimmed.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+        if (ytMatch) {
+            return 'https://www.youtube.com/embed/' + ytMatch[1];
+        }
+
+        // Already an embed URL or direct iframe src
+        return trimmed;
     }
 
-    function removeStagedFile(index) {
-        stagedFiles.splice(index, 1);
-        renderPendingList();
-        updateSubmitBtn();
+    function updatePreview() {
+        var url = toEmbedUrl(linkInput.value);
+        if (url) {
+            previewIframe.src = url;
+            previewPlaceholder.style.display = 'none';
+            previewFrame.style.display = 'block';
+        } else {
+            previewIframe.src = '';
+            previewPlaceholder.style.display = '';
+            previewFrame.style.display = 'none';
+        }
     }
 
-    function renderPendingList() {
-        pendingList.innerHTML = '';
-        stagedFiles.forEach(function (entry, i) {
-            const item = document.createElement('div');
-            item.className = 'edu-admin-material-item edu-admin-pending-item';
+    linkInput.addEventListener('input', updatePreview);
 
-            const dot = document.createElement('span');
-            dot.className = 'edu-video-item__dot edu-admin-pending-dot';
+    // ── Sidebar: item selection for publish ────────────────────
+    var selectedId = null;
+    var publishBtn = document.getElementById('publishBtn');
 
-            const body = document.createElement('div');
-            body.className = 'edu-admin-material-item__body';
+    document.querySelectorAll('.edu-admin-material-item').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            // Ignore clicks on edit/delete buttons
+            if (e.target.closest('.edu-admin-material-item__del')) return;
 
-            const titleInput = document.createElement('input');
-            titleInput.type        = 'text';
-            titleInput.className   = 'edu-admin-pending-title-input';
-            titleInput.placeholder = 'Enter title…';
-            titleInput.value       = entry.title;
-            titleInput.addEventListener('input', function () {
-                stagedFiles[i].title = this.value;
+            document.querySelectorAll('.edu-admin-material-item').forEach(function (el) {
+                el.classList.remove('edu-admin-material-item--selected');
             });
 
-            const meta = document.createElement('span');
-            meta.className = 'edu-admin-material-item__meta edu-admin-pending-badge';
-            meta.textContent = 'Pending \u2022 ' + formatBytes(entry.file.size);
+            item.classList.add('edu-admin-material-item--selected');
+            selectedId = item.dataset.id;
 
-            body.appendChild(titleInput);
-            body.appendChild(meta);
-
-            const btn = document.createElement('button');
-            btn.type      = 'button';
-            btn.className = 'edu-admin-del-btn';
-            btn.title     = 'Remove';
-            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
-            btn.addEventListener('click', function () { removeStagedFile(i); });
-
-            const del = document.createElement('div');
-            del.className = 'edu-admin-material-item__del';
-            del.appendChild(btn);
-
-            item.appendChild(dot);
-            item.appendChild(body);
-            item.appendChild(del);
-            pendingList.appendChild(item);
+            // Only enable publish for draft items
+            var dot = item.querySelector('.edu-admin-dot--draft');
+            publishBtn.disabled = !dot;
         });
-    }
-
-    function updateSubmitBtn() {
-        submitBtn.disabled = stagedFiles.length === 0;
-    }
-
-    function escHtml(str) {
-        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    function formatBytes(bytes) {
-        if (bytes < 1024) return bytes + ' B';
-        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-        return (bytes / 1048576).toFixed(1) + ' MB';
-    }
-
-    // ── File input change ────────────────────────────────────────
-    fileInput.addEventListener('change', function () {
-        if (this.files && this.files.length) {
-            stageFiles(this.files);
-            this.value = ''; // reset so same file can be picked again
-        }
     });
 
-    // ── Drag-and-drop ────────────────────────────────────────────
-    function handleDragOver(e) {
-        e.preventDefault();
-        dropzone.classList.add('edu-admin-dropzone--drag');
-    }
+    window.publishSelected = function () {
+        if (!selectedId) return;
+        var form = document.getElementById('publishForm');
+        form.action = '/education/materials/' + selectedId + '/publish';
+        form.submit();
+    };
 
-    function handleDragLeave(e) {
-        if (!dropzone.contains(e.relatedTarget)) {
-            dropzone.classList.remove('edu-admin-dropzone--drag');
-        }
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        dropzone.classList.remove('edu-admin-dropzone--drag');
-        if (e.dataTransfer.files && e.dataTransfer.files.length) {
-            stageFiles(e.dataTransfer.files);
-        }
-    }
-
-    // ── Edit modal ───────────────────────────────────────────────
-    function openEditModal(id, title) {
-        document.getElementById('editForm').action = '/education/materials/' + id;
-        document.getElementById('editTitleInput').value = title;
-        document.getElementById('editModal').style.display = 'flex';
-        document.getElementById('editTitleInput').focus();
-    }
-
-    function closeEditModal(event) {
-        if (!event || event.target === document.getElementById('editModal')) {
-            document.getElementById('editModal').style.display = 'none';
-        }
-    }
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeEditModal();
-    });
-
-    // ── Right-sidebar search ─────────────────────────────────────
+    // ── Search ──────────────────────────────────────────────────
     document.getElementById('adminSearchInput').addEventListener('input', function () {
-        const q = this.value.toLowerCase();
+        var q = this.value.toLowerCase();
         document.querySelectorAll('.edu-admin-material-item').forEach(function (item) {
-            if (item.classList.contains('edu-admin-pending-item')) return; // always show pending
             item.style.display = (item.dataset.title || '').includes(q) ? '' : 'none';
         });
     });
 
-    // ── Save via fetch (avoids fileInput.files re-assignment issues) ──
-    document.getElementById('uploadForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+    // ── Edit modal ──────────────────────────────────────────────
+    window.openEditModal = function (id, title, link) {
+        document.getElementById('editForm').action = '/education/materials/' + id;
+        document.getElementById('editTitleInput').value = title;
+        document.getElementById('editLinkInput').value = link || '';
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('editTitleInput').focus();
+    };
 
-        // Validate all titles are filled
-        const emptyIdx = stagedFiles.findIndex(function (entry) { return entry.title.trim() === ''; });
-        if (emptyIdx !== -1) {
-            pendingList.querySelectorAll('.edu-admin-pending-title-input')[emptyIdx].focus();
-            return;
+    window.closeEditModal = function (event) {
+        if (!event || event.target === document.getElementById('editModal')) {
+            document.getElementById('editModal').style.display = 'none';
         }
+    };
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Uploading…';
-
-        const fd = new FormData();
-        fd.append('_token', document.querySelector('input[name="_token"]').value);
-        stagedFiles.forEach(function (entry) {
-            fd.append('titles[]', entry.title.trim());
-            fd.append('files[]', entry.file, entry.file.name);
-        });
-
-        fetch('{{ url('/education/materials') }}', { method: 'POST', body: fd })
-            .then(function (res) {
-                // Laravel redirects back — follow the redirect URL
-                if (res.redirected) { window.location.href = res.url; return; }
-                // Non-redirect (e.g. validation error) — reload to show flash/errors
-                window.location.href = '{{ url('/education') }}';
-            })
-            .catch(function () {
-                window.location.href = '{{ url('/education') }}';
-            });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeEditModal();
     });
+})();
 </script>
 @endpush
