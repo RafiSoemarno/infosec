@@ -1699,16 +1699,18 @@ a {
 
 .edu-admin-title-input {
 	display: block;
-	width: 100%;
-	padding: 20px 28px;
-	border: 0;
-	border-bottom: 1px solid var(--color-line);
-	background: transparent;
+	width: calc(100% - 56px);
+	margin: 20px 28px 0;
+	padding: 14px 18px;
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-sm);
+	background: var(--color-panel-muted);
 	font-family: var(--font-sans);
-	font-size: 1.35rem;
-	font-weight: 700;
+	font-size: 0.95rem;
+	font-weight: 400;
 	color: var(--color-text);
 	outline: none;
+	transition: border-color 0.15s, background 0.15s;
 }
 
 .edu-admin-title-input::placeholder {
@@ -1717,7 +1719,8 @@ a {
 }
 
 .edu-admin-title-input:focus {
-	background: var(--color-panel-muted);
+	border-color: var(--color-brand);
+	background: var(--color-panel);
 }
 
 /* Drop zone */
@@ -2113,18 +2116,21 @@ a {
 	overflow: hidden;
 }
 
-/* Link input — sits below the preview, matches title-input style */
+/* Link input */
 .edu-admin-link-input {
 	display: block;
-	width: 100%;
-	padding: 16px 28px;
-	border: 0;
-	border-top: 1px solid var(--color-line);
-	background: transparent;
+	width: calc(100% - 56px);
+	margin: 16px 28px 0;
+	padding: 14px 18px;
+	border: 1.5px solid var(--color-line);
+	border-radius: var(--radius-sm);
+	background: var(--color-panel-muted);
 	font-family: var(--font-sans);
-	font-size: 1rem;
+	font-size: 0.95rem;
+	font-weight: 400;
 	color: var(--color-text);
 	outline: none;
+	transition: border-color 0.15s, background 0.15s;
 }
 
 .edu-admin-link-input::placeholder {
@@ -2132,13 +2138,14 @@ a {
 }
 
 .edu-admin-link-input:focus {
-	background: var(--color-panel-muted);
+	border-color: var(--color-brand);
+	background: var(--color-panel);
 }
 
 /* Video preview area */
 .edu-admin-video-preview {
 	position: relative;
-	margin: 0 28px;
+	margin: 16px 28px 0;
 	border-radius: var(--radius-md);
 	overflow: hidden;
 	background: var(--color-panel-muted);
