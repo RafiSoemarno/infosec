@@ -2191,7 +2191,6 @@ a {
 	display: flex;
 	justify-content: center;
 	padding: 20px 28px 24px;
-	border-top: 1px solid var(--color-line);
 }
 
 .edu-admin-save-btn {
