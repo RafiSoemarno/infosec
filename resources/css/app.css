@@ -1958,6 +1958,9 @@ a {
 .edu-admin-material-item__del {
 	flex-shrink: 0;
 	margin-top: 2px;
+	display: flex;
+	align-items: center;
+	gap: 2px;
 }
 
 .edu-admin-del-btn {
@@ -1974,6 +1977,84 @@ a {
 .edu-admin-del-btn:hover {
 	color: var(--color-brand);
 	background: var(--color-brand-soft);
+}
+
+.edu-admin-edit-btn {
+	background: none;
+	border: none;
+	padding: 4px;
+	line-height: 0;
+	color: var(--color-muted);
+	cursor: pointer;
+	border-radius: 6px;
+	transition: color 0.15s, background 0.15s;
+}
+
+.edu-admin-edit-btn:hover {
+	color: #2278d9;
+	background: rgba(34, 120, 217, 0.1);
+}
+
+/* Edit modal */
+.edu-admin-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.edu-admin-modal {
+	background: var(--color-panel);
+	border: 1px solid var(--color-line);
+	border-radius: var(--radius-md);
+	padding: 24px;
+	width: 100%;
+	max-width: 360px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.edu-admin-modal__title {
+	font-size: 0.95rem;
+	font-weight: 600;
+	margin: 0 0 16px;
+}
+
+.edu-admin-modal__field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 20px;
+}
+
+.edu-admin-modal__label {
+	font-size: 0.78rem;
+	color: var(--color-muted);
+	font-weight: 500;
+}
+
+.edu-admin-modal__input {
+	width: 100%;
+	padding: 8px 10px;
+	border: 1px solid var(--color-line);
+	border-radius: var(--radius-sm);
+	background: var(--color-panel-muted);
+	color: inherit;
+	font-size: 0.88rem;
+	outline: none;
+	transition: border-color 0.15s;
+}
+
+.edu-admin-modal__input:focus {
+	border-color: #2278d9;
+}
+
+.edu-admin-modal__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
 }
 
 .edu-admin-empty {
@@ -2644,12 +2725,13 @@ a {
    Prefix: .dsh-*
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Overview title row (title + Period/FY selectors inline) ─────── */
+/* ── Overview title row (title left, Period/FY right) ───────────── */
 .dsh-overview__title-row {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 16px;
-	flex-wrap: wrap;
+	width: 100%;
 }
 
 /* ── Period / FY selector controls ──────────────────────────────── */
@@ -2724,12 +2806,10 @@ a {
 }
 .dsh-overview__header {
 	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: 16px;
+	flex-direction: column;
+	gap: 14px;
 	padding: 22px 28px 14px;
 	border-bottom: 1px solid var(--color-line);
-	flex-wrap: wrap;
 }
 .dsh-overview__title {
 	font-size: 1rem;

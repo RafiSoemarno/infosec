@@ -81,6 +81,40 @@ class EducationMaterialController extends Controller
             ->with('success', 'Material ' . $label . ' uploaded successfully.');
     }
 
+    public function update(Request $request, int $id): RedirectResponse
+    {
+        if (!$this->isAdmin()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+        ]);
+
+        $dash   = $this->readDashboard();
+        $videos = $dash['education']['videos'] ?? [];
+        $found  = false;
+
+        foreach ($videos as &$v) {
+            if ((int) ($v['id'] ?? 0) === $id) {
+                $v['title'] = $request->input('title');
+                $found = true;
+                break;
+            }
+        }
+        unset($v);
+
+        if (!$found) {
+            return redirect('/education')->with('success', 'Material not found.');
+        }
+
+        $dash['education']['videos'] = $videos;
+        $this->writeDashboard($dash);
+
+        return redirect('/education')
+            ->with('success', 'Material title updated successfully.');
+    }
+
     public function destroy(int $id): RedirectResponse
     {
         if (!$this->isAdmin()) {

@@ -24,6 +24,7 @@ Route::get('/menu', [MenuController::class, 'index']);
 Route::get('/education', [EducationController::class, 'index']);
 Route::post('/education/materials', [EducationMaterialController::class, 'store']);
 Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
+Route::put('/education/materials/{id}', [EducationMaterialController::class, 'update']);
 Route::get('/drill', [DrillController::class, 'index']);
 Route::post('/drill/complete', [DrillController::class, 'complete']);
 Route::get('/drill/video', [DrillController::class, 'videoPlayer']);

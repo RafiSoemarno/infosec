@@ -173,15 +173,22 @@
                             </span>
                         @endif
                     </div>
-                    <form method="POST" action="{{ url('/education/materials/' . $material['id']) }}"
-                          class="edu-admin-material-item__del"
-                          onsubmit="return confirm('Delete &quot;{{ addslashes($material['title']) }}&quot;?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="edu-admin-del-btn" title="Delete">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <div class="edu-admin-material-item__del">
+                        <button type="button" class="edu-admin-edit-btn" title="Edit"
+                            data-id="{{ $material['id'] }}"
+                            data-title="{{ addslashes($material['title']) }}"
+                            onclick="openEditModal(this.dataset.id, this.dataset.title)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         </button>
-                    </form>
+                        <form method="POST" action="{{ url('/education/materials/' . $material['id']) }}"
+                              onsubmit="return confirm('Delete &quot;{{ addslashes($material['title']) }}&quot;?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="edu-admin-del-btn" title="Delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             @empty
                 <div class="edu-admin-empty">
@@ -202,6 +209,25 @@
         </div>
     </div>
 @endsection
+
+{{-- Edit modal --}}
+<div id="editModal" class="edu-admin-modal-overlay" style="display:none" onclick="closeEditModal(event)">
+    <div class="edu-admin-modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+        <p class="edu-admin-modal__title" id="editModalTitle">Rename Material</p>
+        <form method="POST" id="editForm">
+            @csrf
+            @method('PUT')
+            <div class="edu-admin-modal__field">
+                <label class="edu-admin-modal__label" for="editTitleInput">Title</label>
+                <input class="edu-admin-modal__input" type="text" id="editTitleInput" name="title" required maxlength="255">
+            </div>
+            <div class="edu-admin-modal__actions">
+                <button type="button" class="app-btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="app-btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @push('scripts')
 <script>
@@ -319,6 +345,24 @@
             stageFiles(e.dataTransfer.files);
         }
     }
+
+    // ── Edit modal ───────────────────────────────────────────────
+    function openEditModal(id, title) {
+        document.getElementById('editForm').action = '/education/materials/' + id;
+        document.getElementById('editTitleInput').value = title;
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('editTitleInput').focus();
+    }
+
+    function closeEditModal(event) {
+        if (!event || event.target === document.getElementById('editModal')) {
+            document.getElementById('editModal').style.display = 'none';
+        }
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeEditModal();
+    });
 
     // ── Right-sidebar search ─────────────────────────────────────
     document.getElementById('adminSearchInput').addEventListener('input', function () {
