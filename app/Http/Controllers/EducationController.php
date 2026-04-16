@@ -65,9 +65,11 @@ class EducationController extends Controller
             return $v;
         }, $materials);
 
+        $payload = $this->drillData->getEducationPayload($authUser);
+
         return view('admin-education', [
             'user'      => $authUser,
-            'menuData'  => ['items' => $menuItems],
+            'menuData'  => $payload['menuData'] ?? ['items' => $menuItems],
             'materials' => $materials,
         ]);
     }
