@@ -8,11 +8,13 @@ use Illuminate\View\View;
 
 class ResultController extends Controller
 {
-    private DrillDataService $drillData;
+    private DrillDataService   $drillData;
+    private DashboardController $dashboardController;
 
-    public function __construct(DrillDataService $drillData)
+    public function __construct(DrillDataService $drillData, DashboardController $dashboardController)
     {
-        $this->drillData = $drillData;
+        $this->drillData           = $drillData;
+        $this->dashboardController = $dashboardController;
     }
 
     public function index()
@@ -24,7 +26,13 @@ class ResultController extends Controller
                 ]);
         }
 
-        $payload = $this->drillData->getMyResultPayload((array) session('auth_user'));
+        // Admin users see the drill statistics dashboard instead of personal results.
+        $user = (array) session('auth_user');
+        if (($user['role'] ?? '') === 'admin') {
+            return $this->dashboardController->renderDashboard();
+        }
+
+        $payload = $this->drillData->getMyResultPayload($user);
 
         return view('my-result', $payload);
     }
