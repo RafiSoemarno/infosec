@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ResultController extends Controller
@@ -19,15 +20,8 @@ class ResultController extends Controller
 
     public function index()
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/')
-                ->withErrors([
-                    'auth' => 'Please sign in first.',
-                ]);
-        }
-
         // Admin users see the drill statistics dashboard instead of personal results.
-        $user = (array) session('auth_user');
+        $user = (array) Auth::user()->toAuthUserArray();
         if (($user['role'] ?? '') === 'admin') {
             return $this->dashboardController->renderDashboard();
         }

@@ -6,6 +6,7 @@ use App\Services\DrillDataService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -22,14 +23,7 @@ class DrillController extends Controller
 
     public function index()
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/')
-                ->withErrors([
-                    'auth' => 'Please sign in first.',
-                ]);
-        }
-
-        $authUser = (array) session('auth_user');
+        $authUser = (array) Auth::user()->toAuthUserArray();
 
         if (($authUser['role'] ?? '') === 'admin') {
             return redirect('/admin/drill');
@@ -42,16 +36,12 @@ class DrillController extends Controller
 
     public function complete(Request $request)
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/');
-        }
-
         $request->validate([
             'drill_id' => ['required', 'integer'],
         ]);
 
         $this->drillData->completeDrill(
-            (array) session('auth_user'),
+            (array) Auth::user()->toAuthUserArray(),
             (int) $request->input('drill_id')
         );
 
@@ -60,18 +50,11 @@ class DrillController extends Controller
 
     public function videoPlayer()
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/');
-        }
-
         return view('drill-video');
     }
 
     public function video()
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/');
-        }
 
         $path = $this->drillVideoPath;
 

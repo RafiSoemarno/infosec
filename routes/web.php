@@ -18,28 +18,30 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [AuthController::class, 'showLogin']);
+Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/menu', [MenuController::class, 'index']);
-Route::get('/education', [EducationController::class, 'index']);
-Route::post('/education/materials', [EducationMaterialController::class, 'store']);
-Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
-Route::put('/education/materials/{id}', [EducationMaterialController::class, 'update']);
-Route::get('/drill', [DrillController::class, 'index']);
-Route::post('/drill/complete', [DrillController::class, 'complete']);
-Route::get('/drill/video', [DrillController::class, 'videoPlayer']);
-Route::get('/drill/video/stream', [DrillController::class, 'video']);
-Route::get('/my-result', [ResultController::class, 'index']);
-Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-// Admin drill scheduling
-Route::get('/admin/dashboard', [DashboardController::class, 'index']);
-Route::get('/admin/drill', [AdminDrillController::class, 'index']);
-Route::get('/admin/summary-report', [SummaryReportController::class, 'index']);
-Route::post('/admin/drill/self-service', [AdminDrillController::class, 'saveSelfService']);
-Route::post('/admin/drill/schedule', [AdminDrillController::class, 'saveScheduleDrill']);
-Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDrill']);
-Route::post('/admin/drill/drills/{id}/delete', [AdminDrillController::class, 'destroyDrill']);
+    Route::get('/menu', [MenuController::class, 'index']);
+    Route::get('/education', [EducationController::class, 'index']);
+    Route::post('/education/materials', [EducationMaterialController::class, 'store']);
+    Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
+    Route::put('/education/materials/{id}', [EducationMaterialController::class, 'update']);
+    Route::get('/drill', [DrillController::class, 'index']);
+    Route::post('/drill/complete', [DrillController::class, 'complete']);
+    Route::get('/drill/video', [DrillController::class, 'videoPlayer']);
+    Route::get('/drill/video/stream', [DrillController::class, 'video']);
+    Route::get('/my-result', [ResultController::class, 'index']);
+    Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
 
-Route::post('/logout', [AuthController::class, 'logout']);
+    // Admin drill scheduling
+    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+    Route::get('/admin/drill', [AdminDrillController::class, 'index']);
+    Route::get('/admin/summary-report', [SummaryReportController::class, 'index']);
+    Route::post('/admin/drill/self-service', [AdminDrillController::class, 'saveSelfService']);
+    Route::post('/admin/drill/schedule', [AdminDrillController::class, 'saveScheduleDrill']);
+    Route::post('/admin/drill/drills/{id}', [AdminDrillController::class, 'updateDrill']);
+    Route::post('/admin/drill/drills/{id}/delete', [AdminDrillController::class, 'destroyDrill']);
+});

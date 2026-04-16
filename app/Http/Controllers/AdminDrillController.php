@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\DrillDataService;
 use App\Services\DrillScheduleStore;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * AdminDrillController
@@ -147,13 +148,13 @@ class AdminDrillController extends Controller
 
     private function isAdmin(): bool
     {
-        $user = (array) session('auth_user');
-        return ($user['role'] ?? '') === 'admin';
+        $user = Auth::user();
+        return $user && $user->role === 'admin';
     }
 
     private function buildPayload(): array
     {
-        $authUser = (array) session('auth_user');
+        $authUser = (array) Auth::user()->toAuthUserArray();
 
         $menuItems = $this->getMenuItemsFromJson();
 

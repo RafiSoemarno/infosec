@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Shows the Education page.
@@ -25,11 +26,7 @@ class EducationController extends Controller
 
     public function index(Request $request)
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/')->withErrors(['auth' => 'Please sign in first.']);
-        }
-
-        $authUser = (array) session('auth_user');
+        $authUser = (array) Auth::user()->toAuthUserArray();
 
         if (($authUser['role'] ?? '') === 'admin') {
             return $this->adminIndex($authUser);

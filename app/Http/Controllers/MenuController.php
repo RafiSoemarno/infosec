@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class MenuController extends Controller
@@ -17,14 +18,7 @@ class MenuController extends Controller
 
     public function index()
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/')
-                ->withErrors([
-                    'auth' => 'Please sign in first.',
-                ]);
-        }
-
-        $authUser = (array) session('auth_user');
+        $authUser = (array) Auth::user()->toAuthUserArray();
         $payload = $this->drillData->getMenuPayload($authUser);
 
         return view('menu', $payload);

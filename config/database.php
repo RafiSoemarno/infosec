@@ -91,7 +91,22 @@ return [
             'trust_server_certificate' => env('DB2_TRUST_SERVER_CERTIFICATE', false),
         ],
 
+        'drill_auth' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DRILL_DB_HOST', 'localhost\\SQLEXPRESS'),
+            'port' => env('DRILL_DB_PORT', '1433'),
+            'database' => env('DRILL_DB_DATABASE', 'db_drill_webapp'),
+            'username' => env('DRILL_DB_USERNAME', 'sa'),
+            'password' => env('DRILL_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'trust_server_certificate' => env('DRILL_DB_TRUST_CERT', false),
+        ],
+
     ],
+
+    'use_database' => env('USE_DATABASE', false),
 
     /*
     |--------------------------------------------------------------------------

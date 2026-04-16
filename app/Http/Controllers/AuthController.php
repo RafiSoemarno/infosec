@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\DrillDataService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -18,7 +19,7 @@ class AuthController extends Controller
 
     public function showLogin()
     {
-        if (session()->has('auth_user')) {
+        if (Auth::check()) {
             return redirect('/menu');
         }
 
@@ -35,9 +36,12 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $user = $this->drillData->authenticate($request);
+        $credentials = [
+            'MailAddress' => $request->input('username'),
+            'password' => $request->input('password'),
+        ];
 
-        if (!$user) {
+        if (!Auth::attempt($credentials, false)) {
             return redirect('/')
                 ->withInput($request->only('username'))
                 ->withErrors([
@@ -45,14 +49,17 @@ class AuthController extends Controller
                 ]);
         }
 
-        session()->put('auth_user', $user);
+        $request->session()->regenerate();
 
         return redirect('/menu');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('auth_user');
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }

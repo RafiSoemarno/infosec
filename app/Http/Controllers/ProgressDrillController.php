@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProgressDrillController extends Controller
@@ -16,14 +17,7 @@ class ProgressDrillController extends Controller
 
     public function index(): View|\Illuminate\Http\RedirectResponse
     {
-        if (!session()->has('auth_user')) {
-            return redirect('/')
-                ->withErrors([
-                    'auth' => 'Please sign in first.',
-                ]);
-        }
-
-        $payload = $this->drillData->getProgressDrillPayload((array) session('auth_user'));
+        $payload = $this->drillData->getProgressDrillPayload((array) Auth::user()->toAuthUserArray());
 
         return view('progress-drill', $payload);
     }

@@ -190,9 +190,7 @@ class DrillDataService
             return false;
         }
 
-        return Schema::hasTable('users')
-            && Schema::hasTable('education_videos')
-            && Schema::hasTable('drill_simulations');
+        return Schema::connection('drill_auth')->hasTable('tb_user');
     }
 
     private function getLandingDataFromDatabase(): array
@@ -263,7 +261,7 @@ class DrillDataService
         $password = (string) $request->input('password');
 
         $user = User::query()
-            ->whereRaw('LOWER(username) = ?', [$username])
+            ->whereRaw('LOWER(MailAddress) = ?', [$username])
             ->first();
 
         if (!$user) {

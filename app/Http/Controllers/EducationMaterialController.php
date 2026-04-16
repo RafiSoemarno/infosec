@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -38,7 +39,7 @@ class EducationMaterialController extends Controller
         ]);
 
         $titles     = $request->input('titles');
-        $uploadedBy = session('auth_user.username', 'admin');
+        $uploadedBy = Auth::user()->username ?? 'admin';
         $count      = 0;
         $newVideos  = [];
 
@@ -201,7 +202,7 @@ class EducationMaterialController extends Controller
 
     private function isAdmin(): bool
     {
-        $user = session('auth_user');
-        return !empty($user) && ($user['role'] ?? '') === 'admin';
+        $user = Auth::user();
+        return !empty($user) && $user->role === 'admin';
     }
 }

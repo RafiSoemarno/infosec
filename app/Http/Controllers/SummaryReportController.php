@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DrillDataService;
 use App\Services\DrillScheduleStore;
+use Illuminate\Support\Facades\Auth;
 
 class SummaryReportController extends Controller
 {
@@ -22,7 +23,7 @@ class SummaryReportController extends Controller
             return redirect('/menu');
         }
 
-        $authUser  = (array) session('auth_user');
+        $authUser  = (array) Auth::user()->toAuthUserArray();
         $menuItems = $this->getMenuItems();
 
         // Build summary report rows from drills + JSON dashboard data
@@ -39,8 +40,8 @@ class SummaryReportController extends Controller
 
     private function isAdmin(): bool
     {
-        $user = (array) session('auth_user');
-        return ($user['role'] ?? '') === 'admin';
+        $user = Auth::user();
+        return $user && $user->role === 'admin';
     }
 
     private function getMenuItems(): array

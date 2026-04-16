@@ -13,15 +13,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public ?int $id = null;
-    public ?string $username = null;
-    public ?string $name = null;
-    public ?string $email = null;
-    public ?string $password = null;
-    public ?string $employee_id = null;
-    public ?string $company = null;
-    public ?string $business_unit = null;
-    public ?string $remember_token = null;
+    protected $connection = 'drill_auth';
+    protected $table = 'tb_user';
+    protected $primaryKey = 'ID';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -29,13 +24,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
-        'name',
-        'employee_id',
-        'company',
-        'business_unit',
-        'email',
-        'password',
+        'MailAddress',
+        'AuthLevel',
+        'PasswordHash',
     ];
 
     /**
@@ -44,8 +35,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'PasswordHash',
+        'PasswordSalt',
+        'HashAlgorithm',
+        'HashIterations',
     ];
 
     /**
@@ -54,8 +47,53 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'ID' => 'int',
     ];
+
+    /**
+     * Get the password hash for auth verification.
+     */
+    public function getAuthPassword(): string
+    {
+        return (string) $this->PasswordHash;
+    }
+
+    /**
+     * Accessors to map tb_user columns to fields expected by downstream code.
+     */
+    public function getRoleAttribute(): string
+    {
+        return (string) ($this->attributes['AuthLevel'] ?? 'regular');
+    }
+
+    public function getUsernameAttribute(): string
+    {
+        return (string) ($this->attributes['MailAddress'] ?? '');
+    }
+
+    public function getEmailAttribute(): string
+    {
+        return (string) ($this->attributes['MailAddress'] ?? '');
+    }
+
+    /**
+     * Build an auth user array for DrillDataService methods.
+     */
+    public function toAuthUserArray(): array
+    {
+        $username = strtolower((string) $this->MailAddress);
+        return [
+            'id' => (int) $this->ID,
+            'username' => $username,
+            'name' => (string) ($this->name ?? $username),
+            'employeeId' => '-',
+            'company' => '-',
+            'businessUnit' => '-',
+            'email' => $username,
+            'role' => (string) ($this->AuthLevel ?? 'regular'),
+            'isSpecial' => $username === 'selamet.nuryanto',
+        ];
+    }
 
     public function videoProgress(): HasMany
     {
