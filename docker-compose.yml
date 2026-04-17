@@ -4,22 +4,6 @@ services:
       context: ./docker/app
     container_name: laravel-app
     working_dir: /var/www/html
-    environment:
-      # Tailscale
-      TS_AUTHKEY: "tskey-auth-k4QcZfMtSU11CNTRL-nyeXrwhmHwEfw6YHjTArvEBWRNYbkjKS"
-      TS_HOSTNAME: "laravel-dev"
-      TS_ACCEPT_ROUTES: "false"
-
-      # Laravel typical env defaults (you can also use app/.env)
-      APP_ENV: local
-      APP_DEBUG: "true"
-
-      DB_CONNECTION: mysql
-      DB_HOST: mariadb
-      DB_PORT: 3307
-      DB_DATABASE: app
-      DB_USERNAME: app
-      DB_PASSWORD: app
 
     cap_add:
       - NET_ADMIN
