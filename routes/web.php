@@ -24,17 +24,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/menu', [MenuController::class, 'index']);
-    Route::get('/education', [EducationController::class, 'index']);
-    Route::post('/education/materials', [EducationMaterialController::class, 'store']);
-    Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
-    Route::put('/education/materials/{id}', [EducationMaterialController::class, 'update']);
-    Route::get('/drill', [DrillController::class, 'index']);
-    Route::post('/drill/complete', [DrillController::class, 'complete']);
-    Route::get('/drill/video', [DrillController::class, 'videoPlayer']);
-    Route::get('/drill/video/stream', [DrillController::class, 'video']);
-    Route::get('/my-result', [ResultController::class, 'index']);
-    Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
+Route::get('/menu', [MenuController::class, 'index']);
+Route::get('/education', [EducationController::class, 'index']);
+Route::post('/education/materials', [EducationMaterialController::class, 'store']);
+Route::delete('/education/materials/{id}', [EducationMaterialController::class, 'destroy']);
+Route::put('/education/materials/{id}', [EducationMaterialController::class, 'update']);
+Route::put('/education/materials/{id}/publish', [EducationMaterialController::class, 'publish']);
+Route::get('/drill', [DrillController::class, 'index']);
+Route::post('/drill/complete', [DrillController::class, 'complete']);
+Route::get('/drill/video', [DrillController::class, 'videoPlayer']);
+Route::get('/drill/video/stream', [DrillController::class, 'video']);
+Route::get('/my-result', [ResultController::class, 'index']);
+Route::get('/progress-drill', [ProgressDrillController::class, 'index']);
 
     // Admin drill scheduling
     Route::get('/admin/dashboard', [DashboardController::class, 'index']);

@@ -143,14 +143,13 @@
 
         <div class="edu-video-list" id="eduVideoList">
             @foreach ($videos as $video)
-                <a
-                    href="{{ url('/education') }}?video={{ $video['id'] }}"
+                <div
                     class="edu-video-item {{ $video['id'] === $currentVideoId ? 'edu-video-item--active' : '' }}"
                     data-title="{{ strtolower($video['title']) }}"
                 >
                     <span class="edu-video-item__dot {{ ($video['watched'] ?? false) ? 'edu-video-item__dot--watched' : '' }}"></span>
                     <span class="edu-video-item__title">{{ $video['title'] }}</span>
-                </a>
+                </div>
             @endforeach
         </div>
 

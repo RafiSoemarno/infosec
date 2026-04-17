@@ -676,6 +676,12 @@ class DrillDataService
 
         $videos = $drillData['education']['videos'] ?? [];
 
+        // Only show published materials to users (draft = admin-only)
+        $videos = array_values(array_filter($videos, function (array $v) {
+            $status = $v['status'] ?? 'published'; // legacy entries without status are treated as published
+            return $status === 'published';
+        }));
+
         // Normalise to a consistent shape for the view
         $videos = array_map(function (array $v) {
             $fileType = (string) ($v['fileType'] ?? '');
